@@ -1,0 +1,2 @@
+Prerequisites:
+sudo apt-get -y install libqt4-dev libqt4-designer libqt4-gui

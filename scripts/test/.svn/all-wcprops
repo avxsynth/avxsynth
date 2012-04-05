@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test
+END
+amplifydb.avs
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/amplifydb.avs
+END
+resampleaudio.avs
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/resampleaudio.avs
+END
+mergechannels.avs
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/mergechannels.avs
+END
+assumesamplerate.avs
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/assumesamplerate.avs
+END
+getchannels.avs
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/getchannels.avs
+END
+converttomono.avs
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/converttomono.avs
+END
+monotostereo.avs
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/monotostereo.avs
+END
+killaudio.avs
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/killaudio.avs
+END
+mixaudio.avs
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/mixaudio.avs
+END
+normalize.avs
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/normalize.avs
+END
+delayaudio.avs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/delayaudio.avs
+END
+amplify.avs
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/amplify.avs
+END
+convertaudio.avs
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/convertaudio.avs
+END
+killvideo.avs
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/122/trunk/AVXSynth/scripts/test/killvideo.avs
+END

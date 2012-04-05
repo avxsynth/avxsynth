@@ -1,0 +1,10 @@
+src_movie = FFVideoSource(source="/home/encodingtools/TestStreams/DestinationTruth/DestinationTruth.mpg", colorspace="yv12")
+#src_movie
+
+src_width  = width(src_movie)
+src_height = height(src_movie)
+scaled_movie = SWScale(src_movie, src_width/3, src_height/3, "LANCZOS")
+
+swappedUV = SwapUV(scaled_movie)
+StackVertical(StackVertical(scaled_movie, swappedUV), SwapUV(swappedUV))
+
