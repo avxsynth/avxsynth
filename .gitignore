@@ -1,0 +1,4 @@
+*.[oa]
+*.so
+apps/AVXEdit/AVXEdit
+apps/avxframeserver/frameserverapp/avxSynthFrameServer
