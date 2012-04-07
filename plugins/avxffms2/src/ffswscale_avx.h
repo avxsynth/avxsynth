@@ -26,9 +26,10 @@ extern "C" {
 }
 
 #include "ffmscompat.h"
-
-//#include <windows.h>
 #include "avxplugin.h"
+
+SwsContext *FFGetSwsContext(int SrcW, int SrcH, PixelFormat SrcFormat, int DstW, int DstH, PixelFormat DstFormat, int64_t Flags, int ColorSpace = SWS_CS_DEFAULT, int ColorRange = -1);
+int FFGetSwsAssumedColorSpace(int Width, int Height);
 
 class SWScale : public avxsynth::GenericVideoFilter {
 private:

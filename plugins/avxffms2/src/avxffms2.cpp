@@ -187,7 +187,7 @@ static avxsynth::AVSValue __cdecl CreateFFVideoSource(avxsynth::AVSValue Args, v
 	AvisynthVideoSource *Filter;
 
 	try {
-		Filter = new AvisynthVideoSource(Source, Track, Index, FPSNum, FPSDen, PP, Threads, SeekMode, RFFMode, Width, Height, Resizer, ColorSpace, Env);
+        Filter = new AvisynthVideoSource(Source, Track, Index, FPSNum, FPSDen, PP, Threads, SeekMode, RFFMode, Width, Height, Resizer, VarPrefix, ColorSpace, Env);
 	} catch (...) {
 		FFMS_DestroyIndex(Index);
 		throw;
@@ -284,7 +284,7 @@ static avxsynth::AVSValue __cdecl CreateFFAudioSource(avxsynth::AVSValue Args, v
 	AvisynthAudioSource *Filter;
 
 	try {
-		Filter = new AvisynthAudioSource(Source, Track, Index, AdjustDelay, Env);
+        Filter = new AvisynthAudioSource(Source, Track, Index, AdjustDelay, VarPrefix, Env);
 	} catch (...) {
 		FFMS_DestroyIndex(Index);	
 		throw;

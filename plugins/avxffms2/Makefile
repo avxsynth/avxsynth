@@ -52,7 +52,7 @@ EXECUTABLE       = libavxffms2.so
 #
 # Compiler
 #
-CFLAGS           = -pthread -Wall -Wno-unused -fPIC -g -D_REENTRANT -D__STDC_CONSTANT_MACROS 
+CFLAGS           = -pthread -Wall -Wno-unused -fPIC -g -D_REENTRANT -D__STDC_CONSTANT_MACROS -D_FILE_OFFSET_BITS=64
 COMPILE          = g++ $(CFLAGS) $(INCLUDES) 
 
 #

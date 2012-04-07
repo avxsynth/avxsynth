@@ -19,8 +19,8 @@
 //  THE SOFTWARE.
 
 #include "ffpp_avx.h"
+#include "ffswscale_avx.h"
 #include "avsutils_avx.h"
-#include "core/videoutils.h"
 #include <string>
 
 #ifdef FFMS_USE_POSTPROC
@@ -67,8 +67,10 @@ FFPP::FFPP(avxsynth::PClip AChild, const char *PP, avxsynth::IScriptEnvironment 
 		Flags |= PP_FORMAT_420;
 	} else if (vi.IsYUY2()) {
 		Flags |= PP_FORMAT_422;
-		SWSTo422P = GetSwsContext(vi.width, vi.height, PIX_FMT_YUYV422, vi.width, vi.height, PIX_FMT_YUV422P, Flags | SWS_BICUBIC);
-		SWSFrom422P = GetSwsContext(vi.width, vi.height, PIX_FMT_YUV422P, vi.width, vi.height, PIX_FMT_YUYV422, Flags | SWS_BICUBIC);
+        SWSTo422P = FFGetSwsContext(vi.width, vi.height, PIX_FMT_YUYV422, vi.width, vi.height, PIX_FMT_YUV422P, Flags | SWS_BICUBIC,
+                        FFGetSwsAssumedColorSpace(vi.width, vi.height));
+        SWSFrom422P = FFGetSwsContext(vi.width, vi.height, PIX_FMT_YUV422P, vi.width, vi.height, PIX_FMT_YUYV422, Flags | SWS_BICUBIC,
+                        FFGetSwsAssumedColorSpace(vi.width, vi.height));
 		avpicture_alloc(&InputPicture, PIX_FMT_YUV422P, vi.width, vi.height);
 		avpicture_alloc(&OutputPicture, PIX_FMT_YUV422P, vi.width, vi.height);
 	} else {

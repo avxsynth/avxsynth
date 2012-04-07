@@ -20,7 +20,9 @@
 
 #include "ffswscale_avx.h"
 #include "avsutils_avx.h"
-#include "core/videoutils.h"
+extern "C" {
+#include <libavutil/opt.h>
+}
 
 static int64_t AvisynthToSWSCPUFlags(long AvisynthFlags) {
 	int64_t Flags = 0;
@@ -35,6 +37,51 @@ static int64_t AvisynthToSWSCPUFlags(long AvisynthFlags) {
 		Flags |= SWS_CPU_CAPS_SSE2;
 #endif
 	return Flags;
+}
+
+
+SwsContext *FFGetSwsContext(int SrcW, int SrcH, PixelFormat SrcFormat, int DstW, int DstH, PixelFormat DstFormat, int64_t Flags, int ColorSpace, int ColorRange) {
+    Flags |= SWS_FULL_CHR_H_INT | SWS_FULL_CHR_H_INP;
+#if LIBSWSCALE_VERSION_INT < AV_VERSION_INT(0, 12, 0)
+    return sws_getContext(SrcW, SrcH, SrcFormat, DstW, DstH, DstFormat, Flags, 0, 0, 0);
+#else
+    SwsContext *Context = sws_alloc_context();
+    if (!Context) return 0;
+
+    // The intention here is to never change the color range.
+    int Range; // 0 = limited range, 1 = full range
+    if (ColorRange == AVCOL_RANGE_JPEG)
+        Range = 1;
+    else // explicit limited range, or unspecified
+        Range = 0;
+
+    av_set_int(Context, "sws_flags", Flags);
+    av_set_int(Context, "srcw",       SrcW);
+    av_set_int(Context, "srch",       SrcH);
+    av_set_int(Context, "dstw",       DstW);
+    av_set_int(Context, "dsth",       DstH);
+    av_set_int(Context, "src_range",  Range);
+    av_set_int(Context, "dst_range",  Range);
+    av_set_int(Context, "src_format", SrcFormat);
+    av_set_int(Context, "dst_format", DstFormat);
+
+    sws_setColorspaceDetails(Context, sws_getCoefficients(ColorSpace), Range, sws_getCoefficients(ColorSpace), Range, 0, 1<<16, 1<<16);
+
+    if(sws_init_context(Context, 0, 0) < 0){
+        sws_freeContext(Context);
+        return 0;
+    }
+
+    return Context;
+#endif
+
+}
+
+int FFGetSwsAssumedColorSpace(int W, int H) {
+    if (W > 1024 || H >= 600)
+        return SWS_CS_ITU709;
+    else
+        return SWS_CS_DEFAULT;
 }
 
 SWScale::SWScale(avxsynth::PClip Child, int ResizeToWidth, int ResizeToHeight, const char *ResizerName, const char *ConvertToFormatName, avxsynth::IScriptEnvironment *Env) 
@@ -166,8 +213,8 @@ SWScale::SWScale(avxsynth::PClip Child, int ResizeToWidth, int ResizeToHeight, c
 	if ((ConvertToFormat == PIX_FMT_YUV420P || ConvertToFormat == PIX_FMT_YUYV422) && vi.width & 1)
 		Env->ThrowError("SWScale: mod 2 output width required");
 
-	Context = GetSwsContext(OrigWidth, OrigHeight, ConvertFromFormat, vi.width, vi.height, ConvertToFormat, 
-		AvisynthToSWSCPUFlags(Env->GetCPUFlags()) | Resizer);
+	Context = FFGetSwsContext(OrigWidth, OrigHeight, ConvertFromFormat, vi.width, vi.height, ConvertToFormat, 
+        AvisynthToSWSCPUFlags(Env->GetCPUFlags()) | Resizer, FFGetSwsAssumedColorSpace(OrigWidth, OrigHeight));
 	if (Context == NULL)
 		Env->ThrowError("SWScale: Context creation failed");
 	

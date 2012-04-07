@@ -22,7 +22,6 @@
 #define FFAVSSOURCES_H
 
 #include <vector>
-//#include <windows.h>
 #include "avxplugin.h"
 #include "ffms.h"
 
@@ -41,7 +40,8 @@ private:
 	int FPSDen;
 	int RFFMode;
 	std::vector<FrameFields> FieldList;
-
+    const char *VarPrefix;
+    
 	void InitOutputFormat(int ResizeToWidth, int ResizeToHeight,
 		const char *ResizerName, const char *ConvertToFormatName, avxsynth::IScriptEnvironment *Env);
 	void OutputFrame(const FFMS_Frame *Frame, avxsynth::PVideoFrame &Dst, avxsynth::IScriptEnvironment *Env);
@@ -50,7 +50,7 @@ public:
 	AvisynthVideoSource(const char *SourceFile, int Track, FFMS_Index *Index,
 		int FPSNum, int FPSDen, const char *PP, int Threads, int SeekMode, int RFFMode,
 		int ResizeToWidth, int ResizeToHeight, const char *ResizerName,
-		const char *ConvertToFormatName, avxsynth::IScriptEnvironment* Env);
+        const char *ConvertToFormatName, const char *VarPrefix, avxsynth::IScriptEnvironment* Env);
 	~AvisynthVideoSource();
 	bool __stdcall GetParity(int n);
 	void __stdcall SetCacheHints(int cachehints, size_t frame_range) { }
@@ -65,7 +65,7 @@ private:
 	FFMS_AudioSource *A;
 public:
 	AvisynthAudioSource(const char *SourceFile, int Track, FFMS_Index *Index,
-		int AdjustDelay, avxsynth::IScriptEnvironment* Env);
+		int AdjustDelay, const char *VarPrefix, avxsynth::IScriptEnvironment* Env);
 	~AvisynthAudioSource();
 	bool __stdcall GetParity(int n) { return false; }
 	void __stdcall SetCacheHints(int cachehints, size_t frame_range) { }
