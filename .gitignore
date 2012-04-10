@@ -2,3 +2,5 @@
 *.so
 apps/AVXEdit/AVXEdit
 apps/avxframeserver/frameserverapp/avxSynthFrameServer
+apps/AVXEdit/src/moc_mainwindow.cpp
+apps/AVXEdit/src/qrc_application.cpp
