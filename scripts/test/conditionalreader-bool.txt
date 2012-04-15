@@ -1,0 +1,8 @@
+TYPE bool
+DEFAULT false
+1 T
+2 yes
+3 false
+4 F
+5 no
+R 6 7 T
