@@ -14,6 +14,8 @@ You can read about the porting effort [here](https://github.com/avxsynth/avxsynt
 
 You can see the status of the built-in function porting [here](https://github.com/avxsynth/avxsynth/wiki/Built-in-Functions). 
 
+A summary of the testing status can be found [here](https://github.com/avxsynth/avxsynth/wiki/Testing-Summary) and issues are tracked [here](https://github.com/avxsynth/avxsynth/issues).
+
 ## The AvxSynth Frame Server
 
 The AvxSynth toolkit includes a frame server application that delivers decoded frames through stdout. This can be piped to x264. You can see how to use AvxSynth with x264 [here](https://github.com/avxsynth/avxsynth/wiki/AvxSynth-Frame-Server).
