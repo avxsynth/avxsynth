@@ -92,13 +92,13 @@ namespace avxsynth
             strideBuf.nCairoStride = cairo_format_stride_for_width(CAIRO_FORMAT_RGB24, trd.width);        
             
             {
-                strideBuf.pData = new unsigned char[trd.width*strideBuf.nCairoStride];
+                strideBuf.pData = new unsigned char[trd.height*strideBuf.nCairoStride];
                 if(NULL == strideBuf.pData)
                 {
                     throw AvxException
                     (
                         "Failed allocating %d bytes (%d x %d bytes) for Cairo surface",
-                        trd.width*strideBuf.nCairoStride, trd.width, strideBuf.nCairoStride
+                        trd.height*strideBuf.nCairoStride, trd.height, strideBuf.nCairoStride
                     );
                 }
 
@@ -110,7 +110,7 @@ namespace avxsynth
                     // single pass through this loop processes one 
                     // horizontal line
                     unsigned char* pSrc  = trd.originalBuffer + i*trd.originalStride;
-                    unsigned char* pDest = strideBuf.pData + (trd.height - i)*strideBuf.nCairoStride;
+                    unsigned char* pDest = strideBuf.pData + (trd.height - 1 - i)*strideBuf.nCairoStride;
                     for(int j = 0; j < trd.width; j++)
                     {
                         pDest[4 * j + 2] = pSrc[3*j + 0];
@@ -130,7 +130,7 @@ namespace avxsynth
             {
                 // single pass through this loop processes one 
                 // horizontal line
-                unsigned char* pSrc  = strideBuf.pData + (trd.height - i)*strideBuf.nCairoStride;
+                unsigned char* pSrc  = strideBuf.pData + (trd.height - 1 - i)*strideBuf.nCairoStride;
                 unsigned char* pDest = trd.originalBuffer + i*trd.originalStride;
                 for(int j = 0; j < trd.width; j++)
                 {
