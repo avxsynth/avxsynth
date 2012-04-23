@@ -8,5 +8,4 @@ AVXSYNTH_DEPLOY_PLUGINS		= $(HOME)/$(AVXSYNTH_DEPLOY_REL_PATH)/
 LOG4CPP_LIBS	 = `log4cpp-config --libs`
 
 AVXCOMMON_LIB                   = -L$(AVXSYNTH_DEPLOY_ROOT) -lavxcommon
-# for maple avxsynth compilation (do not delete this flag, it is used in ffms2avs plugin)
 AVXSYNTH_INCLUDE_PATH           = .
