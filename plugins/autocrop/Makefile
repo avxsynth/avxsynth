@@ -68,6 +68,8 @@ deploy:
 	echo ""; echo "Building:";echo ""; make;                      \
 	echo ""; echo "Deploying:"; echo "";                          \
 	echo "copying $(EXECUTABLE) to $(AVXSYNTH_DEPLOY_PLUGINS)";   \
+	test -d $(AVXSYNTH_DEPLOY_ROOT) || mkdir -p $(AVXSYNTH_DEPLOY_ROOT);		\
+	test -d $(AVXSYNTH_DEPLOY_PLUGINS) || mkdir -p $(AVXSYNTH_DEPLOY_PLUGINS);	\
 	cp $(EXECUTABLE) $(AVXSYNTH_DEPLOY_PLUGINS); 		      \
 	ls -alg $(AVXSYNTH_DEPLOY_PLUGINS);			      \
 	echo "\n\n\n\n\n"
