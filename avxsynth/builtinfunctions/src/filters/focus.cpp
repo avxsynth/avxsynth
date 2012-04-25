@@ -519,9 +519,9 @@ void AFH_YUY2_C(uc* p, int height, const int pitch, const int width, const int a
 			vu   = p[x*2+1];
 			p[x*2+1] = w;
 		}
-		uc y     = ScaledPixelClip(p[x*2+0] * center_weight + (yy + p[x*2+2]) * outer_weight);
+		uc c     = ScaledPixelClip(p[x*2+0] * center_weight + (yy + p[x*2+2]) * outer_weight);
 		yy       = p[x*2+0];
-		p[x*2+0] = y;
+		p[x*2+0] = c;
 		p[x*2+1] = ScaledPixelClip(p[x*2+1] * center_weight + (uv + p[x*2+1]) * outer_weight);
 		p[x*2+2] = ScaledPixelClip(p[x*2+2] * center_weight + (yy + p[x*2+2]) * outer_weight);
 		p[x*2+3] = ScaledPixelClip(p[x*2+3] * center_weight + (vu + p[x*2+3]) * outer_weight);
