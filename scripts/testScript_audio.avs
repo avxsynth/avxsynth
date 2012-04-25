@@ -12,7 +12,7 @@ clip5 = MergeChannels(clip3, clip4)
 clip6 = DelayAudio(Tone(frequency=f4), 3.0)
 clip7 = MergeChannels(clip5, clip6)
 
-clip8 = ConvertToMono(clip7)
+clip8 = ConvertAudioTo16Bit(ConvertToMono(clip7))
 
 #
 # the result of the two functions below should be
