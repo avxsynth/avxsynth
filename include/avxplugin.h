@@ -61,8 +61,8 @@ enum { AVISYNTH_INTERFACE_VERSION = 3 };
 
 // Raster types used by VirtualDub & Avisynth
 #define in64 (__int64)(unsigned short)
-typedef unsigned long	Pixel;    // this will break on 64-bit machines!
-typedef unsigned long	Pixel32;
+typedef uint32_t	Pixel;    
+typedef uint32_t	Pixel32;
 typedef unsigned char	Pixel8;
 typedef long			PixCoord;
 typedef long			PixDim;

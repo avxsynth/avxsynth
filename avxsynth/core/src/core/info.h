@@ -1548,7 +1548,7 @@ unsigned short font[][20] = {
 
 #ifndef Pixel32
 
-typedef unsigned long Pixel32;
+typedef uint32_t Pixel32;
 
 #endif
 
