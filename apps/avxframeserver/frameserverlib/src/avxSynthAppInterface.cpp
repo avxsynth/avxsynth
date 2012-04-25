@@ -661,13 +661,7 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
           IAVIStream* pAudioStream = NULL;
           DetermineStreamType(pAVXSynth, pVideoStream, pAudioStream);
           
-          if(pVideoStream && pAudioStream)
-          {
-                AVXLOG_FATAL("%s", "Currently unsupported case of having both audio and video stream\n");
-                throw AvisynthError("Currently unsupported case of having both audio and video stream");
-          }
-          else if((NULL == pVideoStream) &&
-                  (NULL == pAudioStream))
+          if((NULL == pVideoStream) && (NULL == pAudioStream))
           {
                 AVXLOG_FATAL("%s", "No streams found (or failed initializing any stream processing");
                 throw AvisynthError("No streams found (or failed initializing any stream processing)");
@@ -675,6 +669,11 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
           memset(&processStreamInfo, 0, sizeof(PROCESS_STREAM_INFO));
           processStreamInfo.isMPlayerLaunchRequired = isMPlayerLaunchRequired;
           PROCESS_STREAM_INFO* pRetValue = NULL;
+          
+          //
+          // If video stream has been detected, give it priority and treat everything as 'video' case; 
+          // only if there is no video stream consider the audio case next.
+          //
           if(pVideoStream)
           {
             processStreamInfo.pAVIStream          = pVideoStream;
