@@ -1,75 +1,30 @@
-include ../../common.mk
+include ../../config.mak
 
-SRC_PATH         = ./src
+ifeq ($(SRCPATH),.)
+        SRCPATH=../..
+endif
 
-#
-# Import includes
-#
-PLUGIN_INCLUDES  = -I../../include		\
-		   -I../../avxsynth/include
+SRC_PATH = $(SRCPATH)/plugins/autocrop/src
+OBJ_PATH = ./src
 
-LOCAL_INCLUDES   = -I$(SRC_PATH) \
-			
-INCLUDES         =                      \
-                   $(LOCAL_INCLUDES)    \
-                   $(PLUGIN_INCLUDES)   
-			
+OBJECTS = $(OBJ_PATH)/autocrop.o
 
-#
-# Sources/objects
-#
-OBJECTS          = 							\
-		    $(SRC_PATH)/autocrop.o				
+INCLUDES = \
+	-I$(SRCPATH)/avxcommon/include \
+	-I$(SRCPATH)/include
 
-#
-# Libraries
-#
+LIBS = -L../../avxcommon -lavxcommon
 
-
-SYSTEM_LIBS      = -lpthread    \
-                   -lm          \
-                   -ldl          
-
-LIBS             = $(SYSTEM_LIBS) $(AVXCOMMON_LIB)
-
-#
-# Outputs
-#
-EXECUTABLE       = libautocrop.so
-
-#
-# Compiler
-#
-CFLAGS           = -pthread -Wall -Wno-unused -fPIC -g -D_REENTRANT 
-COMPILE          = g++ $(CFLAGS) $(INCLUDES) 
-
-#
-# Linker
-#
-LDFLAGS          = -g -Wl,-Bdynamic -shared
-LINK             = g++ $(LDFLAGS)
-
-#
-# Build procedures/target descriptions
-#
-
-default: $(EXECUTABLE)
+EXECUTABLE = libautocrop$(SONAME)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(LINK) $(OBJECTS) $(LIBS) -o $(EXECUTABLE)
+	$(LD) $(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS) $(LDFLAGS_DYN)
 
-%.o: %.cpp
-	$(COMPILE) -c $< -o $@
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
+	$(CXX) $(CFLAGS) $(CFLAGS_DYN) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm $(OBJECTS) $(EXECUTABLE)
+	rm -f $(OBJECTS)
 
-deploy:
-	echo ""; echo "Building:";echo ""; make;                      \
-	echo ""; echo "Deploying:"; echo "";                          \
-	echo "copying $(EXECUTABLE) to $(AVXSYNTH_DEPLOY_PLUGINS)";   \
-	test -d $(AVXSYNTH_DEPLOY_ROOT) || mkdir -p $(AVXSYNTH_DEPLOY_ROOT);		\
-	test -d $(AVXSYNTH_DEPLOY_PLUGINS) || mkdir -p $(AVXSYNTH_DEPLOY_PLUGINS);	\
-	cp $(EXECUTABLE) $(AVXSYNTH_DEPLOY_PLUGINS); 		      \
-	ls -alg $(AVXSYNTH_DEPLOY_PLUGINS);			      \
-	echo "\n\n\n\n\n"
+install:
+	install -D $(EXECUTABLE) $(pluginsdir)/$(EXECUTABLE)

@@ -4,16 +4,10 @@ ifeq ($(SRCPATH),.)
         SRCPATH=../..
 endif
 
-SRC_PATH = $(SRCPATH)/plugins/avxsubtitle/src
+SRC_PATH = $(SRCPATH)/plugins/autocrop/src
 OBJ_PATH = ./src
 
-OBJECTS = \
-	$(OBJ_PATH)/AvxSubtitle.o    \
-	$(OBJ_PATH)/CaptionEntry.o   \
-	$(OBJ_PATH)/CaptionList.o    \
-	$(OBJ_PATH)/SrtParser.o      \
-	$(OBJ_PATH)/SubtitleParser.o \
-	$(OBJ_PATH)/Utils.o
+OBJECTS = $(OBJ_PATH)/autocrop.o
 
 INCLUDES = \
 	-I$(SRCPATH)/avxcommon/include \
@@ -21,7 +15,7 @@ INCLUDES = \
 
 LIBS = -L../../avxcommon -lavxcommon
 
-EXECUTABLE = libavxsubtitle$(SONAME)
+EXECUTABLE = libautocrop$(SONAME)
 
 $(EXECUTABLE): $(OBJECTS)
 	$(LD) $(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS) $(LDFLAGS_DYN)
@@ -33,4 +27,4 @@ clean:
 	rm -f $(OBJECTS)
 
 install:
-	install -D $(EXECUTABLE) $(pluginsdir)/$(EXECUTABLE)
+	install -D $(EXECUTABLE) $(pluginsdir)/

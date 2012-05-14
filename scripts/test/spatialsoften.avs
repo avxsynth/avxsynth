@@ -1,4 +1,4 @@
-# This script tests the SpatialSoften() function#
+# This script tests the SpatialSoften() function
 #
 # Expected behavior:
 #

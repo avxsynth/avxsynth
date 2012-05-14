@@ -30,4 +30,4 @@ clean:
 	rm -f $(OBJECTS)
 
 install:
-	install -D $(EXECUTABLE) $(bindir)/$(EXECUTABLE)
+	install -D $(EXECUTABLE) $(bindir)/

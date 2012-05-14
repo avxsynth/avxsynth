@@ -53,4 +53,4 @@ clean:
 	rm -f $(OBJECTS)
 
 install:
-	install -D $(EXECUTABLE) $(libdir)/$(EXECUTABLE)
+	install -D $(EXECUTABLE) $(libdir)/
