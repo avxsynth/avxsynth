@@ -15,7 +15,6 @@ OBJECTS = \
 	$(OBJ_PATH)/avxffms2.o
 
 INCLUDES = \
-	-I$(SRCPATH)/avxcommon/include \
 	-I$(SRCPATH)/include          \
 	$(FFMS2_INCLUDES)
 

@@ -65,6 +65,9 @@ avxframeserver-install: avxframeserver
 avxedit-install: avxedit
 	$(MAKE) -f $(SRCPATH)/apps/AVXEdit/Makefile -C apps/AVXEdit install
 
+install:
+	cp -r include/* $(includedir)
+
 clean:
 	for dir in $(DIRS); do \
 		$(MAKE) -f $(SRCPATH)/$$dir/Makefile -C $$dir clean; \

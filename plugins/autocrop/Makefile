@@ -10,7 +10,6 @@ OBJ_PATH = ./src
 OBJECTS = $(OBJ_PATH)/autocrop.o
 
 INCLUDES = \
-	-I$(SRCPATH)/avxcommon/include \
 	-I$(SRCPATH)/include
 
 LIBS = -L../../avxcommon -lavxcommon
