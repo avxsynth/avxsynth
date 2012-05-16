@@ -43,7 +43,7 @@ $(OBJ_PATH)/qrc_application.o: $(SRC_PATH)/../application.qrc
 	$(CXX) $(CFLAGS) $(INCLUDES) -c $(OBJ_PATH)/qrc_application.cpp -o $@
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(OBJECTS) $(EXECUTABLE)
 
 install:
 	install -D $(EXECUTABLE) $(bindir)/$(EXECUTABLE)

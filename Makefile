@@ -71,7 +71,7 @@ clean:
 	done
 
 distclean: clean
-	-rm config.log config.mk config.targets avxsynth.pc
+	-rm config.log config.mak config.targets avxsynth.pc
 
 test:
 	echo "Testing..."

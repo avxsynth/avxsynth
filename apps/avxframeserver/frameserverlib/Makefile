@@ -26,4 +26,4 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
 	$(CXX) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(OBJECTS) $(EXECUTABLE)

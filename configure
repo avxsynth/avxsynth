@@ -456,7 +456,7 @@ log_msg "Target host: $host"
 log_msg "Attempting to use C++ compiler: $CC"
 log_msg ""
 
-cc_check || die "No working C++ compiler found."
+cc_check || die "No working C++ compiler found. See config.log for details."
 if [ "$debug" = "yes" ]; then
     CFLAGS="-g $CFLAGS"
     LDFLAGS="-g $LDFLAGS"
@@ -523,18 +523,61 @@ fi
 
 # avxffms2 requires ffms2, avcodec, avutil, avformat, swscale, and postproc
 if [ "$ffms2" = "yes" ]; then
-    ffms2="no"
-    log_check "ffms2 and libav"
-    if ! ${cross_prefix}pkg-config --exists ffms2 libavcodec libavutil libavformat libswscale libpostproc; then
+    log_msg "checking for ffms2 and libav/ffmpeg"
+    log_check "ffms2"
+    if ! ${cross_prefix}pkg-config --exists ffms2; then
         log_fail
-        echo "Warning: ffms2 and/or libav required for ffms2, disabling"
-        echo "Note: libav must be built with libpostproc support"
-        log_msg "ffms2 and/or libav not found, disabling ffms2"
+        echo "Warning: ffms2 not found"
+        ffms2_missing_libs="yes"
     else
         log_ok
+    fi
+    log_check "libavcodec"
+    if ! ${cross_prefix}pkg-config --exists libavcodec; then
+        log_fail
+        echo "Warning: libavcodec not found"
+        ffms2_missing_libs="yes"
+    else
+        log_ok
+    fi
+    log_check "libavformat"
+    if ! ${cross_prefix}pkg-config --exists libavformat; then
+        log_fail
+        echo "Warning: libavformat not found"
+        ffms2_missing_libs="yes"
+    else
+        log_ok
+    fi
+    log_check "libavutil"
+    if ! ${cross_prefix}pkg-config --exists libavutil; then
+        log_fail
+        echo "Warning: libavutil not found"
+        ffms2_missing_libs="yes"
+    else
+        log_ok
+    fi
+    log_check "libpostproc"
+    if ! ${cross_prefix}pkg-config --exists libpostproc; then
+        log_fail
+        echo "Warning: libpostproc not found"
+        ffms2_missing_libs="yes"
+    else
+        log_ok
+    fi
+    log_check "libswscale"
+    if ! ${cross_prefix}pkg-config --exists libswscale; then
+        log_fail
+        echo "Warning: libswscale not found"
+        ffms2_missing_libs="yes"
+    else
+        log_ok
+    fi
+    if [ "$ffms2_missing_libs" = "yes" ]; then
+        echo "Warning: One or more required libraries for ffms2 support missing, disabling"
+        ffms2="no"
+    else
         FFMS2_INCLUDES=`${cross_prefix}pkg-config --cflags ffms2 libavcodec libavutil libavformat libswscale libpostproc`
         FFMS2_LIBS=`${cross_prefix}pkg-config --libs ffms2 libavcodec libavutil libavformat libswscale libpostproc`
-        ffms2="yes"
     fi
 fi
 
@@ -608,6 +651,7 @@ QTGUI_INCLUDES=$QTGUI_INCLUDES
 QTGUI_LIBS=$QTGUI_LIBS
 EOF
 
+log_msg ""
 log_msg "Enabled optional components:"
 
 # generate config.targets
@@ -661,8 +705,8 @@ mkdir -p apps/AVXEdit/src
 
 cat << EOF
 
-Configure completed successfully:
+Configure completed successfully, see config.log for details:
 
-To build, type "make", to install, type "make install"
+To build, type "make". To install, type "make install".
 Other valid targets: clean distclean test
 EOF

@@ -50,7 +50,7 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
 	$(CXX) $(CFLAGS) $(CFLAGS_DYN) $(DEFINES) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f $(OBJECTS) $(EXECUTABLE)
 
 install:
 	install -D $(EXECUTABLE) $(libdir)/$(EXECUTABLE)
