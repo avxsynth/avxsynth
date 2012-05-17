@@ -12,8 +12,6 @@ OBJECTS = $(OBJ_PATH)/autocrop.o
 INCLUDES = \
 	-I$(SRCPATH)/include
 
-LIBS = -L../../avxcommon -lavxcommon
-
 EXECUTABLE = libautocrop$(SONAME)
 
 $(EXECUTABLE): $(OBJECTS)

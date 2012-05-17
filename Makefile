@@ -33,22 +33,22 @@ builtinfunctions: avxcommon
 	$(MAKE) -f $(SRCPATH)/avxsynth/builtinfunctions/Makefile -C avxsynth/builtinfunctions
 core: avxcommon builtinfunctions
 	$(MAKE) -f $(SRCPATH)/avxsynth/core/Makefile -C avxsynth/core
-autocrop: avxcommon
+autocrop: core
 	$(MAKE) -f $(SRCPATH)/plugins/autocrop/Makefile -C plugins/autocrop
-avxffms2: avxcommon
+avxffms2: core
 	$(MAKE) -f $(SRCPATH)/plugins/avxffms2/Makefile -C plugins/avxffms2
-avxframecapture: avxcommon
+avxframecapture: core
 	$(MAKE) -f $(SRCPATH)/plugins/avxframecapture/Makefile -C plugins/avxframecapture
-avxsubtitle: avxcommon
+avxsubtitle: core
 	$(MAKE) -f $(SRCPATH)/plugins/avxsubtitle/Makefile -C plugins/avxsubtitle
 frameserverlib: core
-	$(MAKE) -f $(SRCPATH)/apps/avxframeserver/frameserverlib/Makefile -Capps/avxframeserver/frameserverlib
+	$(MAKE) -f $(SRCPATH)/apps/avxframeserver/frameserverlib/Makefile -C apps/avxframeserver/frameserverlib
 avxframeserver: frameserverlib
 	$(MAKE) -f $(SRCPATH)/apps/avxframeserver/frameserverapp/Makefile -C apps/avxframeserver/frameserverapp
 avxedit: frameserverlib
 	$(MAKE) -f $(SRCPATH)/apps/AVXEdit/Makefile -C apps/AVXEdit
 
-core-install: core
+core-install: core header-install
 	$(MAKE) -f $(SRCPATH)/avxcommon/Makefile -C avxcommon install
 	$(MAKE) -f $(SRCPATH)/avxsynth/builtinfunctions/Makefile -C avxsynth/builtinfunctions install
 	$(MAKE) -f $(SRCPATH)/avxsynth/core/Makefile -C avxsynth/core install
@@ -65,8 +65,10 @@ avxframeserver-install: avxframeserver
 avxedit-install: avxedit
 	$(MAKE) -f $(SRCPATH)/apps/AVXEdit/Makefile -C apps/AVXEdit install
 
-install:
-	cp -r include/* $(includedir)
+header-install:
+	mkdir -p $(includedir)
+	cp -r $(SRCPATH)/include/* $(includedir)
+	install -D avxsynth.pc $(pcdir)
 
 clean:
 	for dir in $(DIRS); do \
@@ -87,5 +89,5 @@ uninstall:
 .PHONY: avxcommon builtinfunctions core autocrop avxffms2 avxframecapture \
 	avxsubtitle avxframeserver avxedit core-install autocrop-install \
 	avxffms2-install avxframecapture-install avxsubtitle-install \
-	avxframeserver-install avxedit-install default install clean distclean \
-	test uninstall
+	avxframeserver-install avxedit-install header-install default install \
+	clean distclean test uninstall

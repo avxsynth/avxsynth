@@ -18,7 +18,7 @@ INCLUDES = \
 	-I$(SRCPATH)/include          \
 	$(FFMS2_INCLUDES)
 
-LIBS = -L../../avxcommon -lavxcommon $(FFMS2_LIBS)
+LIBS = $(FFMS2_LIBS)
 
 DEFINES = -D__STDC_CONSTANT_MACROS -D_FILE_OFFSET_BITS=64
 

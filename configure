@@ -14,7 +14,8 @@ Standard options:
                            [PREFIX]
   --bindir=DIR             install binaries in DIR [EPREFIX/bin]
   --libdir=DIR             install libs in DIR [EPREFIX/lib/avxsynth]
-  --includedir=DIR         install includes in DIR [PREFIX/include]
+  --pcdir=DIR              install pkg-config files in DIR [EPREFIX/lib/pkgconfig]
+  --includedir=DIR         install includes in DIR [PREFIX/include/avxsynth]
   --extra-cflags=ECFLAGS   add ECFLAGS to CFLAGS
   --extra-ldflags=ELDFLAGS add ELDFLAGS to LDFLAGS
 
@@ -196,7 +197,8 @@ prefix='/usr/local'
 exec_prefix='${prefix}'
 bindir='${exec_prefix}/bin'
 libdir='${exec_prefix}/lib/avxsynth'
-includedir='${prefix}/include'
+pcdir='${exec_prefix}/lib/pkgconfig'
+includedir='${prefix}/include/avxsynth'
 pluginsdir='${libdir}/plugins'
 DEVNULL='/dev/null'
 
@@ -621,6 +623,7 @@ prefix=$prefix
 exec_prefix=$exec_prefix
 bindir=$bindir
 libdir=$libdir
+pcdir=$pcdir
 includedir=$includedir
 pluginsdir=$pluginsdir
 ARCH=$ARCH
