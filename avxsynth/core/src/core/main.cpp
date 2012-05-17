@@ -52,9 +52,9 @@ using namespace std;
 #include "../core/cache.h"
 #include "../filters/debug.h"
 #include "avxiface.h"
-#include "./common/windowsPorts/excptLinux.h"
-#include "./common/windowsPorts/WinNTLinux.h"
-#include "./common/windowsPorts/MMRegLinux.h"
+#include "./windowsPorts/excptLinux.h"
+#include "./windowsPorts/WinNTLinux.h"
+#include "./windowsPorts/MMRegLinux.h"
 #include "avxlog.h"
 
 namespace avxsynth {

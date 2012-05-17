@@ -2,15 +2,15 @@
 #define __AVXIFACE_H__
 
 #include <stdint.h>
-#include "./common/windowsPorts/basicDataTypeConversions.h"
-#include "./common/windowsPorts/windows2linux.h"
+#include "./windowsPorts/basicDataTypeConversions.h"
+#include "./windowsPorts/windows2linux.h"
 
-#include "./common/windowsPorts/UnknwnLinux.h"
-#include "./common/windowsPorts/WinDefLinux.h"
-#include "./common/windowsPorts/WinGDILinux.h"
-#include "./common/windowsPorts/VfwLinux.h"
-#include "./common/windowsPorts/WinBaseLinux.h"
-#include "./common/windowsPorts/MMRegLinux.h"
+#include "./windowsPorts/UnknwnLinux.h"
+#include "./windowsPorts/WinDefLinux.h"
+#include "./windowsPorts/WinGDILinux.h"
+#include "./windowsPorts/VfwLinux.h"
+#include "./windowsPorts/WinBaseLinux.h"
+#include "./windowsPorts/MMRegLinux.h"
 
 namespace avxsynth {
 

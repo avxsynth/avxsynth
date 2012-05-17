@@ -37,8 +37,8 @@
 
 #include "stdafx.h"
 
-#include "./common/windowsPorts/WinNTLinux.h"
-#include "./common/windowsPorts/excptLinux.h"
+#include "./windowsPorts/WinNTLinux.h"
+#include "./windowsPorts/excptLinux.h"
 #include "expression.h"
 #include <cache.h>
 #include "avxlog.h"

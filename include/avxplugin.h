@@ -44,7 +44,7 @@
 /* Define all types necessary for interfacing with avisynth.dll
    Moved from internal.h */
 #ifdef LINUXIZED_VERSION
-#include "common/windowsPorts/windows2linux.h"
+#include "windowsPorts/windows2linux.h"
 #else // LINUXIZED_VERSION
 // Win32 API macros, notably the types BYTE, DWORD, ULONG, etc. 
 //#include <windef.h>  
