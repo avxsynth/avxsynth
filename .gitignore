@@ -2,6 +2,10 @@
 *.so
 *.kdev*
 apps/AVXEdit/AVXEdit
-apps/avxframeserver/frameserverapp/avxSynthFrameServer
+apps/avxframeserver/frameserverapp/avxFrameServer
 apps/AVXEdit/src/moc_mainwindow.cpp
 apps/AVXEdit/src/qrc_application.cpp
+avxsynth.pc
+config.log
+config.mak
+config.targets
