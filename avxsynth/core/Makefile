@@ -33,7 +33,7 @@ INCLUDES = \
 	-I$(SRCPATH)/avxsynth/common/include/core    \
 	-I$(SRCPATH)/avxsynth/common/include/filters \
 	-I$(SRCPATH)/avxsynth/builtinfunctions       \
-	-I$(SRCPATH)/avxcommon/include               \
+	-I$(SRCPATH)/include/utils                   \
 	-I$(SRCPATH)/include                         \
 	-I$(SRC_PATH)
 

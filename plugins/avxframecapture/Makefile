@@ -13,7 +13,7 @@ OBJECTS = \
 	$(OBJ_PATH)/FrameRenderer.o
 
 INCLUDES = \
-	-I$(SRCPATH)/avxcommon/include \
+	-I$(SRCPATH)/include/utils \
 	-I$(SRCPATH)/include
 
 LIBS = -L../../avxcommon -lavxcommon -ljpeg

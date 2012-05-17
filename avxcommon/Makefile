@@ -13,7 +13,7 @@ OBJECTS = \
 	$(OBJ_PATH)/avxlog.o
 
 INCLUDES = \
-	-I$(SRCPATH)/avxcommon/include \
+	-I$(SRCPATH)/include/utils \
 	-I$(SRCPATH)/include           \
 	$(PANGOCAIRO_INCLUDES)         \
         $(LOG4CPP_INCLUDES)
