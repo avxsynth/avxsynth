@@ -39,7 +39,7 @@ INCLUDES = \
 
 LIBS = -L../../avxcommon -lavxcommon -L../builtinfunctions -lavxbtinfncs
 
-DEFINES = -DAVXSYNTH_PLUGIN_RELATIVE_PATH='".AVXSynth/plugins"'
+DEFINES = -DAVXSYNTH_PLUGIN_PATH='"$(pluginsdir)"'
 
 EXECUTABLE = libavxsynth$(SONAME)
 

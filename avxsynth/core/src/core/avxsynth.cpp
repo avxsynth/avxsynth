@@ -1157,17 +1157,11 @@ const char* ScriptEnvironment::GetPluginDirectory()
     plugin_dir = (char*)GetVar("$PluginDir$").AsString();
   }
   catch (...) {
-    char* strHomeDirectoryPath = getenv("AVXSYNTH_APP_LIB_PATH");
-    if (strHomeDirectoryPath == NULL)
-        strHomeDirectoryPath = getenv("HOME");
-    AVXLOG_INFO("Plugins Dir: %s\n", strHomeDirectoryPath);
-    
-    unsigned long nPluginsPathBytes = 
-	  strlen(strHomeDirectoryPath) + sizeof(char) /*slash*/ + strlen(AVXSYNTH_PLUGIN_RELATIVE_PATH) + sizeof(char) /*NULL*/;
+    unsigned long nPluginsPathBytes = strlen(AVXSYNTH_PLUGIN_PATH) + sizeof(char) /*slash*/ + sizeof(char) /*NULL*/;
     
     char* strPluginsPath = new char[nPluginsPathBytes];
     memset(strPluginsPath, 0, nPluginsPathBytes*sizeof(char));
-    sprintf(strPluginsPath, "%s/%s", strHomeDirectoryPath, AVXSYNTH_PLUGIN_RELATIVE_PATH);
+    sprintf(strPluginsPath, "%s/", AVXSYNTH_PLUGIN_PATH);
     
     SetGlobalVar("$PluginDir$", AVSValue(SaveString(strPluginsPath)));
     
@@ -1183,6 +1177,7 @@ const char* ScriptEnvironment::GetPluginDirectory()
     }
   }
 
+  AVXLOG_INFO("Plugins Dir: %s\n", plugin_dir);      
   return plugin_dir;
 }
 
