@@ -19,7 +19,7 @@ INCLUDES = \
 	-I$(SRCPATH)/include                                \
 	$(QTGUI_INCLUDES)
 
-LIBS = -L../avxframeserver/frameserverlib -lavxframeserver -L../../avxcommon -lavxcommon $(QTGUI_LIBS)
+LIBS = -L../avxframeserver/frameserverlib -lavxframeserver -L../../avxutils -lavxutils $(QTGUI_LIBS)
 
 EXECUTABLE = AVXEdit$(EXE)
 

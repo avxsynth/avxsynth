@@ -6,7 +6,7 @@ ifeq ($(SRCPATH),.)
 endif
 
 DIRS = \
-	avxcommon                          \
+	avxutils                          \
 	avxsynth/builtinfunctions          \
 	avxsynth/core                      \
 	plugins/autocrop                   \
@@ -17,7 +17,7 @@ DIRS = \
 	apps/AVXEdit
 
 INSTALLED = \
-	$(libdir)/libavxcommon$(SONAME)           \
+	$(libdir)/libavxutils$(SONAME)           \
         $(libdir)/libavxbtinfncs$(SONAME)         \
 	$(libdir)/libavxsynth$(SONAME)            \
 	$(pluginsdir)/libautocrop$(SONAME)        \
@@ -27,11 +27,11 @@ INSTALLED = \
 	$(bindir)/avxFrameServer$(EXE)            \
 	$(bindir)/AVXEdit$(EXE)
 
-avxcommon:
-	$(MAKE) -f $(SRCPATH)/avxcommon/Makefile -C avxcommon
-builtinfunctions: avxcommon
+avxutils:
+	$(MAKE) -f $(SRCPATH)/avxutils/Makefile -C avxutils
+builtinfunctions: avxutils
 	$(MAKE) -f $(SRCPATH)/avxsynth/builtinfunctions/Makefile -C avxsynth/builtinfunctions
-core: avxcommon builtinfunctions
+core: avxutils builtinfunctions
 	$(MAKE) -f $(SRCPATH)/avxsynth/core/Makefile -C avxsynth/core
 autocrop: core
 	$(MAKE) -f $(SRCPATH)/plugins/autocrop/Makefile -C plugins/autocrop
@@ -49,7 +49,7 @@ avxedit: frameserverlib
 	$(MAKE) -f $(SRCPATH)/apps/AVXEdit/Makefile -C apps/AVXEdit
 
 core-install: core header-install
-	$(MAKE) -f $(SRCPATH)/avxcommon/Makefile -C avxcommon install
+	$(MAKE) -f $(SRCPATH)/avxutils/Makefile -C avxutils install
 	$(MAKE) -f $(SRCPATH)/avxsynth/builtinfunctions/Makefile -C avxsynth/builtinfunctions install
 	$(MAKE) -f $(SRCPATH)/avxsynth/core/Makefile -C avxsynth/core install
 autocrop-install: autocrop
@@ -86,7 +86,7 @@ uninstall:
 	-rmdir $(pluginsdir)
 	-rmdir $(libdir)
 
-.PHONY: avxcommon builtinfunctions core autocrop avxffms2 avxframecapture \
+.PHONY: avxutils builtinfunctions core autocrop avxffms2 avxframecapture \
 	avxsubtitle avxframeserver avxedit core-install autocrop-install \
 	avxffms2-install avxframecapture-install avxsubtitle-install \
 	avxframeserver-install avxedit-install header-install default install \

@@ -14,7 +14,7 @@ INCLUDES = \
 	-I$(SRCPATH)/avxsynth/common/include                \
 	-I$(SRCPATH)/include
 
-LIBS = -L../frameserverlib -lavxframeserver -L../../../avxcommon -lavxcommon
+LIBS = -L../frameserverlib -lavxframeserver -L../../../avxutils -lavxutils
 
 EXECUTABLE = avxFrameServer$(EXE)
 

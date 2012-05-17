@@ -601,7 +601,7 @@ fi
 rm -f conftest*
 
 # generate avxsynth.pc (not tested)
-pclibs="-L$libdir -lavxcommon -lavxbtinfncs -lavxsynth -lpthread"
+pclibs="-L$libdir -lavxutils -lavxbtinfncs -lavxsynth -lpthread"
 
 cat > avxsynth.pc << EOF
 prefix=$prefix
@@ -699,7 +699,7 @@ fi
 
 # for out-of-tree stuff
 [ "$SRCPATH" != "." ] && ln -sf ${SRCPATH}/Makefile ./Makefile
-mkdir -p avxcommon/src avxsynth/builtinfunctions/src
+mkdir -p avxutils/src avxsynth/builtinfunctions/src
 mkdir -p avxsynth/builtinfunctions/src/{audio,convert,core,filters,sources}
 mkdir -p avxsynth/core/src/{audio,core/parser,filters/conditional,sources/avi}
 mkdir -p plugins/{autocrop,avxframecapture,avxsubtitle,avxffms2}/src

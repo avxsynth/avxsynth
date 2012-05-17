@@ -37,7 +37,7 @@ INCLUDES = \
 	-I$(SRCPATH)/include                         \
 	-I$(SRC_PATH)
 
-LIBS = -L../../avxcommon -lavxcommon -L../builtinfunctions -lavxbtinfncs
+LIBS = -L../../avxutils -lavxutils -L../builtinfunctions -lavxbtinfncs
 
 DEFINES = -DAVXSYNTH_PLUGIN_PATH='"$(pluginsdir)"'
 

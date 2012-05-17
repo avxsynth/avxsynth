@@ -4,7 +4,7 @@ ifeq ($(SRCPATH),.)
         SRCPATH=..
 endif
 
-SRC_PATH = $(SRCPATH)/avxcommon/src
+SRC_PATH = $(SRCPATH)/avxutils/src
 OBJ_PATH = ./src
 
 OBJECTS = \
@@ -20,7 +20,7 @@ INCLUDES = \
 
 LIBS = $(PANGOCAIRO_LIBS) $(LOG4CPP_LIBS)
 
-EXECUTABLE = libavxcommon$(SONAME)
+EXECUTABLE = libavxutils$(SONAME)
 
 $(EXECUTABLE): $(OBJECTS)
 	$(LD) $(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS) $(LDFLAGS_DYN)

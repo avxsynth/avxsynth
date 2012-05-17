@@ -16,7 +16,7 @@ INCLUDES = \
 	-I$(SRCPATH)/include/utils \
 	-I$(SRCPATH)/include
 
-LIBS = -L../../avxcommon -lavxcommon -ljpeg
+LIBS = -L../../avxutils -lavxutils -ljpeg
 
 EXECUTABLE = libavxframecapture$(SONAME)
 

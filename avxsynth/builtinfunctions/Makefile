@@ -47,7 +47,7 @@ INCLUDES = \
 	-I$(SRCPATH)/include                         \
 	-I$(SRC_PATH)
 
-LIBS = -L../../avxcommon -lavxcommon
+LIBS = -L../../avxutils -lavxutils
 
 EXECUTABLE = libavxbtinfncs$(SONAME)
 

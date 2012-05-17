@@ -19,7 +19,7 @@ INCLUDES = \
 	-I$(SRCPATH)/include/utils \
 	-I$(SRCPATH)/include
 
-LIBS = -L../../avxcommon -lavxcommon
+LIBS = -L../../avxutils -lavxutils
 
 EXECUTABLE = libavxsubtitle$(SONAME)
 
