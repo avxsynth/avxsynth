@@ -89,7 +89,7 @@ avxedit-install: avxedit
 	$(MAKE) -f $(SRCPATH)/apps/AVXEdit/Makefile -C apps/AVXEdit install
 
 header-install:
-	install -T -m 644 -D avxsynth.pc $(pcdir)
+	install -T -m 644 -D avxsynth.pc $(pcdir)/avxsynth.pc
 	for header in $(HEADERS); do \
 		install -T -m 644 -D $(SRCPATH)/include/$$header $(includedir)/$$header; \
 	done
