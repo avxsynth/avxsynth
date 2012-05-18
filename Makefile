@@ -72,7 +72,6 @@ avxedit: frameserverlib
 
 core-install: core header-install
 	$(MAKE) -f $(SRCPATH)/avxutils/Makefile -C avxutils install
-	$(MAKE) -f $(SRCPATH)/avxsynth/builtinfunctions/Makefile -C avxsynth/builtinfunctions install
 	$(MAKE) -f $(SRCPATH)/avxsynth/core/Makefile -C avxsynth/core install
 autocrop-install: autocrop
 	$(MAKE) -f $(SRCPATH)/plugins/autocrop/Makefile -C plugins/autocrop install
@@ -88,9 +87,9 @@ avxedit-install: avxedit
 	$(MAKE) -f $(SRCPATH)/apps/AVXEdit/Makefile -C apps/AVXEdit install
 
 header-install:
-	install -T -m 644 -D avxsynth.pc $(pcdir)/avxsynth.pc
+	install -T -m 644 -D avxsynth.pc $(DESTDIR)$(pcdir)/avxsynth.pc
 	for header in $(HEADERS); do \
-		install -T -m 644 -D $(SRCPATH)/include/$$header $(includedir)/$$header; \
+		install -T -m 644 -D $(SRCPATH)/include/$$header $(DESTDIR)$(includedir)/$$header; \
 	done
 
 clean:
@@ -105,16 +104,18 @@ test:
 	echo "Testing..."
 
 uninstall:
-	-rm $(INSTALLED)
-	-rmdir $(pluginsdir)
-	-rmdir $(pcdir)
-	-for header in $(HEADERS); do \
-		rm $(includedir)/$$header; \
+	-for installed in $(INSTALLED); do \
+		rm $(DESTDIR)$$installed; \
 	done
-	-rmdir $(includedir)/utils $(includedir)/windowsPorts
-	-rmdir $(includedir)
-	-rmdir $(libdir)
-	-rmdir $(bindir)
+	-for header in $(HEADERS); do \
+		rm $(DESTDIR)$(includedir)/$$header; \
+	done
+	-rmdir $(DESTDIR)$(includedir)/utils $(DESTDIR)$(includedir)/windowsPorts
+	-rmdir $(DESTDIR)$(includedir)
+	-rmdir $(DESTDIR)$(pluginsdir)
+	-rmdir $(DESTDIR)$(pcdir)
+	-rmdir $(DESTDIR)$(libdir)
+	-rmdir $(DESTDIR)$(bindir)
 
 .PHONY: avxutils builtinfunctions core autocrop avxffms2 avxframecapture \
 	avxsubtitle avxframeserver avxedit core-install autocrop-install \

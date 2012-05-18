@@ -32,4 +32,4 @@ clean:
 	rm -f $(OBJECTS) $(EXECUTABLE)
 
 install:
-	install -T -D $(EXECUTABLE) $(libdir)/$(EXECUTABLE)
+	install -T -D $(EXECUTABLE) $(DESTDIR)$(libdir)/$(EXECUTABLE)

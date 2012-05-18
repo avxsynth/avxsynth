@@ -28,4 +28,4 @@ clean:
 	rm -f $(OBJECTS) $(EXECUTABLE)
 
 install:
-	install -T -D $(EXECUTABLE) $(bindir)/$(EXECUTABLE)
+	install -T -D $(EXECUTABLE) $(DESTDIR)$(bindir)/$(EXECUTABLE)

@@ -57,6 +57,3 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
 
 clean:
 	rm -f $(OBJECTS) $(EXECUTABLE)
-
-install:
-	install -T -D $(EXECUTABLE) $(libdir)/$(EXECUTABLE)
