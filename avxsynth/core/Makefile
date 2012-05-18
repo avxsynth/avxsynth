@@ -39,7 +39,7 @@ INCLUDES = \
 
 LIBS = -L../../avxutils -lavxutils -L../builtinfunctions -lavxbtinfncs
 
-DEFINES = -DAVXSYNTH_PLUGIN_PATH='"$(pluginsdir)"'
+DEFINES = -DAVXSYNTH_PLUGIN_PATH='"$(plugindir)"'
 
 EXECUTABLE = libavxsynth$(SONAME)
 
@@ -53,4 +53,4 @@ clean:
 	rm -f $(OBJECTS) $(EXECUTABLE)
 
 install:
-	install -T -D $(EXECUTABLE) $(DESTDIR)$(libdir)/$(EXECUTABLE)
+	install -T -D $(EXECUTABLE) "$(DESTDIR)$(libdir)/$(EXECUTABLE)"

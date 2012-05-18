@@ -13,9 +13,8 @@ Standard options:
   --exec-prefix=EPREFIX    install architecture-dependent files in EPREFIX
                            [PREFIX]
   --bindir=DIR             install binaries in DIR [EPREFIX/bin]
-  --libdir=DIR             install libs in DIR [EPREFIX/lib/avxsynth]
-  --pcdir=DIR              install pkg-config files in DIR [EPREFIX/lib/pkgconfig]
-  --includedir=DIR         install includes in DIR [PREFIX/include/avxsynth]
+  --libdir=DIR             install libs in DIR [EPREFIX/lib]
+  --includedir=DIR         install includes in DIR [PREFIX/include]
   --extra-cflags=ECFLAGS   add ECFLAGS to CFLAGS
   --extra-ldflags=ELDFLAGS add ELDFLAGS to LDFLAGS
 
@@ -26,6 +25,7 @@ Configuration options:
   --disable-ffms2          disable building of ffms2 plugin [requires ffms2, libav]
   --disable-frameserver    disable building of frameserver application
   --disable-avxedit        disable building of Qt GUI [requires Qt4]
+  --with-plugindir=DIR     set plugin autoload dir to DIR [LIBDIR/avxsynth]
 
 Cross-compilation:
   --host=HOST              build programs to run on HOST
@@ -80,7 +80,7 @@ cc_check() {
         log_check "for $3 in $1";
     fi
     rm -f conftest.c
-    [ -n "$1" ] && echo "#include <$1>" > conftest.c
+    [ -n "$1" ] && for i in $1; do echo "#include <$i>" >> conftest.c; done
     echo "int main () { $3 return 0; }" >> conftest.c
     cc_cmd="$CC conftest.c $CFLAGS $2 $LDFLAGSCLI $LDFLAGS -o conftest"
     if $cc_cmd >conftest.log 2>&1; then
@@ -186,20 +186,19 @@ die() {
 
 rm -f config.log config.mak config.targets avxsynth.pc conftest*
 
-RELPATH=`dirname "$0"`
-SRCPATH=`cd "$RELPATH"; pwd`
+SRCPATH="$(cd "$(dirname "$0")"; pwd)"
 
 [ "$SRCPATH" = "$(pwd)" ] && SRCPATH=.
-echo "$SRCPATH" | grep -q "$(pwd)" && die "Build can not be done from a parent directory of source path."
 [ -n "$(echo $SRCPATH | grep ' ')" ] && die "Out of tree builds are impossible with whitespace in source path."
+[ -n "$(echo $SRCPATH | grep "$(pwd)")" ] && die "Build can not be done from a parent directory of source path."
 
 prefix='/usr/local'
 exec_prefix='${prefix}'
 bindir='${exec_prefix}/bin'
 libdir='${exec_prefix}/lib'
-pcdir='${exec_prefix}/lib/pkgconfig'
-includedir='${prefix}/include/avxsynth'
-pluginsdir='${libdir}/avxsynth'
+pcdir='${libdir}/pkgconfig'
+includedir='${prefix}/include'
+plugindir='${libdir}/avxsynth'
 DEVNULL='/dev/null'
 
 autocrop="yes"
@@ -217,7 +216,7 @@ compiler="GNU"
 
 #-O0 is required because of some baked-in header code in avxsynth/core
 CFLAGS="$CFLAGS -O0 -Wall -Wno-unused -pipe"
-LDFLAGS="$LDFLAGS -lm -ldl"
+LDFLAGS="$LDFLAGS -ldl"
 
 # parse options
 
@@ -256,6 +255,9 @@ for opt do
             ;;
         --disable-avxedit)
             avxedit="no"
+            ;;
+        --with-plugindir=*)
+            plugindir="$optarg"
             ;;
         --extra-cflags=*)
             CFLAGS="$CFLAGS $optarg"
@@ -314,26 +316,31 @@ case $host_os in
         ;;
     darwin*)
         SYS="MACOSX"
+	LDFLAGS="$LDFLAGS -lm"
         ;;
     freebsd*)
         SYS="FREEBSD"
+	LDFLAGS="$LDFLAGS -lm"
         ;;
     kfreebsd*-gnu)
         SYS="FREEBSD"
+	LDFLAGS="$LDFLAGS -lm"
         ;;
     netbsd*)
         SYS="NETBSD"
+	LDFLAGS="$LDFLAGS -lm"
         ;;
     openbsd*)
         SYS="OPENBSD"
+	LDFLAGS="$LDFLAGS -lm"
         ;;
     *linux*)
         SYS="LINUX"
-        CFLAGS="$CFLAGS -pthread"
-        LDFLAGS="$LDFLAGS -pthread"
+	LDFLAGS="$LDFLAGS -lm"
         ;;
     gnu*)
         SYS="HURD"
+	LDFLAGS="$LDFLAGS -lm"
         ;;
     cygwin*)
         EXE=".exe"
@@ -353,21 +360,9 @@ case $host_os in
         SYS="WINDOWS"
         EXE=".exe"
         DEVNULL="NUL"
-        if cc_check pthread.h -lpthreadGC2 "pthread_create(0,0,0,0);" ; then
-            LDFLAGS="${LDFLAGS} -lpthreadGC2"
-        elif cc_check pthread.h "-lpthreadGC2 -lwsock32 -DPTW32_STATIC_LIB" "pthread_create(0,0,0,0);" ; then
-            LDFLAGS="${LDFLAGS} -lpthreadGC2 -lwsock32"
-        elif cc_check pthread.h "-lpthreadGC2 -lws2_32 -DPTW32_STATIC_LIB" "pthread_create(0,0,0,0);" ; then
-            LDFLAGS="${LDFLAGS} -lpthreadGC2 -lws2_32"
-        fi
         ;;
     sunos*|solaris*)
         SYS="SunOS"
-        if cc_check "" /usr/lib/64/values-xpg6.o; then
-            LDFLAGS="$LDFLAGS /usr/lib/64/values-xpg6.o"
-        else
-            LDFLAGS="$LDFLAGS /usr/lib/values-xpg6.o"
-        fi
         ;;
     *)
         echo "Unknown system $host, edit the configure"
@@ -431,6 +426,9 @@ case $host_cpu in
         ;;
 esac
 
+CFLAGS="$CFLAGS $libpthread_cflags"
+LDFLAGS="$LDFLAGS $libpthread_lib"
+
 # this might need to be updated for dynamic versioning
 if  [ "$SYS" = "WINDOWS" -o "$SYS" = "CYGWIN" ]; then
     SONAME=".dll"
@@ -468,6 +466,31 @@ if [ "$strip" = "yes" ]; then
     CFLAGS="$CFLAGS -s"
     LDFLAGS="$LDFLAGS -s"
 fi
+
+# -pthread sets both -lpthread and -D_REENTRANT
+case $SYS in
+    WINDOWS)
+        if cc_check pthread.h -lpthreadGC2 "pthread_create(0,0,0,0);"; then
+            libpthread_lib="-lpthreadGC2"
+        elif cc_check pthread.h "-lpthreadGC2 -lwsock32 -DPTW32_STATIC_LIB" "pthread_create(0,0,0,0);" ; then
+            libpthread_lib="${LDFLAGS} -lpthreadGC2 -lwsock32"
+        elif cc_check pthread.h "-lpthreadGC2 -lws2_32 -DPTW32_STATIC_LIB" "pthread_create(0,0,0,0);" ; then
+            libpthread_lib="${LDFLAGS} -lpthreadGC2 -lws2_32"
+        fi
+        ;;
+    OPENBSD)
+        cc_check pthread.h -pthread && libpthread="-pthread"
+        ;;
+    *)
+        if cc_check pthread.h -pthread; then
+            libpthread_cflags="-pthread"
+            libpthread_lib="-pthread"
+        elif cc_check pthread.h -lpthread; then
+            libpthread_cflags="-D_REENTRANT"
+            libpthread_lib=" -lpthread"
+        fi
+	;;
+esac
 
 if [ ! -z "$sysroot" ]; then
     echo "Warning: frameserver and AVXEdit can not be built with sysroot"
@@ -507,19 +530,10 @@ fi
 
 # framecapture requires libjpeg
 if [ "$framecapture" = "yes" ]; then
-    log_check "libjpeg"
-    cat > conftest.cpp << EOF
-#include <stdio.h>
-#include <stddef.h>
-#include "jpeglib.h"
-EOF
-    if ! $CC $CFLAGS -c conftest.cpp -o conftest.o 2> /dev/null; then
-        log_fail
+    if ! cc_check "stdio.h stddef.h jpeglib.h" -ljpeg "jpeg_destroy_compress(0);"; then
         echo "Warning: libjpeg required for framecapture, disabling"
         log_msg "libjpeg not found, disabling framecapture"
         framecapture="no"
-    else
-        log_ok
     fi
 fi
 
@@ -601,31 +615,30 @@ fi
 rm -f conftest*
 
 # generate avxsynth.pc (not tested)
-pclibs="-L$libdir -lavxutils -lavxbtinfncs -lavxsynth -lpthread"
-
 cat > avxsynth.pc << EOF
 prefix=$prefix
 exec_prefix=$exec_prefix
 libdir=$libdir
-includedir=$includedir
+includedir=$includedir/avxsynth
+plugindir=$plugindir
 
 Name: AvxSynth
 Description: AvxSynth (AviSynth for Linux)
 Version: 4.0
-Libs: $pclibs
-Cflags: -I$includedir
+Libs: -L"$libdir" -lavxutils -lavxsynth $libpthread_cflags
+Cflags: -I"$includedir"
 EOF
 
-# generate config.mak
+# generate config.mak, we do not escape paths because they are escaped in Makefile
 cat > config.mak << EOF
 SRCPATH=$SRCPATH
 prefix=$prefix
 exec_prefix=$exec_prefix
 bindir=$bindir
 libdir=$libdir
-pcdir=$pcdir
-includedir=$includedir
-pluginsdir=$pluginsdir
+includedir=$includedir/avxsynth
+pcdir=$libdir/pkgconfig
+plugindir=$plugindir
 ARCH=$ARCH
 SYS=$SYS
 CXX=$CC

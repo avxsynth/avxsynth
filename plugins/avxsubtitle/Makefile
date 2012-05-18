@@ -33,4 +33,4 @@ clean:
 	rm -f $(OBJECTS) $(EXECUTABLE)
 
 install:
-	install -T -D $(EXECUTABLE) $(DESTDIR)$(pluginsdir)/$(EXECUTABLE)
+	install -T -D $(EXECUTABLE) "$(DESTDIR)$(plugindir)/$(EXECUTABLE)"

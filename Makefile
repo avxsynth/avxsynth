@@ -17,15 +17,15 @@ DIRS = \
 	apps/AVXEdit
 
 INSTALLED = \
-	$(libdir)/libavxutils$(SONAME)            \
-	$(libdir)/libavxsynth$(SONAME)            \
-	$(pcdir)/avxsynth.pc                      \
-	$(pluginsdir)/libautocrop$(SONAME)        \
-	$(pluginsdir)/libavxffms2$(SONAME)        \
-	$(pluginsdir)/libavxframecapture$(SONAME) \
-	$(pluginsdir)/libavxsubtitle$(SONAME)     \
-	$(bindir)/avxFrameServer$(EXE)            \
-	$(bindir)/AVXEdit$(EXE)
+	"$(libdir)"/libavxutils$(SONAME)            \
+	"$(libdir)"/libavxsynth$(SONAME)            \
+	"$(pcdir)"/avxsynth.pc                      \
+	"$(plugindir)"/libautocrop$(SONAME)        \
+	"$(plugindir)"/libavxffms2$(SONAME)        \
+	"$(plugindir)"/libavxframecapture$(SONAME) \
+	"$(plugindir)"/libavxsubtitle$(SONAME)     \
+	"$(bindir)"/avxFrameServer$(EXE)            \
+	"$(bindir)"/AVXEdit$(EXE)
 
 HEADERS = \
 	avxiface.h                              \
@@ -87,9 +87,9 @@ avxedit-install: avxedit
 	$(MAKE) -f $(SRCPATH)/apps/AVXEdit/Makefile -C apps/AVXEdit install
 
 header-install:
-	install -T -m 644 -D avxsynth.pc $(DESTDIR)$(pcdir)/avxsynth.pc
+	install -T -m 644 -D avxsynth.pc "$(DESTDIR)$(pcdir)/avxsynth.pc"
 	for header in $(HEADERS); do \
-		install -T -m 644 -D $(SRCPATH)/include/$$header $(DESTDIR)$(includedir)/$$header; \
+		install -T -m 644 -D $(SRCPATH)/include/$$header "$(DESTDIR)$(includedir)/$$header"; \
 	done
 
 clean:
@@ -103,19 +103,16 @@ distclean: clean
 test:
 	echo "Testing..."
 
+# Only includedir and plugindir are guaranteed to be used by avxsynth only
 uninstall:
 	-for installed in $(INSTALLED); do \
-		rm $(DESTDIR)$$installed; \
+		rm "$(DESTDIR)$$installed"; \
 	done
 	-for header in $(HEADERS); do \
-		rm $(DESTDIR)$(includedir)/$$header; \
+		rm "$(DESTDIR)$(includedir)/$$header"; \
 	done
-	-rmdir $(DESTDIR)$(includedir)/utils $(DESTDIR)$(includedir)/windowsPorts
-	-rmdir $(DESTDIR)$(includedir)
-	-rmdir $(DESTDIR)$(pluginsdir)
-	-rmdir $(DESTDIR)$(pcdir)
-	-rmdir $(DESTDIR)$(libdir)
-	-rmdir $(DESTDIR)$(bindir)
+	-rmdir "$(DESTDIR)$(includedir)/utils" "$(DESTDIR)$(includedir)/windowsPorts"
+	-rmdir "$(DESTDIR)$(includedir)" "$(DESTDIR)$(plugindir)"
 
 .PHONY: avxutils builtinfunctions core autocrop avxffms2 avxframecapture \
 	avxsubtitle avxframeserver avxedit core-install autocrop-install \
