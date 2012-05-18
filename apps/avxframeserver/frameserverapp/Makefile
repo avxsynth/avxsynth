@@ -18,7 +18,7 @@ LIBS = -L../frameserverlib -lavxframeserver -L../../../avxutils -lavxutils
 
 EXECUTABLE = avxFrameServer$(EXE)
 
-RUNTIME = -Wl,-rpath='$(pluginsdir)':'$(libdir)'
+RUNTIME = -Wl,-rpath='$(libdir)'
 
 $(EXECUTABLE): $(OBJECTS)
 	$(LD) $(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS) $(RUNTIME)

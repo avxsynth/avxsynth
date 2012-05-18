@@ -6,7 +6,7 @@ ifeq ($(SRCPATH),.)
 endif
 
 DIRS = \
-	avxutils                          \
+	avxutils                           \
 	avxsynth/builtinfunctions          \
 	avxsynth/core                      \
 	plugins/autocrop                   \
@@ -17,15 +17,38 @@ DIRS = \
 	apps/AVXEdit
 
 INSTALLED = \
-	$(libdir)/libavxutils$(SONAME)           \
+	$(libdir)/libavxutils$(SONAME)            \
         $(libdir)/libavxbtinfncs$(SONAME)         \
 	$(libdir)/libavxsynth$(SONAME)            \
+	$(pcdir)/avxsynth.pc                      \
 	$(pluginsdir)/libautocrop$(SONAME)        \
 	$(pluginsdir)/libavxffms2$(SONAME)        \
 	$(pluginsdir)/libavxframecapture$(SONAME) \
 	$(pluginsdir)/libavxsubtitle$(SONAME)     \
 	$(bindir)/avxFrameServer$(EXE)            \
 	$(bindir)/AVXEdit$(EXE)
+
+HEADERS = \
+	avxiface.h                              \
+	avxlog.h                                \
+	avxplugin.h                             \
+	utils/AvxTextRender.h                   \
+	utils/AvxString.h                       \
+	utils/Path.h                            \
+	utils/Size.h                            \
+	utils/AvxException.h                    \
+	utils/TextConfig.h                      \
+	utils/TextLayout.h                      \
+	windowsPorts/MMRegLinux.h               \
+	windowsPorts/WinNTLinux.h               \
+	windowsPorts/VfwLinux.h                 \
+	windowsPorts/excptLinux.h               \
+	windowsPorts/basicDataTypeConversions.h \
+	windowsPorts/WinBaseLinux.h             \
+	windowsPorts/WinDefLinux.h              \
+	windowsPorts/windows2linux.h            \
+	windowsPorts/WinGDILinux.h              \
+	windowsPorts/UnknwnLinux.h
 
 avxutils:
 	$(MAKE) -f $(SRCPATH)/avxutils/Makefile -C avxutils
@@ -66,9 +89,10 @@ avxedit-install: avxedit
 	$(MAKE) -f $(SRCPATH)/apps/AVXEdit/Makefile -C apps/AVXEdit install
 
 header-install:
-	mkdir -p $(includedir)
-	cp -r $(SRCPATH)/include/* $(includedir)
-	install -D avxsynth.pc $(pcdir)
+	install -D -m 644 avxsynth.pc $(pcdir)/avxsynth.pc
+	for header in $(HEADERS); do \
+		install -D -m 644 $(SRCPATH)/include/$$header $(includedir)/$$header; \
+	done
 
 clean:
 	for dir in $(DIRS); do \
@@ -84,7 +108,14 @@ test:
 uninstall:
 	-rm $(INSTALLED)
 	-rmdir $(pluginsdir)
+	-rmdir $(pcdir)
+	-for header in $(HEADERS); do \
+		rm $(includedir)/$$header; \
+	done
+	-rmdir $(includedir)/utils $(includedir)/windowsPorts
+	-rmdir $(includedir)
 	-rmdir $(libdir)
+	-rmdir $(bindir)
 
 .PHONY: avxutils builtinfunctions core autocrop avxffms2 avxframecapture \
 	avxsubtitle avxframeserver avxedit core-install autocrop-install \

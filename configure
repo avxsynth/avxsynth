@@ -196,10 +196,10 @@ echo "$SRCPATH" | grep -q "$(pwd)" && die "Build can not be done from a parent d
 prefix='/usr/local'
 exec_prefix='${prefix}'
 bindir='${exec_prefix}/bin'
-libdir='${exec_prefix}/lib/avxsynth'
+libdir='${exec_prefix}/lib'
 pcdir='${exec_prefix}/lib/pkgconfig'
 includedir='${prefix}/include/avxsynth'
-pluginsdir='${libdir}/plugins'
+pluginsdir='${libdir}/avxsynth'
 DEVNULL='/dev/null'
 
 autocrop="yes"

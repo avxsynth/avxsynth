@@ -23,7 +23,7 @@ LIBS = -L../avxframeserver/frameserverlib -lavxframeserver -L../../avxutils -lav
 
 EXECUTABLE = AVXEdit$(EXE)
 
-RUNTIME = -Wl,-rpath='$(pluginsdir)':'$(libdir)'
+RUNTIME = -Wl,-rpath='$(libdir)'
 
 MOC = moc-qt4
 RCC = rcc
