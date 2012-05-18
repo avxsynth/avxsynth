@@ -23,13 +23,11 @@ LIBS = -L../avxframeserver/frameserverlib -lavxframeserver -L../../avxutils -lav
 
 EXECUTABLE = AVXEdit$(EXE)
 
-RUNTIME = -Wl,-rpath='$(libdir)'
-
 MOC = moc-qt4
 RCC = rcc
 
 $(EXECUTABLE): $(OBJECTS)
-	$(LD) $(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS) $(RUNTIME)
+	$(LD) $(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
 	$(CXX) $(CFLAGS) $(INCLUDES) -c $< -o $@

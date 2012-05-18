@@ -18,10 +18,8 @@ LIBS = -L../frameserverlib -lavxframeserver -L../../../avxutils -lavxutils
 
 EXECUTABLE = avxFrameServer$(EXE)
 
-RUNTIME = -Wl,-rpath='$(libdir)'
-
 $(EXECUTABLE): $(OBJECTS)
-	$(LD) $(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS) $(RUNTIME)
+	$(LD) $(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
 	$(CXX) $(CFLAGS) $(INCLUDES) -c $< -o $@

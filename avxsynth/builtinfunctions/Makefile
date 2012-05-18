@@ -47,12 +47,10 @@ INCLUDES = \
 	-I$(SRCPATH)/include                         \
 	-I$(SRC_PATH)
 
-LIBS = -L../../avxutils -lavxutils
-
-EXECUTABLE = libavxbtinfncs$(SONAME)
+EXECUTABLE = libavxbtinfncs$(ARNAME)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(LD) $(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS) $(LDFLAGS_DYN)
+	$(AR) $(EXECUTABLE) $(OBJECTS)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
 	$(CXX) $(CFLAGS) $(CFLAGS_DYN) $(INCLUDES) -c $< -o $@

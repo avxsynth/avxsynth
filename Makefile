@@ -18,7 +18,6 @@ DIRS = \
 
 INSTALLED = \
 	$(libdir)/libavxutils$(SONAME)            \
-        $(libdir)/libavxbtinfncs$(SONAME)         \
 	$(libdir)/libavxsynth$(SONAME)            \
 	$(pcdir)/avxsynth.pc                      \
 	$(pluginsdir)/libautocrop$(SONAME)        \
