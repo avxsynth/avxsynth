@@ -433,7 +433,7 @@ void* ProcessVideoStream(void* pArgument) // very likely to end up being pthread
             break;
         }
               
-        AVXLOG_INFO("Preparing to fetch frame #%ld (%d frame of the stream)", pInfo->nFramesSoFar, nNextFrameStreamPos);
+        AVXLOG_DEBUG("Preparing to fetch frame #%ld (%d frame of the stream)", pInfo->nFramesSoFar, nNextFrameStreamPos);
         memset(pImageBuffer, 0, bih.biSizeImage*sizeof(char));
               
         int32_t nBytesRead = 0;
@@ -470,6 +470,7 @@ void* ProcessVideoStream(void* pArgument) // very likely to end up being pthread
                                 nImageBytes, nWrittenImageBytes, nImageBytes, errno, strerror(errno));
             break;
         }
+        AVXLOG_INFO("Delivered frame %ld", pInfo->nFramesSoFar);        
         pInfo->nFramesSoFar++;
         //if(nMaxFrames <= nFramesSoFar)
               //  break;
