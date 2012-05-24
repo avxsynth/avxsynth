@@ -1157,11 +1157,29 @@ const char* ScriptEnvironment::GetPluginDirectory()
     plugin_dir = (char*)GetVar("$PluginDir$").AsString();
   }
   catch (...) {
-    unsigned long nPluginsPathBytes = strlen(AVXSYNTH_PLUGIN_PATH) + sizeof(char) /*slash*/ + sizeof(char) /*NULL*/;
-    
+
+    unsigned long nPluginsPathBytes = sizeof(char) /*slash*/ + sizeof(char) /*NULL*/;      
+    char* runTimePath = getenv("AVXSYNTH_RUNTIME_PLUGIN_PATH");
+    if (runTimePath != NULL)
+    {
+        nPluginsPathBytes += strlen(runTimePath);
+    }
+    else
+    {
+        nPluginsPathBytes += strlen(AVXSYNTH_PLUGIN_PATH);
+    }
+            
     char* strPluginsPath = new char[nPluginsPathBytes];
     memset(strPluginsPath, 0, nPluginsPathBytes*sizeof(char));
-    sprintf(strPluginsPath, "%s/", AVXSYNTH_PLUGIN_PATH);
+    
+    if (runTimePath != NULL)
+    {
+        sprintf(strPluginsPath, "%s/", runTimePath);
+    }
+    else
+    {
+        sprintf(strPluginsPath, "%s/", AVXSYNTH_PLUGIN_PATH);        
+    }
     
     SetGlobalVar("$PluginDir$", AVSValue(SaveString(strPluginsPath)));
     
