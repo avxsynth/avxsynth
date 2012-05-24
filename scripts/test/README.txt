@@ -34,4 +34,4 @@ no guarantee of correct behavior. Likewise, a test
 failure only indicates that output has changed. If the
 recorded output is that of an incorrect result, a test
 failure may well indicate that the new behavior is now
-correted.
+corrected.
