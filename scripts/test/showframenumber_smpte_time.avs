@@ -8,7 +8,7 @@
 # 3. Center of frame: The current timestamp + 1s with white glow, 45 degree clockwise rotation.
 # 4. Bottom of frame: The current SMPTE timestamp + 10s in narrow font.
 
-BlankClip(width=640, height=480).KillAudio()
+BlankClip(width=640, height=480, length=48).KillAudio()
 ShowFrameNumber(scroll=true, offset=48, font="Times", size=48)
 ShowFrameNumber(scroll=false, text_color=$0000FF, halo_color=$FF0000)
 ShowSMPTE(offset_f=240, font_width=6)

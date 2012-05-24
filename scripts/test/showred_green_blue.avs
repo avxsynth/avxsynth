@@ -4,6 +4,6 @@
 #
 # Three frames, with values $404040, $808080, $B0B0B0
 
-BlankClip(width=320, height=240, color=$4080B0, length=10000)
+BlankClip(width=320, height=240, color=$4080B0, length=1)
 ShowRed() + ShowGreen() + ShowBlue()
 KillAudio()
