@@ -345,7 +345,6 @@ extern "C" __declspec(dllexport) const char* __stdcall AvisynthPluginInit2(avxsy
     Env->AddFunction("FFAudioSource", "[source]s[track]i[cache]b[cachefile]s[adjustdelay]i[utf8]b[varprefix]s", CreateFFAudioSource, 0);
 #ifdef FFMS_USE_POSTPROC
     Env->AddFunction("FFPP", "c[pp]s", CreateFFPP, 0);
-    Env->AddFunction("FFDeinterlace", "c", CreateFFDeinterlace, 0);    
 #endif // FFMS_USE_POSTPROC
     Env->AddFunction("SWScale", "c[width]i[height]i[resizer]s[colorspace]s", CreateSWScale, 0);	
     Env->AddFunction("FFGetLogLevel", "", FFGetLogLevel, 0);

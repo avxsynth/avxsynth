@@ -919,8 +919,8 @@ STDMETHODIMP CAVIStreamSynth::Read(LONG lStart, LONG lSamples, LPVOID lpBuffer, 
 
 HRESULT CAVIStreamSynth::Read2(LONG lStart, LONG lSamples, LPVOID lpBuffer, LONG cbBuffer, LONG *plBytes, LONG *plSamples) {
 
-  AVXLOG_INFO("%p->CAVIStreamSynth::Read(%ld samples at %ld)", this, lSamples, lStart);
-  AVXLOG_INFO("\tbuffer: %ld bytes at %p", cbBuffer, lpBuffer);
+  AVXLOG_DEBUG("%p->CAVIStreamSynth::Read(%ld samples at %ld)", this, lSamples, lStart);
+  AVXLOG_DEBUG("\tbuffer: %ld bytes at %p", cbBuffer, lpBuffer);
 
 #ifdef ENABLE_INLINE_ASSEMBLY_MMX_SSE
   int fp_state = 87( 0, 0 );

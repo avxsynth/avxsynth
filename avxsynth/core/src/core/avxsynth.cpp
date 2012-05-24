@@ -457,7 +457,7 @@ public:
         f->prev = local_functions;
         local_functions = f;
       } else {
-        AVXLOG_INFO("  Function %s (prescan)", name);
+        AVXLOG_DEBUG("  Function %s (prescan)", name);
         f->prev = plugins->plugin_functions;
         plugins->plugin_functions = f;
       }
@@ -465,7 +465,7 @@ public:
 
     LocalFunction *f2 = NULL;
     if (loadplugin_prefix) {
-      AVXLOG_INFO("  Plugin name %s", loadplugin_prefix);
+      AVXLOG_DEBUG("  Plugin name %s", loadplugin_prefix);
       char result[512];
       strcpy(result, loadplugin_prefix);
       strcat(result, "_");
@@ -974,18 +974,18 @@ void ScriptEnvironment::DebugListBuiltInFunctions(void)
 	unsigned int i, j;
 	for(i = 0; i < nFamilies; i++)
 	{
-		AVXLOG_INFO("Family #%02d: ", i);
-		AVXLOG_INFO("%s", "------------------------------");
+		AVXLOG_DEBUG("Family #%02d: ", i);
+		AVXLOG_DEBUG("%s", "------------------------------");
 		unsigned int nFunctions = builtInFunctions[i].size();
 		for(j = 0; j < nFunctions; j++)
 		{
-			AVXLOG_INFO(" Function #%02d: ", j);
-			AVXLOG_INFO("  name        = %s", builtInFunctions[i][j].name ? builtInFunctions[i][j].name : "NULL");
-			AVXLOG_INFO("  param_types = %s", builtInFunctions[i][j].param_types ? builtInFunctions[i][j].param_types : "NULL");
-			AVXLOG_INFO("  apply       = 0x%p", builtInFunctions[i][j].apply);
-			AVXLOG_INFO("  user_data   = 0x%p", builtInFunctions[i][j].user_data);
+			AVXLOG_DEBUG(" Function #%02d: ", j);
+			AVXLOG_DEBUG("  name        = %s", builtInFunctions[i][j].name ? builtInFunctions[i][j].name : "NULL");
+			AVXLOG_DEBUG("  param_types = %s", builtInFunctions[i][j].param_types ? builtInFunctions[i][j].param_types : "NULL");
+			AVXLOG_DEBUG("  apply       = 0x%p", builtInFunctions[i][j].apply);
+			AVXLOG_DEBUG("  user_data   = 0x%p", builtInFunctions[i][j].user_data);
 		}
-		AVXLOG_INFO("%s", "------------------------------");
+		AVXLOG_DEBUG("%s", "------------------------------");
 	}
 }
 
@@ -1834,7 +1834,7 @@ bool ScriptEnvironment::PlanarChromaAlignment(IScriptEnvironment::PlanarChromaAl
 
 LinkedVideoFrameBuffer* ScriptEnvironment::NewFrameBuffer(int size) {
   memory_used += size;
-  AVXLOG_INFO("Frame buffer memory used: %ld", memory_used);
+  AVXLOG_DEBUG("Frame buffer memory used: %ld", memory_used);
   return new LinkedVideoFrameBuffer(size);
 }
 

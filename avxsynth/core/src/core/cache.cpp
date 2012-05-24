@@ -206,7 +206,7 @@ void Cache::ResetCache(IScriptEnvironment* env)
   maxframe = -1;
   CachedVideoFrame *i, *j;
 
-  AVXLOG_INFO("Cache:%x: Cache Reset, cache_limit %d, cache_init %d", this, cache_limit, CACHE_SCALE_FACTOR*cache_init);
+  AVXLOG_DEBUG("Cache:%x: Cache Reset, cache_limit %d, cache_init %d", this, cache_limit, CACHE_SCALE_FACTOR*cache_init);
 
   int count=0;
   for (i = video_frames.next; i != &video_frames; i = i->next) {
@@ -395,7 +395,7 @@ PVideoFrame __stdcall Cache::GetFrame(int n, IScriptEnvironment* env)
 
 	if (cache_limit > CACHE_SCALE_FACTOR*MAX_CACHED_VIDEO_FRAMES) cache_limit = CACHE_SCALE_FACTOR*MAX_CACHED_VIDEO_FRAMES;
 
-	AVXLOG_INFO("Cache:%x: size %d, limit %d, fault %d", this, c, cache_limit, fault_rate);
+	AVXLOG_DEBUG("Cache:%x: size %d, limit %d, fault %d", this, c, cache_limit, fault_rate);
 
   } // if (n>=minframe
   else { // This frame is not in the range we are currently tracking
@@ -408,7 +408,7 @@ PVideoFrame __stdcall Cache::GetFrame(int n, IScriptEnvironment* env)
   
   if (fault_rate > 0) --fault_rate;  // decay fault rate
 
-  AVXLOG_INFO("Cache:%x: generating frame %d, cache from %d to %d", this, n, minframe, maxframe);
+  AVXLOG_DEBUG("Cache:%x: generating frame %d, cache from %d to %d", this, n, minframe, maxframe);
 
   // not cached; make the filter generate it.
 #ifdef ENABLE_INLINE_ASSEMBLY_MMX_SSE
