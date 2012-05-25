@@ -1,3 +1,5 @@
+#!/usr/bin/python
+#
 # Automated testing framework for AvxSynth.
 # Individual unit tests and analysis.
 #

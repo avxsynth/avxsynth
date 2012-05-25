@@ -2,7 +2,7 @@
 #
 # Expected behavior:
 #
-# 2 frames at 640x480, info display indicating video is NOT field-based.
+# 2 frames at 320x240, info display indicating video is NOT field-based.
 
 BlankClip(width=320, height=240).KillAudio()
 Trim(0, -1)

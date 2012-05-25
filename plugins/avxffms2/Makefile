@@ -24,14 +24,14 @@ DEFINES = -D__STDC_CONSTANT_MACROS -D_FILE_OFFSET_BITS=64
 
 EXECUTABLE = libavxffms2$(SONAME)
 
-$(EXECUTABLE): $(OBJECTS)
-	$(LD) $(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS) $(LDFLAGS_DYN)
+../$(EXECUTABLE): $(OBJECTS)
+	$(LD) ../$(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS) $(LDFLAGS_DYN)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
 	$(CXX) $(CFLAGS) $(CFLAGS_DYN) $(INCLUDES) $(DEFINES) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS) $(EXECUTABLE)
+	rm -f $(OBJECTS) ../$(EXECUTABLE)
 
 install:
-	install -T -D $(EXECUTABLE) "$(DESTDIR)$(plugindir)/$(EXECUTABLE)"
+	install -T -D ../$(EXECUTABLE) "$(DESTDIR)$(plugindir)/$(EXECUTABLE)"

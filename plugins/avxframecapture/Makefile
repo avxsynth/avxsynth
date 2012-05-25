@@ -20,14 +20,14 @@ LIBS = -L../../avxutils -lavxutils -ljpeg
 
 EXECUTABLE = libavxframecapture$(SONAME)
 
-$(EXECUTABLE): $(OBJECTS)
-	$(LD) $(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS) $(LDFLAGS_DYN)
+../$(EXECUTABLE): $(OBJECTS)
+	$(LD) ../$(EXECUTABLE) $(OBJECTS) $(LIBS) $(LDFLAGS) $(LDFLAGS_DYN)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
 	$(CXX) $(CFLAGS) $(CFLAGS_DYN) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS) $(EXECUTABLE)
+	rm -f $(OBJECTS) ../$(EXECUTABLE)
 
 install:
-	install -T -D $(EXECUTABLE) "$(DESTDIR)$(plugindir)/$(EXECUTABLE)"
+	install -T -D ../$(EXECUTABLE) "$(DESTDIR)$(plugindir)/$(EXECUTABLE)"
