@@ -1,0 +1,6 @@
+usr/lib
+usr/lib/pkgconfig
+usr/include
+usr/include/avxsynth
+usr/include/avxsynth/utils
+usr/include/avxsynth/windowsPorts
