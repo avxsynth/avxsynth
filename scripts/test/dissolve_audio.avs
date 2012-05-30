@@ -11,3 +11,4 @@ b = BlankClip(color=$000000, length=48, width=320, height=240).AudioDub(Tone(fre
 x = Dissolve(a, b, 24)
 y = AudioDub(Dissolve(a.KillAudio(), b.KillAudio(), 24), Dissolve(a.KillVideo(), b.KillVideo(), 48, fps=48))
 x + y
+KillVideo()

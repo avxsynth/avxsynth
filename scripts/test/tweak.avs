@@ -2,7 +2,7 @@
 #
 # Expected behavior:
 #
-# 12 frames total, each with diagnostic output from
+# 12 frames total, the first 9 with diagnostic output from
 # ColorYUV(analyze=true) overlaid. The expected output is
 # provided in inline comments below.
 

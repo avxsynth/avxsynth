@@ -10,7 +10,7 @@ o1 = MergeARGB(o, o, o, o) # BlankClip can't set the alpha
 
 # Testing scaling parameters, 50% gain, expected average: 192, 64
 RGBAdjust(o1, r=1.5, g=1.5, b=1.5, a=1.5)
-last + RGBAdjust(o1, r=0.5, g=0.5, b=-0.5, a=0.5)
+last + RGBAdjust(o1, r=0.5, g=0.5, b=0.5, a=0.5)
 
 # Testing bias parameters, +/- 64, expected average: 192, 64
 last + RGBAdjust(o1, rb=64, gb=64, bb=64, ab=64)

@@ -15,3 +15,4 @@ d1 = AudioDubEx(b1, b2)
 d2 = AudioDubEx(b2, b1)
 
 AudioDub(c1, d1) + AudioDub(c2, d2)
+KillAudio()

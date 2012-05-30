@@ -60,6 +60,8 @@ class AvxFrameServer(object):
                 process.terminate()
                 errmsg = 'Script taking longer than maximum of {0} to execute'
                 raise AvxRuntimeError(errmsg.format(MAXTIME))
+        # The process will terminate if less than BUFSIZE bytes remain
+        hashsum.update(process.stdout.read())
         devnull.close()
         if process.returncode != 0:
             raise AvxRuntimeError('Script returned nonzero exit status')

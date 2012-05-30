@@ -98,7 +98,7 @@ clean:
 	done
 
 distclean: clean
-	-rm config.log config.mak config.targets avxsynth.pc avxtest.log
+	-rm config.log config.mak config.targets avxsynth.pc avxtest-a.log avxtest-v.log
 
 test: avxffms2 avxframeserver
 	$(MAKE) -f $(SRCPATH)/scripts/test/Makefile -C $(SRCPATH)/scripts/test

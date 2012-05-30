@@ -3,7 +3,7 @@
 # Expected behavior:
 #
 # 10 frames, in this order:
-# white x3, black x2, white x3, black x2
+# white x3, black x3, white x2, black x2
 #
 # Clip framerate is 24000/1001 (23.976)
 

@@ -86,8 +86,8 @@ class AvxUnitTest(object):
 def parse_line(line):
     '''Parse a line from a test suite file.  Returns a list of comma-separated
     values, escaped by regular quotes.  A value of None is returned for comment
-    lines'''
-    if line.strip().startswith('#'):
+    lines and empty lines'''
+    if line.strip().startswith('#') or line.strip() == '':
         return None
     line = line.strip('\n')
     parsed = [[]]
