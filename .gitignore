@@ -1,6 +1,8 @@
 *.[oa]
 *.so
 *.kdev*
+*.pyc
+*.ffindex
 apps/AVXEdit/AVXEdit
 apps/avxframeserver/frameserverapp/avxFrameServer
 apps/AVXEdit/src/moc_mainwindow.cpp
