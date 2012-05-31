@@ -240,7 +240,7 @@ bool launchMPlayerToRenderVideo(BITMAPINFOHEADER const& bih)
         return false;                                                        
     }
     
-    sprintf(command, "/usr/bin/mplayer %s -demuxer rawvideo -rawvideo w=%d:h=%d:format=%s - 1> /dev/null", 
+    sprintf(command, "mplayer %s -demuxer rawvideo -rawvideo w=%d:h=%d:format=%s - 1> /dev/null", 
              bRGBFlippingRequired ? "-flip" : "", bih.biWidth, bih.biHeight, colorspace);
     if (-1 == execl(SHELL, SHELL, "-c", command, NULL))
     {
@@ -261,7 +261,7 @@ bool launchMPlayerToRenderAudio(void* pAudioFormat)
     WAVEFORMATEX* pWfx = (WAVEFORMATEX*)pAudioFormat;
     AVXLOG_INFO("Setting up mplayer to render %d channels, %d bytes per sample, at %d/sec\n", pWfx->nChannels, pWfx->wBitsPerSample/BITS_PER_BYTE, pWfx->nSamplesPerSec);
     // mplayer -demuxer rawaudio -rawaudio channels=1:rate=44100:samplesize=2:format=0
-    sprintf(command, "/usr/bin/mplayer -demuxer rawaudio -rawaudio channels=%d:rate=%d:samplesize=%d:format=0 - 1> /dev/null", 
+    sprintf(command, "mplayer -demuxer rawaudio -rawaudio channels=%d:rate=%d:samplesize=%d:format=0 - 1> /dev/null", 
             pWfx->nChannels, pWfx->nSamplesPerSec, pWfx->wBitsPerSample/BITS_PER_BYTE);
     AVXLOG_INFO("mplayer command line: \"%s\"", command);
     if (-1 == execl(SHELL, SHELL, "-c", command, NULL))
