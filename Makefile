@@ -17,14 +17,14 @@ DIRS = \
 	apps/AVXEdit
 
 INSTALLED = \
-	"$(libdir)"/libavxutils$(SONAME)            \
-	"$(libdir)"/libavxsynth$(SONAME)            \
-	"$(pcdir)"/avxsynth.pc                      \
+	"$(libdir)"/libavxutils$(SONAME)           \
+	"$(libdir)"/libavxsynth$(SONAME)           \
+	"$(pcdir)"/avxsynth.pc                     \
 	"$(plugindir)"/libautocrop$(SONAME)        \
 	"$(plugindir)"/libavxffms2$(SONAME)        \
 	"$(plugindir)"/libavxframecapture$(SONAME) \
 	"$(plugindir)"/libavxsubtitle$(SONAME)     \
-	"$(bindir)"/avxFrameServer$(EXE)            \
+	"$(bindir)"/avxFrameServer$(EXE)           \
 	"$(bindir)"/AVXEdit$(EXE)
 
 HEADERS = \
@@ -55,15 +55,15 @@ builtinfunctions: avxutils
 	$(MAKE) -f $(SRCPATH)/avxsynth/builtinfunctions/Makefile -C avxsynth/builtinfunctions
 core: avxutils builtinfunctions
 	$(MAKE) -f $(SRCPATH)/avxsynth/core/Makefile -C avxsynth/core
-autocrop: core
+autocrop:
 	$(MAKE) -f $(SRCPATH)/plugins/autocrop/Makefile -C plugins/autocrop
-avxffms2: core
+avxffms2:
 	$(MAKE) -f $(SRCPATH)/plugins/avxffms2/Makefile -C plugins/avxffms2
-avxframecapture: core
+avxframecapture: avxutils
 	$(MAKE) -f $(SRCPATH)/plugins/avxframecapture/Makefile -C plugins/avxframecapture
-avxsubtitle: core
+avxsubtitle: avxutils
 	$(MAKE) -f $(SRCPATH)/plugins/avxsubtitle/Makefile -C plugins/avxsubtitle
-frameserverlib: core
+frameserverlib: avxutils
 	$(MAKE) -f $(SRCPATH)/apps/avxframeserver/frameserverlib/Makefile -C apps/avxframeserver/frameserverlib
 avxframeserver: frameserverlib
 	$(MAKE) -f $(SRCPATH)/apps/avxframeserver/frameserverapp/Makefile -C apps/avxframeserver/frameserverapp
@@ -73,6 +73,9 @@ avxedit: frameserverlib
 core-install: core header-install
 	$(MAKE) -f $(SRCPATH)/avxutils/Makefile -C avxutils install
 	$(MAKE) -f $(SRCPATH)/avxsynth/core/Makefile -C avxsynth/core install
+	ifndef DESTDIR
+		-ldconfig
+	endif
 autocrop-install: autocrop
 	$(MAKE) -f $(SRCPATH)/plugins/autocrop/Makefile -C plugins/autocrop install
 avxffms2-install: avxffms2

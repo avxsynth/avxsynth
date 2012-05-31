@@ -15,7 +15,7 @@ OBJECTS = \
 	$(OBJ_PATH)/avxffms2.o
 
 INCLUDES = \
-	-I$(SRCPATH)/include          \
+	-I$(SRCPATH)/include \
 	$(FFMS2_INCLUDES)
 
 LIBS = $(FFMS2_LIBS)
