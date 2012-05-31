@@ -190,7 +190,7 @@ SRCPATH="$(cd "$(dirname "$0")"; pwd)"
 
 [ "$SRCPATH" = "$(pwd)" ] && SRCPATH=.
 [ -n "$(echo $SRCPATH | grep ' ')" ] && die "Out of tree builds are impossible with whitespace in source path."
-[ -n "$(echo $SRCPATH | grep "$(pwd)")" ] && die "Build can not be done from a parent directory of source path."
+[ -n "$(echo $SRCPATH | grep "$(pwd)/")" ] && die "Build can not be done from a parent directory of source path."
 
 prefix='/usr/local'
 exec_prefix='${prefix}'

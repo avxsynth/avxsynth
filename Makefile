@@ -73,9 +73,9 @@ avxedit: frameserverlib
 core-install: core header-install
 	$(MAKE) -f $(SRCPATH)/avxutils/Makefile -C avxutils install
 	$(MAKE) -f $(SRCPATH)/avxsynth/core/Makefile -C avxsynth/core install
-	ifndef DESTDIR
-		-ldconfig
-	endif
+ifndef DESTDIR
+	-ldconfig
+endif
 autocrop-install: autocrop
 	$(MAKE) -f $(SRCPATH)/plugins/autocrop/Makefile -C plugins/autocrop install
 avxffms2-install: avxffms2
