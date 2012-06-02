@@ -552,9 +552,6 @@ string GetCpuMsg(IScriptEnvironment * env)
   int flags = env->GetCPUFlags();
   stringstream ss;  
 
-#if 1 // currently CPUCheckForSSESupport() function does not do anything
-   ss << "unknown (detection is TBD)";
-#else
   if (flags & CPUF_FPU)
     ss << "x87  ";
   if (flags & CPUF_MMX)
@@ -571,7 +568,7 @@ string GetCpuMsg(IScriptEnvironment * env)
     ss << "3DNOW ";
   if (flags & CPUF_3DNOW_EXT)
     ss << "3DNOW_EXT";
-#endif
+
   return ss.str();
 }
 

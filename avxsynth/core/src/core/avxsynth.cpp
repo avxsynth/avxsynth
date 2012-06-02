@@ -916,9 +916,8 @@ ScriptEnvironment::ScriptEnvironment()
     // Remember our threadId.
     coinitThreadId=pthread_self(); // GetCurrentThreadId();
 
-#if 0
     CPU_id = CPUCheckForExtensions();
-#endif
+
     if(InterlockedCompareExchange(&refcount, 1, 0) == 0)//tsp June 2005 Initialize Recycle bin
       g_Bin=new RecycleBin();
     else

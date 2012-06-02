@@ -19,6 +19,9 @@
 //	Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "stdafx.h"
+#include <iostream>
+#include <fstream>
+#include <avxplugin.h>
 
 namespace avxsynth {
 	
@@ -168,8 +171,41 @@ nocheck:
 		pop		ebp
 		ret
 	}
+#else
+    std::ifstream procInfo;
+    procInfo.open("/proc/cpuinfo");
+    if(procInfo.fail())
+        return 0;
+    std::string line;
+    while(1)
+    {
+        std::getline(procInfo, line);
+        if(std::string::npos != line.find("flags", 0))
+        {
+            // http://blog.bradiceanu.net/2009/07/20/linux-proccpuinfo-flags/
+            g_lCPUExtensionsAvailable = 0;
+            if(std::string::npos != line.find(" fpu "))
+                g_lCPUExtensionsAvailable |= CPUF_FPU;
+            if(std::string::npos != line.find(" mmx "))
+                g_lCPUExtensionsAvailable |= CPUF_MMX;
+            // CPUF_INTEGER_SSE ?
+            if(std::string::npos != line.find(" sse "))
+                g_lCPUExtensionsAvailable |= CPUF_SSE;
+            if(std::string::npos != line.find(" sse2 "))
+                g_lCPUExtensionsAvailable |= CPUF_SSE2;
+            if(std::string::npos != line.find(" 3dnow "))
+                g_lCPUExtensionsAvailable |= CPUF_3DNOW;
+            if(std::string::npos != line.find(" 3dnowext "))
+                g_lCPUExtensionsAvailable |= CPUF_3DNOW_EXT;
+            if(std::string::npos != line.find(" lm "))
+                g_lCPUExtensionsAvailable |= CPUF_X86_64;
+            if(std::string::npos != line.find(" pni "))
+                g_lCPUExtensionsAvailable |= CPUF_SSE3;
+            break;
+        }
+    }
 #endif // ENABLE_INLINE_ASSEMBLY_MMX_SSE
-	return 0;
+	return g_lCPUExtensionsAvailable;
 }
 
 }; // namespace avxsynth
