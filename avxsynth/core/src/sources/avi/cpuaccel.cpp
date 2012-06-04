@@ -197,8 +197,26 @@ nocheck:
                 g_lCPUExtensionsAvailable |= CPUF_3DNOW;
             if(std::string::npos != line.find(" 3dnowext "))
                 g_lCPUExtensionsAvailable |= CPUF_3DNOW_EXT;
-            if(std::string::npos != line.find(" lm "))
-                g_lCPUExtensionsAvailable |= CPUF_X86_64;
+            //
+            // the lingo of /proc/cpuinfo flags and the lingo of AviSynth differ 
+            // in the way of how the X86_64 is declared
+            //
+            // This is what Linux convention assumes
+            // if(std::string::npos != line.find(" lm "))
+            //    g_lCPUExtensionsAvailable |= CPUF_X86_64;
+            //
+            //...and this is what AviSynth conventions assume
+            // quote:
+            // ====================================================================================
+            // For GetCPUFlags.  These are backwards-compatible with those in VirtualDub.
+            // enum {
+            // ...
+            // ...CPUF_X86_64       =  0xA0,    //  Hammer (note: equiv. to 3DNow + SSE2, which
+                                                //          only Hammer will have anyway)
+            // ...
+            if((std::string::npos != line.find(" 3dnow ")) && (std::string::npos != line.find(" sse2 ")))
+               g_lCPUExtensionsAvailable |= CPUF_X86_64;
+            
             if(std::string::npos != line.find(" pni "))
                 g_lCPUExtensionsAvailable |= CPUF_SSE3;
             break;
