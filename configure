@@ -718,6 +718,7 @@ mkdir -p avxsynth/core/src/{audio,core/parser,filters/conditional,sources/avi}
 mkdir -p plugins/{autocrop,avxframecapture,avxsubtitle,avxffms2}/src
 mkdir -p apps/avxframeserver/frameserver{app,lib}/src
 mkdir -p apps/AVXEdit/src
+mkdir -p scripts/test
 
 cat << EOF
 

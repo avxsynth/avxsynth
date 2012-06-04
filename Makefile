@@ -104,7 +104,7 @@ distclean: clean
 	-rm config.log config.mak config.targets avxsynth.pc avxtest-a.log avxtest-v.log
 
 test: avxffms2 avxframeserver
-	$(MAKE) -f $(SRCPATH)/scripts/test/Makefile -C $(SRCPATH)/scripts/test
+	$(MAKE) -f $(SRCPATH)/scripts/test/Makefile -C scripts/test
 
 # Only includedir and plugindir are guaranteed to be used by avxsynth only
 uninstall:

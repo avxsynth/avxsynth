@@ -31,7 +31,7 @@ class AvxFrameServer(object):
     def run(self):
         '''Evalute script.  Check the status of self.ready first.'''
         if not self.ready:
-            raise AvxNotReadyError('subprocess already completed')
+            raise AvxNotReadyError('Subprocess already completed')
 
         # Change these as needed.
         BUFSIZE = 4 * 2 ** 20
@@ -42,7 +42,7 @@ class AvxFrameServer(object):
         try:
             process = subprocess.Popen(
                 ['avxFrameServer', self.avs_name, 'N'],
-#                ['avs2pipemod', self.avs_name, '-rawvideo'], \
+#                ['avs2pipemod', self.avs_name, '-rawvideo'],
                 bufsize=BUFSIZE, stdout=subprocess.PIPE, stderr=devnull)
         except OSError as err:
             raise AvxScriptError(err)        
@@ -50,8 +50,9 @@ class AvxFrameServer(object):
         hashsum = hashlib.md5()
         read_bytes = 0
         while process.poll() == None:
-            hashsum.update(process.stdout.read(BUFSIZE))
-            read_bytes += BUFSIZE
+            buf = process.stdout.read(BUFSIZE)
+            read_bytes += len(buf)
+            hashsum.update(buf)
             if read_bytes > MAXSIZE:
                 process.terminate()
                 errmsg = 'More data than maximum of {0} was produced'
@@ -82,7 +83,7 @@ class AvxFrameServer(object):
         of self.ready first.
         '''
         if self.ready:
-            raise AvxNotReadyError('subprocess has not yet executed')
+            raise AvxNotReadyError('Subprocess has not yet executed')
         return self._main_hash, self._extra_hash_table
 
     def cleanup(self):
