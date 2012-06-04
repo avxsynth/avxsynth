@@ -817,12 +817,14 @@ Compare::~Compare()
 AVSValue __cdecl Compare::Create(AVSValue args, void*, IScriptEnvironment *env)
 {
   PClip clip = args[0].AsClip();
+  PClip clip1 = args[1].AsClip();
   
   VideoInfo vi = clip->GetVideoInfo();
   convertColorFormatToRGB24(clip, vi, env);
-    
+  convertColorFormatToRGB24(clip1, vi, env);
+  
   PClip texted = new Compare(clip,     // clip
-                             args[1].AsClip(),     // base clip
+                             clip1,     // base clip
                              args[2].AsString(""),   // channels
                              args[3].AsString(""),   // logfile
                              args[4].AsBool(true),   // show_graph
