@@ -214,8 +214,7 @@ debug="yes"
 strip="no"
 compiler="GNU"
 
-#-O0 is required because of some baked-in header code in avxsynth/core
-CFLAGS="$CFLAGS -O0 -Wall -Wno-unused -pipe"
+CFLAGS="$CFLAGS -O2 -Wall -Wno-unused -pipe"
 LDFLAGS="$LDFLAGS -ldl"
 
 # parse options
