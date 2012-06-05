@@ -41,14 +41,6 @@
 
 namespace avxsynth {
   
-/********************************************************************
-********************************************************************/
-
-
-
-
-
-
 /*****************************************************
  *******   Colorspace Single-Byte Conversions   ******
  ****************************************************/
@@ -67,25 +59,6 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out)
   out[1] = ScaledPixelClip(scaled_y - (u-128) * cgu - (v-128) * cgv); // green
   out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red
 }
-
-
-// not used here, but useful to other filters
-inline int RGB2YUV(int rgb) 
-{
-  const int cyb = int(0.114*219/255*65536+0.5);
-  const int cyg = int(0.587*219/255*65536+0.5);
-  const int cyr = int(0.299*219/255*65536+0.5);
-
-  // y can't overflow
-  int y = (cyb*(rgb&255) + cyg*((rgb>>8)&255) + cyr*((rgb>>16)&255) + 0x108000) >> 16;
-  int scaled_y = (y - 16) * int(255.0/219.0*65536+0.5);
-  int b_y = ((rgb&255) << 16) - scaled_y;
-  int u = ScaledPixelClip((b_y >> 10) * int(1/2.018*1024+0.5) + 0x800000);
-  int r_y = (rgb & 0xFF0000) - scaled_y;
-  int v = ScaledPixelClip((r_y >> 10) * int(1/1.596*1024+0.5) + 0x800000);
-  return ((y*256+u)*256+v) | (rgb & 0xff000000);
-}
-
 
 // in convert_a.asm
 extern "C" 
