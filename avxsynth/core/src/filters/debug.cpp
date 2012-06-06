@@ -220,7 +220,9 @@ void MemDebug::reset()
 //
 // ErrorHandlingExternal
 //
-bool ErrorHandlingExternal::m_bErrorHandlingExternal = true;
+#define DEFAULT_ERROR_HANDLING_ENABLE_VALUE     (true)
+
+bool ErrorHandlingExternal::m_bErrorHandlingExternal = DEFAULT_ERROR_HANDLING_ENABLE_VALUE;
 
 ErrorHandlingExternal::ErrorHandlingExternal(IScriptEnvironment* env )
 {   
@@ -233,7 +235,7 @@ bool ErrorHandlingExternal::IsErrorHandlingExternal(void)
 
 AVSValue __cdecl ErrorHandlingExternal::Create(AVSValue args, IScriptEnvironment* env)
 {
-  ErrorHandlingExternal::m_bErrorHandlingExternal = args[0].AsBool();
+  ErrorHandlingExternal::m_bErrorHandlingExternal = args[0].AsBool(DEFAULT_ERROR_HANDLING_ENABLE_VALUE);
   return new ErrorHandlingExternal(env);
 }
 
@@ -244,7 +246,7 @@ AVSValue __cdecl ErrorHandlingExternal::Create(AVSValue args, IScriptEnvironment
 AVSFunction Debug_filters[] = {
   { "Null", "c[copy]s", Null::Create },     // clip, copy
   { "SetPlanarLegacyAlignment", "cb", PlanarLegacyAlignment::Create },     // clip, legacy alignment
-  { "ErrorHandlingExternal", "b", (AVXSYNTH_PLUGIN_APPLY_FUNCTION)ErrorHandlingExternal::Create },     // clip, legacy alignment
+  { "ErrorHandlingExternal", "[enable]b", (AVXSYNTH_PLUGIN_APPLY_FUNCTION)ErrorHandlingExternal::Create },     // clip, legacy alignment
   { 0,0,0 }
 };
 
