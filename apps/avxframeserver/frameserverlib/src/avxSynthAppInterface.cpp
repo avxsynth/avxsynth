@@ -698,7 +698,7 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
           AVXLOG_INFO("Delivered %ld frames", processStreamInfo.nFramesSoFar);
                   
           dlclose(hAvxSynth);
-          retvalue = 0;
+          result = 0;
         }
         catch(AvisynthError error)
         {
