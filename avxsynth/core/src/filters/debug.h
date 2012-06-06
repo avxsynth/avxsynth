@@ -68,7 +68,7 @@ public:
 
   static bool IsErrorHandlingExternal(void);
 
-  static AVSValue __cdecl Create(IScriptEnvironment* env);
+  static AVSValue __cdecl Create(AVSValue args, IScriptEnvironment* env);
   
 private:
   static bool m_bErrorHandlingExternal;
