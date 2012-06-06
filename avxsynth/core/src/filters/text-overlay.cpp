@@ -575,7 +575,7 @@ string GetCpuMsg(IScriptEnvironment * env)
 
 PVideoFrame FilterInfo::GetFrame(int n, IScriptEnvironment* env) 
 {
-  PVideoFrame frame = child->GetFrame(n, env);
+    PVideoFrame frame = child->GetFrame(n, env);
   
     const char* c_space;
     const char* s_type = t_NONE;
@@ -608,6 +608,7 @@ PVideoFrame FilterInfo::GetFrame(int n, IScriptEnvironment* env)
       } else {
         s_parity = viIn.IsBFF() ? t_ABFF : t_BFF;
       }
+    }
     char text[512];
 	int tlen;
     RECT r= { 32, 16, min(3440,viIn.width*8), 900*2 };
@@ -673,9 +674,8 @@ PVideoFrame FilterInfo::GetFrame(int n, IScriptEnvironment* env)
     {
         env->ThrowError(Utf8String(e.GetMsg()).c_str());
     }
-  }
 
-  return frame;
+    return frame;
 }
 
 AVSValue __cdecl FilterInfo::Create(AVSValue args, void*, IScriptEnvironment* env) 
