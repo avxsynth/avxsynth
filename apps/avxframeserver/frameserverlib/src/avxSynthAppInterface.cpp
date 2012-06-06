@@ -625,7 +625,8 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
     int result = -1;
     
     PROCESS_STREAM_INFO processStreamInfo;
-
+    memset(&processStreamInfo, 0, sizeof(PROCESS_STREAM_INFO));
+    
     if (scriptName != NULL)
     {
         try 
