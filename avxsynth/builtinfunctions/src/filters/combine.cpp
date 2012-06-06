@@ -565,7 +565,12 @@ AVSValue __cdecl Animate::Create_Range(AVSValue args, void*, IScriptEnvironment*
   const int last = args[2].AsInt();
   const char* const name = args[3].AsString();
   int n = args[4].ArraySize();
-  return new Animate(context, first, last, name, &args[4][0], &args[4][0], n, true, env);
+  AVSValue temp1("");
+  AVSValue temp2("");
+  if(0 == n)
+     return new Animate(context, first, last, name, &temp1, &temp2, n, true, env);
+  else
+    return new Animate(context, first, last, name, &args[4][0], &args[4][0], n, true, env);
 }
 
 }; // namespace avxsynth
