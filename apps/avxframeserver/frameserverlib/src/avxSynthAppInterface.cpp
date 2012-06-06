@@ -63,6 +63,7 @@ typedef void* PLUGIN_HANDLE;
 typedef struct
 {
     bool            isMPlayerLaunchRequired;
+    bool            isVideoFieldBased;
     IAVIStream*     pAVIStream;
     long            nFramesSoFar;
     AvisynthError*  pLastError;
@@ -678,6 +679,7 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
           if(pVideoStream)
           {
             processStreamInfo.pAVIStream          = pVideoStream;
+            processStreamInfo.isVideoFieldBased   = pAVXSynth->IsFieldBased();
             pRetValue = (PROCESS_STREAM_INFO*)ProcessVideoStream((void*)&processStreamInfo);
           }
           else if(pAudioStream)
