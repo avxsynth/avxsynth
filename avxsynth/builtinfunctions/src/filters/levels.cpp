@@ -327,7 +327,7 @@ PVideoFrame __stdcall RGBAdjust::GetFrame(int n, IScriptEnvironment* env)
 			Amin_r,Amin_g,Amin_b,
 			Amax_r,Amax_g,Amax_b
 			);
-		ApplyMessage(&frame, vi, text, vi.width/24, 0xa0a0a0,0,0 , env );
+		ApplyMessage(&frame, vi, text, vi.width/32, 0xa0a0a0,0,0 , env );
 	}
   return frame;
 }
