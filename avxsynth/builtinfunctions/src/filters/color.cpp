@@ -254,7 +254,7 @@ PVideoFrame __stdcall Color::GetFrame(int frame, IScriptEnvironment* env)
       Amax_y,Amax_u,Amax_v
       );
 
-      ApplyMessage(&src, vi, text, vi.width/24, 0xa0a0a0,0,0 , env );
+      ApplyMessage(&src, vi, text, vi.width/32, 0xa0a0a0,0,0 , env );
       if (!(autowhite||autogain)) {
         return src;
       }
