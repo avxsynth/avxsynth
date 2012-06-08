@@ -286,8 +286,10 @@ PClip Create_MessageClip(const char* message, int width, int height, int pixel_t
     }
   }
 #else
-  width  = 720; // 45*16
-  height = 480; // 30*16
+  if(-1 == width)
+    width  = 720; // 45*16
+  if(-1 == height)
+    height = 480; // 30*16
 #endif
   VideoInfo vi;
   memset(&vi, 0, sizeof(vi));
