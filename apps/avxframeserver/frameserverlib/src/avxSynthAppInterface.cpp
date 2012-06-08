@@ -627,6 +627,11 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
     PROCESS_STREAM_INFO processStreamInfo;
     memset(&processStreamInfo, 0, sizeof(PROCESS_STREAM_INFO));
     
+    PLUGIN_HANDLE hAvxSynth         = NULL;
+    PCREATEAVISYNTH pCreateAVISynth = NULL;
+    PDELETEAVISYNTH pDeleteAVISynth = NULL;
+    IAVXSynth* pAVXSynth            = NULL;
+
     if (scriptName != NULL)
     {
         try 
@@ -634,7 +639,7 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
           AVXLOG_INFO("Processing script %s:", scriptName);
           printScript(scriptName);
           
-          PLUGIN_HANDLE hAvxSynth = dlopen("libavxsynth.so", RTLD_NOW | RTLD_GLOBAL);
+          hAvxSynth = dlopen("libavxsynth.so", RTLD_NOW | RTLD_GLOBAL);
           if(NULL == hAvxSynth)
           {
               AVXLOG_ERROR("%s", "Failed loading libavxsynth.so");
@@ -642,14 +647,19 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
               return -1;
           }
           
-          PCREATEAVISYNTH pCreateAVISynth = (PCREATEAVISYNTH)dlsym(hAvxSynth, "CreateAVISynth");
+          pCreateAVISynth = (PCREATEAVISYNTH)dlsym(hAvxSynth, "CreateAVISynth");
           if(NULL == pCreateAVISynth)
           {
               AVXLOG_ERROR("%s", "Failed retrieving shared library \"CreateAVISynth\" symbol");
               AVXLOG_ERROR("Error: %s", dlerror());
           }
 
-          IAVXSynth* pAVXSynth;
+          pDeleteAVISynth = (PDELETEAVISYNTH)dlsym(hAvxSynth, "DeleteAVISynth");
+          if(NULL == pDeleteAVISynth)
+          {
+              AVXLOG_ERROR("%s", "Failed retrieving shared library \"DeleteAVISynth\" symbol");
+              AVXLOG_ERROR("Error: %s", dlerror());              
+          }
           pCreateAVISynth(&pAVXSynth);
           if(NULL == pAVXSynth)
           {
@@ -698,7 +708,6 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
           
           AVXLOG_INFO("Delivered %ld frames", processStreamInfo.nFramesSoFar);
                   
-          dlclose(hAvxSynth);
           result = 0;
         }
         catch(AvisynthError error)
@@ -712,11 +721,20 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
         }
     }
     
+    
     if(processStreamInfo.pLastError)
     {
         delete processStreamInfo.pLastError;
         processStreamInfo.pLastError = NULL;
     }
+
+    if(pDeleteAVISynth)
+    {
+        pDeleteAVISynth(pAVXSynth);
+        pDeleteAVISynth = NULL;
+    }
+    dlclose(hAvxSynth);
+
     return result;
 }
 } // namespace avxsynth
