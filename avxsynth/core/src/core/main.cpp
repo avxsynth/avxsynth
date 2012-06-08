@@ -112,8 +112,8 @@ public:
 	STDMETHODIMP Info(AVIFILEINFOW *psi, LONG lSize);                           // 3
 
 	STDMETHODIMP Open(LPCSTR szFile, UINT mode, LPCOLESTR lpszFileName);        // ???
-        STDMETHODIMP Save(LPCSTR szFile, AVICOMPRESSOPTIONS* lpOptions,         // ???
-				AVISAVECALLBACK lpfnCallback);
+    STDMETHODIMP Save(LPCSTR szFile, AVICOMPRESSOPTIONS* lpOptions,         // ???
+                      AVISAVECALLBACK lpfnCallback);
 
 	STDMETHODIMP ReadData(DWORD fcc, LPVOID lp, LONG *lpcb);                    // 7
 	STDMETHODIMP WriteData(DWORD fcc, LPVOID lpBuffer, LONG cbBuffer);          // 6
@@ -124,6 +124,8 @@ public:
 	int __stdcall GetError(const char** ppszMessage);
 	bool __stdcall GetParity(int n);
 	bool __stdcall IsFieldBased();
+    
+    STDMETHODIMP_(ULONG) Release();
 };
 
 ///////////////////////////////////
@@ -575,7 +577,20 @@ bool __stdcall CAVIFileSynth::IsFieldBased() {
   return vi->IsFieldBased();
 }
 
+STDMETHODIMP_(ULONG) CAVIFileSynth::Release() {
+#if 0
+    const int refs = InterlockedDecrement(&m_refs);
+    InterlockedDecrement(&gRefCnt);
 
+    _RPT3(0,"%p->CAVIFileSynth::Release() gRefCnt=%d, m_refs=%d\n", this, gRefCnt, refs);
+
+    if (!refs) delete this;
+    return refs;
+#else
+    delete this;
+    return 0;
+#endif
+}
 ////////////////////////////////////////////////////////////////////////
 //
 //		CAVIStreamSynth
@@ -1163,6 +1178,13 @@ HRESULT CreateAVISynth(IAVXSynth **ppIAVXSynth) {
 	*ppIAVXSynth = (IAVXSynth*)pAVIFileSynth;
 	return hresult;
 }
+
+void DeleteAVISynth(IAVXSynth *pIAVXSynth)
+{
+    if(pIAVXSynth)
+        pIAVXSynth->Release();
+}
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

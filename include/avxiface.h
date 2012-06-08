@@ -47,7 +47,8 @@ typedef struct tagIAVXClipInfo {
 
 typedef struct tagIAVXSynth : IAVXFile, IAVXPersistFile, IAVXClipInfo
 {
-    // combined interface
+    // combined interface 
+    virtual STDMETHODIMP_(ULONG) Release()                                                                  = 0;    
 } IAVXSynth;
 
 #ifdef __cplusplus
@@ -55,8 +56,9 @@ extern "C"
 {
 #endif // __cplusplus
 typedef unsigned long (*PCREATEAVISYNTH)(IAVXSynth **pIAVXSynth);
-
+typedef unsigned long (*PDELETEAVISYNTH)(IAVXSynth* pIAVXSynth);
 HRESULT CreateAVISynth(IAVXSynth **pIAVXSynth);
+void DeleteAVISynth(IAVXSynth *pIAVISynth);
 #ifdef __cplusplus
 }
 #endif // __cplusplus
