@@ -13,7 +13,6 @@
 # 3
 # 4
 # THIS IS THE END
-# SDFG
 
 BlankClip(length=5)
 WriteFileStart("writefile.txt", """ "THIS IS THE HEADER" """)
