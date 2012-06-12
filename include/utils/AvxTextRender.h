@@ -93,7 +93,7 @@ namespace avxsynth
         (
             const char* strText, FrameBuffer & trd, TextConfig const& textConfig, TextLayout const& layout, unsigned int options = RenderOptions_None
         ) throw(AvxException);
-    
+        static void GetApproximateCharacterWidth(TextConfig const& textConfig, int & nCharWidth);
     };
 
 }; // namespace avxsynth

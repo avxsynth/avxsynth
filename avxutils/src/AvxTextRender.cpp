@@ -314,5 +314,37 @@ namespace avxsynth
 
         cairo_surface_destroy (pSurface);
     }   
+    
+    void AvxTextRender::GetApproximateCharacterWidth
+    (
+        TextConfig const& textConfig,
+        int & nCharacterWidth
+    )
+    {
+        cairo_surface_t *surface    = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 100, 100);
+        cairo_t *cr                 = cairo_create(surface);
+        PangoLayout *layout         = pango_cairo_create_layout(cr);
+        PangoContext *context       = pango_layout_get_context(layout);
+        
+        PangoLanguage *language     = pango_language_get_default();
+        PangoFontDescription *desc  = pango_font_description_new ();
+        pango_font_description_set_family (desc, textConfig.fontname.c_str());
+        pango_font_description_set_weight (desc, PANGO_WEIGHT_BOLD);
+        pango_font_description_set_absolute_size (desc, PANGO_SCALE*(textConfig.size));
+        pango_font_description_set_stretch(desc, PANGO_STRETCH_ULTRA_EXPANDED);
+        pango_layout_set_font_description(layout, desc);
+        
+        PangoFontMetrics *metrics   = pango_context_get_metrics(context, desc, language);
+
+        nCharacterWidth = pango_font_metrics_get_approximate_char_width(metrics);
+        nCharacterWidth = (nCharacterWidth + PANGO_SCALE)/PANGO_SCALE;
+        
+        pango_font_description_free(desc);
+        g_object_unref(layout);
+
+        cairo_destroy(cr);
+        cairo_surface_destroy(surface);
+   }
+
 
 }; // namespace avxsynth

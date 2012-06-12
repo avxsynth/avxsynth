@@ -39,6 +39,7 @@
 
 #include "../internal.h"
 #include "source-private.h"
+#include "text-overlay.h"
 
 namespace avxsynth {
 	
@@ -266,12 +267,78 @@ extern void ApplyMessage(PVideoFrame* frame, const VideoInfo& vi,
 extern bool GetTextBoundingBox(const char* text, const char* fontname,
   int size, bool bold, bool italic, int align, int* width, int* height);
 
+#define SCREEN_DIMENSION_ALIGNMENT  (16)
+void fit_font_with_desired_video_dimensions(const char* message, int & fontSize, int & width, int & height, bool shrink)
+{
+    int nTextLen = strlen(message);
+
+    if (-1 == width)
+    {
+        // we need to determine the window width so that entire text fits in without being wrapped around
+        int nCharWidth = 0;
+        GetApproximateCharacterWidth("Arial", fontSize, 0, 0, nCharWidth);
+        int nSideMarginWidth = nCharWidth;
+
+        width = nTextLen*nCharWidth + 2*nSideMarginWidth;
+        width = ((width + SCREEN_DIMENSION_ALIGNMENT)/SCREEN_DIMENSION_ALIGNMENT)*SCREEN_DIMENSION_ALIGNMENT;
+
+        if (-1 == height || shrink)
+        {
+            int nVerticalMargin = fontSize;
+            height = fontSize + 2*nVerticalMargin;
+            height = ((height + SCREEN_DIMENSION_ALIGNMENT)/SCREEN_DIMENSION_ALIGNMENT)*SCREEN_DIMENSION_ALIGNMENT;
+        }
+        // else there is no need to touch the height - leave it as it is
+    }
+    else
+    {
+        // basic question - can the message fit the existing screen ?
+        int nMinRequiredHeight = 0;
+        for (fontSize = 24; fontSize >= 9; fontSize--)
+        {
+            int nCharWidth = 0;
+            GetApproximateCharacterWidth("Arial", fontSize, 0, 0, nCharWidth);
+            int nSideMarginWidth = nCharWidth;
+            
+            int nCharsPerLine = (width - 2*nSideMarginWidth)/nCharWidth;
+            
+            int nLines = nTextLen/nCharsPerLine;
+            if(nTextLen % nCharsPerLine)
+                nLines++;
+            
+            int nMarginBetweenLines = 3;
+            int nVerticalMargin     = 3;
+            nMinRequiredHeight = (2*nLines - 1)*fontSize +          // text lines
+                                 (nLines - 1)*nMarginBetweenLines + // margins in between lines
+                                 2*nVerticalMargin;            
+            if(-1 == height)
+                break;
+            else if(nMinRequiredHeight <= height)
+            {
+                if(shrink)
+                {
+                    height = nMinRequiredHeight;
+                    height = ((height + SCREEN_DIMENSION_ALIGNMENT)/SCREEN_DIMENSION_ALIGNMENT)*SCREEN_DIMENSION_ALIGNMENT;
+                }
+
+                return; // with determined font size
+            }
+        }
+        
+        //
+        // If we arrived here, it means that even with the smallest possible font we can't fit in the message into the window, 
+        // or that video height was not specified (i.e. set to -1)
+        //
+        height = nMinRequiredHeight;
+        height = ((height + SCREEN_DIMENSION_ALIGNMENT)/SCREEN_DIMENSION_ALIGNMENT)*SCREEN_DIMENSION_ALIGNMENT;
+        return ;
+    }
+}
 
 PClip Create_MessageClip(const char* message, int width, int height, int pixel_type, bool shrink,
                          int textcolor, int halocolor, int bgcolor, IScriptEnvironment* env) {
 // builtinfunctions
-  int size = 24;
-#if 0
+#if 0 // original avisynth code
   for (size = 24*8; /*size>=9*8*/; size-=4) {
     int text_width, text_height;
     GetTextBoundingBox(message, "Arial", size, true, false, TA_TOP | TA_CENTER, &text_width, &text_height);
@@ -286,10 +353,9 @@ PClip Create_MessageClip(const char* message, int width, int height, int pixel_t
     }
   }
 #else
-  if(-1 == width)
-    width  = 720; // 45*16
-  if(-1 == height)
-    height = 480; // 30*16
+  int fontHeight = 24; // to start with
+  fit_font_with_desired_video_dimensions(message, fontHeight, width, height, shrink);
+  
 #endif
   VideoInfo vi;
   memset(&vi, 0, sizeof(vi));
@@ -301,7 +367,7 @@ PClip Create_MessageClip(const char* message, int width, int height, int pixel_t
   vi.num_frames = 240;
 
   PVideoFrame frame = CreateBlankFrame(vi, bgcolor, COLOR_MODE_RGB, env);
-  ApplyMessage(&frame, vi, message, size, textcolor, halocolor, bgcolor, env);
+  ApplyMessage(&frame, vi, message, fontHeight, textcolor, halocolor, bgcolor, env);
   return new StaticImage(vi, frame, false);
 };
 

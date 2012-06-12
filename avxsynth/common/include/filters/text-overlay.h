@@ -175,6 +175,7 @@ private:
 void ApplyMessage( PVideoFrame* frame, const VideoInfo& vi, const char* message, int size, 
                    int textcolor, int halocolor, int bgcolor, IScriptEnvironment* env );
 
+void GetApproximateCharacterWidth(const char* pStrFontFamily, int nFontSize, int textcolor, int halocolor, int& nCharWidth);
 
 }; // namespace avxsynth
 

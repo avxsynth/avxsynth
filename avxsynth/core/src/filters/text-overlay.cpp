@@ -1186,4 +1186,11 @@ void ApplyMessage( PVideoFrame* frame, const VideoInfo& vi, const char* message,
   }
 }
 
+void GetApproximateCharacterWidth(const char* pStrFontFamily, int nFontSize, int textcolor, int halocolor, int& nCharWidth)
+{
+    TextConfig txtConfig(pStrFontFamily, nFontSize, 0, textcolor, halocolor);
+    
+    AvxTextRender::GetApproximateCharacterWidth(txtConfig, nCharWidth);
+}
+
 }; // namespace avxsynth
