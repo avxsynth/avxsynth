@@ -267,11 +267,38 @@ extern void ApplyMessage(PVideoFrame* frame, const VideoInfo& vi,
 extern bool GetTextBoundingBox(const char* text, const char* fontname,
   int size, bool bold, bool italic, int align, int* width, int* height);
 
+int find_number_of_newlines(const char* message, unsigned int & longestSubLineLength)
+{
+    int nOcccurences = 0;
+    std::string strMessage = message;
+    
+    size_t found = 0;
+    while (1)
+    {
+        found = strMessage.find_first_of("\n", found);
+        if(std::string::npos == found)
+            break;
+
+        nOcccurences++;
+        if(found > longestSubLineLength)
+            longestSubLineLength = found;
+        strMessage.erase(0, found + 1);
+    }
+    
+    if(strMessage.length() > longestSubLineLength)
+        longestSubLineLength = strMessage.length();
+    
+    return nOcccurences;
+}
+
 #define SCREEN_DIMENSION_ALIGNMENT  (16)
 void fit_font_with_desired_video_dimensions(const char* message, int & fontSize, int & width, int & height, bool shrink)
 {
     int nTextLen = strlen(message);
-
+    
+    unsigned int nLongestSubLineLength = 0;
+    int nNewLineCharsFound = find_number_of_newlines(message, nLongestSubLineLength);
+    
     if (-1 == width)
     {
         // we need to determine the window width so that entire text fits in without being wrapped around
@@ -279,13 +306,34 @@ void fit_font_with_desired_video_dimensions(const char* message, int & fontSize,
         GetApproximateCharacterWidth("Arial", fontSize, 0, 0, nCharWidth);
         int nSideMarginWidth = nCharWidth;
 
-        width = nTextLen*nCharWidth + 2*nSideMarginWidth;
+        if(0 == nNewLineCharsFound)
+        {
+            width = nTextLen*nCharWidth + 2*nSideMarginWidth;
+        }
+        else
+        {
+            int nFudgeFactor = 10*nCharWidth; // unexplained why is this needed, libpango breaks the text when there is newline in unusual manner
+            width = nLongestSubLineLength*nCharWidth + 2*nSideMarginWidth + nFudgeFactor;
+        }
         width = ((width + SCREEN_DIMENSION_ALIGNMENT)/SCREEN_DIMENSION_ALIGNMENT)*SCREEN_DIMENSION_ALIGNMENT;
-
+        
         if (-1 == height || shrink)
         {
-            int nVerticalMargin = fontSize;
-            height = fontSize + 2*nVerticalMargin;
+            if(0 == nNewLineCharsFound)
+            {
+                int nVerticalMargin = fontSize;
+                height = fontSize + 2*nVerticalMargin;
+            }
+            else
+            {                
+                int nLines = nNewLineCharsFound + 1;
+                
+                int nMarginBetweenLines = 3;
+                int nVerticalMargin     = fontSize;
+                height                  = (2*nLines - 1)*fontSize +          // text lines
+                                          (nLines - 1)*nMarginBetweenLines + // margins in between lines
+                                          2*nVerticalMargin;
+            }
             height = ((height + SCREEN_DIMENSION_ALIGNMENT)/SCREEN_DIMENSION_ALIGNMENT)*SCREEN_DIMENSION_ALIGNMENT;
         }
         // else there is no need to touch the height - leave it as it is
