@@ -20,6 +20,7 @@
 
 #include <internal.h>
 #include <stdio.h>
+#include <limits.h>
 
 namespace avxsynth {
 
@@ -202,7 +203,7 @@ private:
 	bool flush;
 	bool append;
 
-	char filename[255];
+	char filename[PATH_MAX];
 	char mode[10];	//file open mode
 	int arrsize;
 	struct exp_res {

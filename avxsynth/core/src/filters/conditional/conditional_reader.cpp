@@ -22,6 +22,7 @@
 #include "conditional_reader.h"
 #include "avxlog.h"
 #include <text-overlay.h>
+#include <errno.h>
 
 namespace avxsynth {
 	
@@ -336,7 +337,11 @@ AVSValue __cdecl ConditionalReader::Create(AVSValue args, void* user_data, IScri
 Write::Write (PClip _child, const char _filename[], AVSValue args, int _linecheck, bool _append, bool _flush, IScriptEnvironment* env):
 	GenericVideoFilter(_child), linecheck(_linecheck), flush(_flush), append(_append)
 {
-	realpath(_filename, filename);	// may check for NULL return value
+	char* retValue = realpath(_filename, filename);	// may check for NULL return value
+    if(NULL == retValue)
+    {
+        env->ThrowError("Write::Write() failed determining realpath, error = %s\n", strerror(errno));
+    }
 	arrsize = std::min(args.ArraySize(), maxWriteArgs);
 	int i;
 	
