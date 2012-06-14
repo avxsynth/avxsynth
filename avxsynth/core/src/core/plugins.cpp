@@ -42,6 +42,7 @@
 #include <dlfcn.h>
 #include "avxlog.h"
 #include <limits.h>
+#include <unistd.h> // gcc 4.7 needs it in order to have the definition of getcwd() (issue #49)
 
 namespace avxsynth {
 
