@@ -303,7 +303,15 @@ bool CAVIFileSynth::DelayInit() {
 
     Lock();
 
-    bool result = DelayInit2();
+    bool result;
+    try{
+        result = DelayInit2();
+    }
+    catch(...)
+    {
+        Unlock();
+        throw;
+    }
 
     Unlock();
 
