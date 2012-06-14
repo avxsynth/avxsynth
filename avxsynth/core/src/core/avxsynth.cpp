@@ -1164,7 +1164,12 @@ const char* ScriptEnvironment::GetPluginDirectory()
     char runTimeFullPath[PATH_MAX];
     memset(runTimeFullPath, 0, PATH_MAX*sizeof(char));
     char* ret = realpath(runTimePath, runTimeFullPath);
-    
+    if(runTimePath && (NULL == ret))
+    {
+        AVXLOG_WARN("%s", "*******************************************");
+        AVXLOG_WARN("AVXSYNTH_RUNTIME_PLUGIN_PATH:\n %s\ndoes not exist (?)", runTimePath);
+        AVXLOG_WARN("%s", "*******************************************");
+    }
     bool bUseAvxsynthRuntimePluginPath = (runTimePath != NULL) && (NULL != ret) && (0 != strlen(runTimeFullPath));
     if ( bUseAvxsynthRuntimePluginPath)
     {
