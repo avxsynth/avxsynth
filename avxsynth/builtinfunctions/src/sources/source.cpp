@@ -354,8 +354,8 @@ void fit_font_with_desired_video_dimensions(const char* message, int & fontSize,
             if(nTextLen % nCharsPerLine)
                 nLines++;
             
-            int nMarginBetweenLines = 3;
-            int nVerticalMargin     = 3;
+            int nMarginBetweenLines = 1;
+            int nVerticalMargin     = fontSize;
             nMinRequiredHeight = (2*nLines - 1)*fontSize +          // text lines
                                  (nLines - 1)*nMarginBetweenLines + // margins in between lines
                                  2*nVerticalMargin;            
