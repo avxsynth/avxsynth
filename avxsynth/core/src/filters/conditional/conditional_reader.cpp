@@ -337,8 +337,9 @@ AVSValue __cdecl ConditionalReader::Create(AVSValue args, void* user_data, IScri
 Write::Write (PClip _child, const char _filename[], AVSValue args, int _linecheck, bool _append, bool _flush, IScriptEnvironment* env):
 	GenericVideoFilter(_child), linecheck(_linecheck), flush(_flush), append(_append)
 {
+    memset(filename, 0, PATH_MAX*sizeof(char));
 	char* retValue = realpath(_filename, filename);	// may check for NULL return value
-    if(NULL == retValue)
+    if((NULL == retValue) && (0 == strlen(filename)))
     {
         env->ThrowError("Write::Write() failed determining realpath, error = %s\n", strerror(errno));
     }
