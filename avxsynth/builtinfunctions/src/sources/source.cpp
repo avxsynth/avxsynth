@@ -292,6 +292,11 @@ int find_number_of_newlines(const char* message, unsigned int & longestSubLineLe
 }
 
 #define SCREEN_DIMENSION_ALIGNMENT  (16)
+#define ALIGN_TO_PREFERRED_BOUNDARIES(x)                                                      \
+{                                                                                                       \
+    (x) = (((x) + SCREEN_DIMENSION_ALIGNMENT)/SCREEN_DIMENSION_ALIGNMENT)*SCREEN_DIMENSION_ALIGNMENT;   \
+}
+
 void fit_font_with_desired_video_dimensions(const char* message, int & fontSize, int & width, int & height, bool shrink)
 {
     int nTextLen = strlen(message);
@@ -304,7 +309,7 @@ void fit_font_with_desired_video_dimensions(const char* message, int & fontSize,
         // we need to determine the window width so that entire text fits in without being wrapped around
         int nCharWidth = 0;
         GetApproximateCharacterWidth("Arial", fontSize, 0, 0, nCharWidth);
-        int nSideMarginWidth = nCharWidth;
+        int nSideMarginWidth = fontSize;
 
         if(0 == nNewLineCharsFound)
         {
@@ -312,10 +317,9 @@ void fit_font_with_desired_video_dimensions(const char* message, int & fontSize,
         }
         else
         {
-            int nFudgeFactor = 10*nCharWidth; // unexplained why is this needed, libpango breaks the text when there is newline in unusual manner
-            width = nLongestSubLineLength*nCharWidth + 2*nSideMarginWidth + nFudgeFactor;
+            width = nLongestSubLineLength*nCharWidth + 2*nSideMarginWidth;
         }
-        width = ((width + SCREEN_DIMENSION_ALIGNMENT)/SCREEN_DIMENSION_ALIGNMENT)*SCREEN_DIMENSION_ALIGNMENT;
+        ALIGN_TO_PREFERRED_BOUNDARIES(width);
         
         if (-1 == height || shrink)
         {
@@ -328,13 +332,13 @@ void fit_font_with_desired_video_dimensions(const char* message, int & fontSize,
             {                
                 int nLines = nNewLineCharsFound + 1;
                 
-                int nMarginBetweenLines = 3;
+                int nMarginBetweenLines = 1;
                 int nVerticalMargin     = fontSize;
                 height                  = (2*nLines - 1)*fontSize +          // text lines
                                           (nLines - 1)*nMarginBetweenLines + // margins in between lines
                                           2*nVerticalMargin;
             }
-            height = ((height + SCREEN_DIMENSION_ALIGNMENT)/SCREEN_DIMENSION_ALIGNMENT)*SCREEN_DIMENSION_ALIGNMENT;
+            ALIGN_TO_PREFERRED_BOUNDARIES(height);
         }
         // else there is no need to touch the height - leave it as it is
     }
@@ -342,17 +346,20 @@ void fit_font_with_desired_video_dimensions(const char* message, int & fontSize,
     {
         // basic question - can the message fit the existing screen ?
         int nMinRequiredHeight = 0;
+        int nMinRequiredWidth  = 0;
         for (fontSize = 24; fontSize >= 9; fontSize--)
         {
             int nCharWidth = 0;
             GetApproximateCharacterWidth("Arial", fontSize, 0, 0, nCharWidth);
-            int nSideMarginWidth = nCharWidth;
+            int nSideMarginWidth = fontSize;
             
             int nCharsPerLine = (width - 2*nSideMarginWidth)/nCharWidth;
             
             int nLines = nTextLen/nCharsPerLine;
             if(nTextLen % nCharsPerLine)
                 nLines++;
+            
+            nMinRequiredWidth = nTextLen*nCharWidth + 2*nSideMarginWidth; 
             
             int nMarginBetweenLines = 1;
             int nVerticalMargin     = fontSize;
@@ -361,12 +368,20 @@ void fit_font_with_desired_video_dimensions(const char* message, int & fontSize,
                                  2*nVerticalMargin;            
             if(-1 == height)
                 break;
-            else if(nMinRequiredHeight <= height)
+            else 
             {
                 if(shrink)
                 {
-                    height = nMinRequiredHeight;
-                    height = ((height + SCREEN_DIMENSION_ALIGNMENT)/SCREEN_DIMENSION_ALIGNMENT)*SCREEN_DIMENSION_ALIGNMENT;
+                    if(nMinRequiredHeight < height)
+                    {
+                        height = nMinRequiredHeight;
+                        ALIGN_TO_PREFERRED_BOUNDARIES(height);
+                    }
+                    if(nMinRequiredWidth < width)
+                    {
+                        width  = nMinRequiredWidth;
+                        ALIGN_TO_PREFERRED_BOUNDARIES(width);
+                    }
                 }
 
                 return; // with determined font size
@@ -377,8 +392,10 @@ void fit_font_with_desired_video_dimensions(const char* message, int & fontSize,
         // If we arrived here, it means that even with the smallest possible font we can't fit in the message into the window, 
         // or that video height was not specified (i.e. set to -1)
         //
+        width  = nMinRequiredWidth;
+        ALIGN_TO_PREFERRED_BOUNDARIES(width);
         height = nMinRequiredHeight;
-        height = ((height + SCREEN_DIMENSION_ALIGNMENT)/SCREEN_DIMENSION_ALIGNMENT)*SCREEN_DIMENSION_ALIGNMENT;
+        ALIGN_TO_PREFERRED_BOUNDARIES(height);
         return ;
     }
 }
