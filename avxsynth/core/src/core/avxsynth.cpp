@@ -1159,9 +1159,16 @@ const char* ScriptEnvironment::GetPluginDirectory()
 
     unsigned long nPluginsPathBytes = sizeof(char) /*slash*/ + sizeof(char) /*NULL*/;      
     char* runTimePath = getenv("AVXSYNTH_RUNTIME_PLUGIN_PATH");
-    if (runTimePath != NULL)
+    
+    // In case that AVXSYNTH_RUNTIME_PLUGIN_PATH is relative path, this may come handy:
+    char runTimeFullPath[PATH_MAX];
+    memset(runTimeFullPath, 0, PATH_MAX*sizeof(char));
+    char* ret = realpath(runTimePath, runTimeFullPath);
+    
+    bool bUseAvxsynthRuntimePluginPath = (runTimePath != NULL) && (NULL != ret) && (0 != strlen(runTimeFullPath));
+    if ( bUseAvxsynthRuntimePluginPath)
     {
-        nPluginsPathBytes += strlen(runTimePath);
+        nPluginsPathBytes += strlen(runTimeFullPath);
     }
     else
     {
@@ -1171,9 +1178,9 @@ const char* ScriptEnvironment::GetPluginDirectory()
     char* strPluginsPath = new char[nPluginsPathBytes];
     memset(strPluginsPath, 0, nPluginsPathBytes*sizeof(char));
     
-    if (runTimePath != NULL)
+    if (bUseAvxsynthRuntimePluginPath)
     {
-        sprintf(strPluginsPath, "%s/", runTimePath);
+        sprintf(strPluginsPath, "%s/", runTimeFullPath);
     }
     else
     {
