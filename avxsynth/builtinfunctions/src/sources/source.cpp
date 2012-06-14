@@ -483,7 +483,7 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 	// Rec. ITU-R BT.801-1
 	if (vi.IsRGB32()) {
 		// note we go bottom->top
-		static const int bottom_quarter[] =
+		static const unsigned int bottom_quarter[] =
 // RGB[16..235]     -I     white        +Q     Black     -4ire     Black     +4ire     Black
 			{ 0x003a62, 0xebebeb, 0x4b0f7e, 0x101010,  0x070707, 0x101010, 0x191919,  0x101010 }; // Qlum=Ilum=13.4%
 		for (; y < h/4; ++y) {
@@ -501,7 +501,7 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 			p += pitch;
 		}
 		
-		static const int two_thirds_to_three_quarters[] =
+		static const unsigned int two_thirds_to_three_quarters[] =
 // RGB[16..235]   Blue     Black  Magenta      Black      Cyan     Black    LtGrey
 			{ 0x1010b4, 0x101010, 0xb410b4, 0x101010, 0x10b4b4, 0x101010, 0xb4b4b4 };
 		for (; y < h/3; ++y) {
@@ -513,7 +513,7 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 			p += pitch;
 		}
 		
-		static const int top_two_thirds[] =
+		static const unsigned int top_two_thirds[] =
 // RGB[16..235] LtGrey    Yellow      Cyan     Green   Magenta       Red      Blue
 			{ 0xb4b4b4, 0xb4b410, 0x10b4b4, 0x10b410, 0xb410b4, 0xb41010, 0x1010b4 };
 		for (; y < h; ++y) {
@@ -526,7 +526,7 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 		}
 	}
 	else if (vi.IsYUY2()) {
-		static const int top_two_thirds[] =
+		static const unsigned int top_two_thirds[] =
 //                LtGrey      Yellow        Cyan       Green     Magenta         Red        Blue
 			{ 0x80b480b4, 0x8ea22ca2, 0x2c839c83, 0x3a704870, 0xc654b854, 0xd4416441, 0x7223d423 }; //VYUY
 		w >>= 1;
@@ -539,7 +539,7 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 			p += pitch;
 		}
 
-		static const int two_thirds_to_three_quarters[] =
+		static const unsigned int two_thirds_to_three_quarters[] =
 //                 Blue        Black     Magenta       Black        Cyan       Black      LtGrey
 			{ 0x7223d423, 0x80108010, 0xc654b854, 0x80108010, 0x2c839c83, 0x80108010, 0x80b480b4 }; //VYUY
 		for (; y*4 < h*3; ++y) {
@@ -551,7 +551,7 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 			p += pitch;
 		}
 
-		static const int bottom_quarter[] =
+		static const unsigned int bottom_quarter[] =
 //                    -I       white          +Q       Black       -4ire       Black       +4ire       Black
 			{ 0x5f109e10, 0x80eb80eb, 0x9510ae10, 0x80108010, 0x80078007, 0x80108010, 0x80198019, 0x80108010 }; //VYUY
 		for (; y < h; ++y) {
