@@ -41,6 +41,7 @@
 #include <stdarg.h>
 #include <dlfcn.h>
 #include "avxlog.h"
+#include <limits.h>
 
 namespace avxsynth {
 
@@ -94,11 +95,20 @@ static bool MyLoadLibrary(const char* filename, HMODULE* hmod, bool quiet, IScri
   *hmod = dlopen(filename, RTLD_NOW | RTLD_GLOBAL);
   if (!*hmod)
   {
-    AVXLOG_ERROR("Failed loading %s, error = %s\n", filename, dlerror());
-    if (quiet)
-      return false;
-    else
-      env->ThrowError("LoadPlugin: unable to load \"%s\"", filename);
+    // one more thing to try: implicit on Windows but not implicit on Linux is that the library loading
+    // path may include current working directory
+    char cwd[PATH_MAX];
+    getcwd(cwd, PATH_MAX);
+    std::string strTryingCurrentPath = std::string(cwd) + std::string("/") + std::string(filename);
+    *hmod = dlopen(strTryingCurrentPath.c_str(), RTLD_NOW | RTLD_GLOBAL);
+    if(!*hmod)
+    {
+        AVXLOG_ERROR("Failed loading %s, error = %s\n", filename, dlerror());
+        if (quiet)
+        return false;
+        else
+        env->ThrowError("LoadPlugin: unable to load \"%s\"", filename);
+    }
   }
   // see if we've loaded this already, and add it to the list if not
   for (int j=0; j<max_plugins; ++j) {

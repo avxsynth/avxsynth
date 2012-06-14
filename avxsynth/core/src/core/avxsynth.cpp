@@ -1073,7 +1073,7 @@ int ScriptEnvironment::SetMemoryMax(int mem) {
 }
 
 int ScriptEnvironment::SetWorkingDir(const char * newdir) {
-  return 0; //SetCurrentDirectory(newdir) ? 0 : 1;
+  return chdir(newdir) ? 1 : 0; //SetCurrentDirectory(newdir) ? 0 : 1;
 }
 
 void ScriptEnvironment::CheckVersion(int version) {

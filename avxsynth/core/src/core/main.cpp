@@ -40,6 +40,7 @@
 
 #include <stdio.h>
 #include <malloc.h>
+#include <limits.h>
 #include <math.h>
 #include <cstdarg>
 #include <ctype.h>
@@ -76,6 +77,9 @@ extern "C" const GUID CLSID_CAVIFileSynth   // {E6D6B700-124D-11D4-86F3-DB80AFD9
   
 class CAVIFileSynth : public IAVXSynth {
   friend class CAVIStreamSynth;
+private:
+    std::string GetScriptDirectoryAndFilename(char* & szScriptName);
+    
 private:
     char* szScriptName;
     IScriptEnvironment* env;
@@ -306,6 +310,36 @@ bool CAVIFileSynth::DelayInit() {
     return result;
 }
 
+std::string CAVIFileSynth::GetScriptDirectoryAndFilename(char* & szScriptName)
+{
+    char strRealPath[PATH_MAX];
+    memset(strRealPath, 0, PATH_MAX*sizeof(char));
+    if(NULL == realpath(szScriptName, (char*)strRealPath))
+    {
+       throw AvisynthError("Invalid script path"); 
+    }
+    
+    std::string strDirectory(strRealPath);
+    size_t nLastSlash = strDirectory.find_last_of("/");
+    if(std::string::npos == nLastSlash)
+    {
+       throw AvisynthError("Strangely formed script path"); 
+    }
+    strDirectory = strDirectory.assign(strDirectory, 0, nLastSlash);
+    
+    std::string strFilename(strRealPath);
+    strFilename.replace(0, nLastSlash+1, "");
+    
+    delete[] szScriptName;
+    szScriptName = NULL;
+    
+    szScriptName = new char[strFilename.length() + 1];
+    memset(szScriptName, 0, (strFilename.length() + 1)*sizeof(char));
+    sprintf(szScriptName, "%s", strFilename.c_str());
+    
+    return strDirectory;
+}
+
 bool CAVIFileSynth::DelayInit2() {
     
 #ifdef ENABLE_INLINE_ASSEMBLY_MMX_SSE
@@ -328,7 +362,15 @@ bool CAVIFileSynth::DelayInit2() {
         return false;
       }
       try {
-        AVSValue return_val = env->Invoke("Import", szScriptName);
+          
+#if 1 // needed for Linux
+        std::string strNewWorkingDirectory = GetScriptDirectoryAndFilename(szScriptName);
+        AVSValue return_val = env->Invoke("SetWorkingDir", strNewWorkingDirectory.c_str());
+        if(0 != return_val.AsInt())
+            throw AvisynthError("Failed setting the script directory as working directory");
+#endif 
+            
+        return_val = env->Invoke("Import", szScriptName);
         // store the script's return value (a video clip)
         if (return_val.IsClip()) {
 
