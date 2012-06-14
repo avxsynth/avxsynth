@@ -93,7 +93,7 @@ class AvxFrameServer(object):
             try:
                 os.unlink(i)
             except OSError:
-                errmsg = 'Auto-generated file {0} was not found'
+                errmsg = 'Auto-generated file {0} was not found\n'
                 sys.stderr.write(errmsg.format(i))
         self._main_hash = None
         self._extra_hash_table = {}

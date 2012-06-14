@@ -10,5 +10,5 @@
 a = MessageClip("This is a message", width=320, height=240, shrink=false, text_color=$FF0000, halo_color=$00FF00, bg_color=$0000FF).Trim(0, -1)
 b = MessageClip("This is a message", width=320, height=240, shrink=true, text_color=$FF0000, halo_color=$00FF00, bg_color=$0000FF).Trim(0, -1)
 
-a + b.BilinearResize(width(a), height(a))
+a + b.PointResize(width(a), height(a))
 KillAudio()
