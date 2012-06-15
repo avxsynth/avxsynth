@@ -315,10 +315,11 @@ namespace avxsynth
             // the top coordinate to achieve the scrolling effect
             // 
             unsigned int nAvailableRowsAbove = y/fontSize;
-            for(unsigned int i = 1; i <= nAvailableRowsAbove; i++)
+            unsigned int nExtraRowsToDisplay = optionsParam < nAvailableRowsAbove ? optionsParam + 1 : nAvailableRowsAbove + 1;
+            int nNumber = atoi(strText);
+            for(unsigned int i = 1; i < nExtraRowsToDisplay; i++)
             {
                 cairo_move_to(cr, x, y - i*fontSize);
-                int nNumber = atoi(strText);
                 nNumber--;
                 char temp[6] = {0,0,0,0,0,0};
                 sprintf(temp, "%05d", nNumber);
