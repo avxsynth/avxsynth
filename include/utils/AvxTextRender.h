@@ -83,9 +83,9 @@ namespace avxsynth
          */
         enum RenderOptions
         {
-            RenderOptions_None = 0,
+            RenderOptions_None        = 0,
             RenderOptions_ResizeToFit = 1,       // text will bre resized to fit the specified rectangle or screen
-            RenderOptions_Scroll                 // text scrolling in the fashion of ShowFrameNumber() function
+            RenderOptions_Scroll_SFN  = 1 << 1   // text scrolling in the fashion of ShowFrameNumber() function
         };
         
         
