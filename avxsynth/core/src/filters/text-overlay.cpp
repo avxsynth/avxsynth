@@ -397,9 +397,9 @@ AVSValue __cdecl ShowSMPTE::CreateTime(AVSValue args, void*, IScriptEnvironment*
   
   const int offset_f = args[1].AsInt(0);
   const int xreal = args[0].AsClip()->GetVideoInfo().width;
-  const int x = args[2].AsInt(10);
+  const int x = args[2].AsInt(-1);
   const int yreal = args[0].AsClip()->GetVideoInfo().height;
-  const int y = args[3].AsInt(yreal - yreal/3);
+  const int y = args[3].AsInt(-1);
   const char* font = args[4].AsString("Arial");
   const int size = int(args[5].AsFloat(24)*8+0.5);
   const int text_color = args[6].AsInt(0xFFFF00);
