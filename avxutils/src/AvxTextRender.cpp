@@ -246,7 +246,8 @@ namespace avxsynth
         AvxTextRender::FrameBuffer& trd, 
         const TextConfig& textConfig, 
         const TextLayout& textLayout, 
-        unsigned int options
+        unsigned int options,
+        unsigned int optionsParam
     ) throw(AvxException)
     {
         //AVXLOG_INFO("%s", __FUNCTION__);

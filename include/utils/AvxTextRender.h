@@ -85,13 +85,14 @@ namespace avxsynth
         {
             RenderOptions_None = 0,
             RenderOptions_ResizeToFit = 1,       // text will bre resized to fit the specified rectangle or screen
+            RenderOptions_Scroll                 // text scrolling in the fashion of ShowFrameNumber() function
         };
         
         
         static void RenderSubtitleText(const char* strText, FrameBuffer & trd, TextConfig const& textConfig) throw(AvxException);
         static void RenderText
         (
-            const char* strText, FrameBuffer & trd, TextConfig const& textConfig, TextLayout const& layout, unsigned int options = RenderOptions_None
+            const char* strText, FrameBuffer & trd, TextConfig const& textConfig, TextLayout const& layout, unsigned int options = RenderOptions_None, unsigned int nOptionsParam = -1
         ) throw(AvxException);
         static void GetApproximateCharacterWidth(TextConfig const& textConfig, int & nCharWidth);
     };
