@@ -138,21 +138,15 @@ PVideoFrame ShowFrameNumber::GetFrame(int n, IScriptEnvironment* env) {
   AvxTextRender::FrameBuffer trd(frame->GetWritePtr(), vi.width, vi.height, frame->GetPitch());
   TextConfig txtConfig(fontname, size/8, 0.75, textcolor, halocolor);
 
-  int nLeftCoordinate;
-  TextLayout::HorizontalAlignment nTextLayout;
   int nCharWidth;
   GetApproximateCharacterWidth(fontname, size/8, 0, 0, nCharWidth);
-  if(false == vi.IsFieldBased()) // or if it is bottom field
-  {
-      nLeftCoordinate = vi.width - this->x - FRAME_NUMBER_CHARACTERS*nCharWidth;
-      nTextLayout     = TextLayout::Right;
-  }
-  else
-  {
-      nLeftCoordinate = this->x;
-      nTextLayout     = TextLayout::Left;
-  }
-  TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, this->y, vi.width, vi.height), TextLayout::VCenter, nTextLayout);
+  
+ // progressive frames and/or bottom field will be displayed on the right side, top field on the left
+  bool bDisplayOnRightSide          = vi.IsFieldBased() ? child->GetParity(n) : true;
+  int nLeftCoordinate               = bDisplayOnRightSide ? vi.width - this->x - FRAME_NUMBER_CHARACTERS*nCharWidth : this->x;
+  TextLayout::HorizontalAlignment nHorizontalAlignment = bDisplayOnRightSide ? TextLayout::Right : TextLayout::Left;
+  
+  TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, this->y, vi.width, vi.height), TextLayout::VCenter, nHorizontalAlignment);
 
   char text[16];
   sprintf(text, FRAME_NUMBER_PRINT_FORMAT, n);
