@@ -125,6 +125,8 @@ ShowFrameNumber::ShowFrameNumber(PClip _child, bool _scroll, int _offset, int _x
 	env->ThrowError("ShowFrameNumber: both x and y position must be specified");
 }
 
+#define FRAME_NUMBER_CHARACTERS (5)
+#define FRAME_NUMBER_PRINT_FORMAT   "%05d"
 
 PVideoFrame ShowFrameNumber::GetFrame(int n, IScriptEnvironment* env) {
   PVideoFrame frame = child->GetFrame(n, env);
@@ -135,10 +137,25 @@ PVideoFrame ShowFrameNumber::GetFrame(int n, IScriptEnvironment* env) {
 
   AvxTextRender::FrameBuffer trd(frame->GetWritePtr(), vi.width, vi.height, frame->GetPitch());
   TextConfig txtConfig(fontname, size/8, 0.75, textcolor, halocolor);
-  TextLayout txtLayout(TextLayout::Rect(this->x, this->y, vi.width, vi.height), TextLayout::VCenter, TextLayout::Left);
+
+  int nLeftCoordinate;
+  TextLayout::HorizontalAlignment nTextLayout;
+  int nCharWidth;
+  GetApproximateCharacterWidth(fontname, size/8, 0, 0, nCharWidth);
+  if(false == vi.IsFieldBased()) // or if it is bottom field
+  {
+      nLeftCoordinate = vi.width - this->x - FRAME_NUMBER_CHARACTERS*nCharWidth;
+      nTextLayout     = TextLayout::Right;
+  }
+  else
+  {
+      nLeftCoordinate = this->x;
+      nTextLayout     = TextLayout::Left;
+  }
+  TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, this->y, vi.width, vi.height), TextLayout::VCenter, nTextLayout);
 
   char text[16];
-  sprintf(text, "%05d", n);
+  sprintf(text, FRAME_NUMBER_PRINT_FORMAT, n);
   
   try
   {
