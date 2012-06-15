@@ -141,12 +141,22 @@ PVideoFrame ShowFrameNumber::GetFrame(int n, IScriptEnvironment* env) {
   int nCharWidth;
   GetApproximateCharacterWidth(fontname, size/8, 0, 0, nCharWidth);
   
- // progressive frames and/or bottom field will be displayed on the right side, top field on the left
-  bool bDisplayOnRightSide          = vi.IsFieldBased() ? child->GetParity(n) : true;
-  int nLeftCoordinate               = bDisplayOnRightSide ? vi.width - this->x - FRAME_NUMBER_CHARACTERS*nCharWidth : this->x;
-  TextLayout::HorizontalAlignment nHorizontalAlignment = bDisplayOnRightSide ? TextLayout::Right : TextLayout::Left;
-  int nTopCoordinate                = vi.height - 2*size/8;
-  TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, nTopCoordinate, vi.width, vi.height), TextLayout::VCenter, nHorizontalAlignment);
+  int nLeftCoordinate = this->x;
+  if(-1 == nLeftCoordinate)
+  {
+    // progressive frames and/or bottom field will be displayed on the right side, top field on the left
+    bool bDisplayOnRightSide= vi.IsFieldBased() ? child->GetParity(n) : true;
+    int nSideMargin         = nCharWidth;
+    nLeftCoordinate         = bDisplayOnRightSide ? vi.width - nSideMargin - FRAME_NUMBER_CHARACTERS*nCharWidth : this->x + nSideMargin;
+  }
+
+  int nTopCoordinate = this->y; 
+  if(-1 == nTopCoordinate)
+  {
+    nTopCoordinate   = vi.height - 2*size/8;
+  }
+  
+  TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, nTopCoordinate, vi.width, vi.height), TextLayout::VCenter, TextLayout::Left);
 
   char text[16];
   sprintf(text, FRAME_NUMBER_PRINT_FORMAT, n);
@@ -174,8 +184,8 @@ AVSValue __cdecl ShowFrameNumber::Create(AVSValue args, void*, IScriptEnvironmen
   
   bool scroll = args[1].AsBool(false);
   const int offset = args[2].AsInt(0);
-  const int x = args[3].AsInt(32);
-  const int y = args[4].AsInt(32);
+  const int x = args[3].AsInt(-1);
+  const int y = args[4].AsInt(-1);
   const char* font = args[5].AsString("Arial");
   const int size = int(args[6].AsFloat(24)*8+0.5);
   const int text_color = args[7].AsInt(0xFFFF00);
