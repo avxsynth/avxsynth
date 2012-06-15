@@ -299,9 +299,39 @@ namespace avxsynth
         int x = textLayout.rect.left;
         int y = textLayout.rect.top;
         cairo_set_source_rgb (cr, textColor.fR, textColor.fG, textColor.fB);
-        cairo_move_to (cr, x, y);
-        pango_cairo_show_layout (cr, layout);
-
+        
+        if(options & RenderOptions_Scroll_SFN)
+        {
+            cairo_move_to (cr, x, y);
+            pango_cairo_show_layout (cr, layout);
+            
+            //
+            // In addition to rendering the specified frame number, render also N previous
+            // frame numbers. The value of N depends on 
+            //  a) how much was specified through the optionsParam value
+            //  b) how many can fit the screen
+            //
+            // Scrolling will observe the left coordinate, but will incrementally adjust
+            // the top coordinate to achieve the scrolling effect
+            // 
+            unsigned int nAvailableRowsAbove = y/fontSize;
+            for(unsigned int i = 1; i <= nAvailableRowsAbove; i++)
+            {
+                cairo_move_to(cr, x, y - i*fontSize);
+                int nNumber = atoi(strText);
+                nNumber--;
+                char temp[6] = {0,0,0,0,0,0};
+                sprintf(temp, "%05d", nNumber);
+                pango_layout_set_text (layout, temp, -1);
+                pango_cairo_show_layout(cr, layout);
+            }
+        }
+        else
+        {
+            cairo_move_to (cr, x, y);
+            pango_cairo_show_layout (cr, layout);
+        }
+        
         g_object_unref (layout);        
         
         if(textConfig.strokeSize)
