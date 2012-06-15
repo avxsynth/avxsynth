@@ -156,7 +156,7 @@ PVideoFrame ShowFrameNumber::GetFrame(int n, IScriptEnvironment* env) {
     nTopCoordinate   = vi.height - 2*size/8;
   }
   
-  TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, nTopCoordinate, vi.width, vi.height), TextLayout::VCenter, TextLayout::Left);
+  TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, nTopCoordinate, vi.width, vi.height), TextLayout::VCenter, TextLayout::HCenter);
 
   char text[16];
   sprintf(text, FRAME_NUMBER_PRINT_FORMAT, n);
@@ -346,7 +346,7 @@ PVideoFrame __stdcall ShowSMPTE::GetFrame(int n, IScriptEnvironment* env)
   }
   AvxTextRender::FrameBuffer trd(frame->GetWritePtr(), vi.width, vi.height, frame->GetPitch());
   TextConfig txtConfig(fontname, size/8, 0.75, textcolor, halocolor);
-  TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, nTopCoordinate, vi.width, vi.height), TextLayout::VCenter, TextLayout::Left);
+  TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, nTopCoordinate, vi.width, vi.height), TextLayout::VCenter, TextLayout::HCenter);
   
   try
   {
