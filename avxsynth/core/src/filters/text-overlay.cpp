@@ -321,9 +321,22 @@ PVideoFrame __stdcall ShowSMPTE::GetFrame(int n, IScriptEnvironment* env)
     sprintf(text, "%02d:%02d:%02d.%03d", hour, min%60, sec%60, ms);
   }
 
+  int nLeftCoordinate = this->x;
+  if(-1 == nLeftCoordinate)
+  {
+      nLeftCoordinate = vi.width/2;
+      int nCharWidth;
+      GetApproximateCharacterWidth(fontname, size/8, 0, 0, nCharWidth);
+      nLeftCoordinate -= strlen(text)*nCharWidth/2;
+  }
+  int nTopCoordinate = this->y;
+  if(-1 == nTopCoordinate)
+  {
+      nTopCoordinate = vi.height - 3*(size/8)/2;
+  }
   AvxTextRender::FrameBuffer trd(frame->GetWritePtr(), vi.width, vi.height, frame->GetPitch());
   TextConfig txtConfig(fontname, size/8, 0.75, textcolor, halocolor);
-  TextLayout txtLayout(TextLayout::Rect(this->x, this->y, vi.width, vi.height), TextLayout::VCenter, TextLayout::Left);
+  TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, nTopCoordinate, vi.width, vi.height), TextLayout::VCenter, TextLayout::Left);
   
   try
   {
@@ -350,9 +363,9 @@ AVSValue __cdecl ShowSMPTE::CreateSMTPE(AVSValue args, void*, IScriptEnvironment
   const char* offset = args[2].AsString(0);
   const int offset_f = args[3].AsInt(0);
   const int xreal = args[0].AsClip()->GetVideoInfo().width;
-  const int x = args[4].AsInt(10);
+  const int x = args[4].AsInt(-1);
   const int yreal = args[0].AsClip()->GetVideoInfo().height;
-  const int y = args[5].AsInt(yreal/2);
+  const int y = args[5].AsInt(-1);
   const char* font = args[6].AsString("Arial");
   const int size = int(args[7].AsFloat(24)*8+0.5);
   const int text_color = args[8].AsInt(0xFFFF00);
