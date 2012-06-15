@@ -145,8 +145,8 @@ PVideoFrame ShowFrameNumber::GetFrame(int n, IScriptEnvironment* env) {
   bool bDisplayOnRightSide          = vi.IsFieldBased() ? child->GetParity(n) : true;
   int nLeftCoordinate               = bDisplayOnRightSide ? vi.width - this->x - FRAME_NUMBER_CHARACTERS*nCharWidth : this->x;
   TextLayout::HorizontalAlignment nHorizontalAlignment = bDisplayOnRightSide ? TextLayout::Right : TextLayout::Left;
-  
-  TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, this->y, vi.width, vi.height), TextLayout::VCenter, nHorizontalAlignment);
+  int nTopCoordinate                = vi.height - 2*size/8;
+  TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, nTopCoordinate, vi.width, vi.height), TextLayout::VCenter, nHorizontalAlignment);
 
   char text[16];
   sprintf(text, FRAME_NUMBER_PRINT_FORMAT, n);
