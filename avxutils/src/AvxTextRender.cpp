@@ -141,6 +141,50 @@ namespace avxsynth
             }
          }            
 
+        void RenderShowFrameNumberScrolling
+        (
+            const char* strText, 
+            AvxTextRender::FrameBuffer& trd,
+            const TextConfig& textConfig,
+            cairo_t *cr,
+            PangoLayout *layout,
+            int nLeftCoordinate,
+            unsigned int nFrames
+        )
+        {
+            //
+            // In addition to rendering the specified frame number, render also N previous
+            // frame numbers. The value of N depends on 
+            //  a) how much was specified through the optionsParam value
+            //  b) how many can fit the screen
+            //
+            // Scrolling will observe the left coordinate, but will incrementally adjust
+            // the top coordinate to achieve the scrolling effect
+            // 
+            double fontSize = textConfig.size;
+            unsigned int nAvailableRows = trd.height/fontSize;
+            unsigned int nRowsToDisplay = nFrames < nAvailableRows ? nFrames + 1 : nAvailableRows;
+            unsigned int nStartFrameNumber = atoi(strText); 
+            
+            unsigned int nInitialOffsetFromTop = (nFrames + nAvailableRows - 2) % nAvailableRows;
+            unsigned int nInitialOffsetFromBottom = (nAvailableRows - 1 - nInitialOffsetFromTop); // 0 to 9
+            unsigned int nTopCoordinate;
+            for(unsigned int i = 0; i < nRowsToDisplay; i++)
+            {
+                unsigned int nOffsetFromBottom = (nInitialOffsetFromBottom + i) % nAvailableRows;
+                nTopCoordinate = trd.height - (nOffsetFromBottom + 1)*fontSize;
+
+                cairo_move_to(cr, nLeftCoordinate, nTopCoordinate);
+                char temp[6] = {0,0,0,0,0,0};
+                sprintf(temp, "%05d", nStartFrameNumber);
+                
+                pango_layout_set_text (layout, temp, -1);
+                pango_cairo_show_layout(cr, layout);
+                
+                nStartFrameNumber--;
+            }            
+        }
+
         void RenderOutlineText
         (
             AvxTextRender::FrameBuffer & trd, 
@@ -150,7 +194,8 @@ namespace avxsynth
             TextConfig const& textConfig,
             const char* strText,
             PangoAlignment hAlign,
-            unsigned int options
+            unsigned int options,
+            unsigned int optionsParam = -1
         ) 
         {
             
@@ -179,7 +224,7 @@ namespace avxsynth
             cairo_stroke_preserve(cr);                      // draw a stroke along the path, but do not fill it
 
             g_object_unref(layout);                         // free the layout
-        }  
+        }         
     }
 
     void AvxTextRender::RenderSubtitleText(const char* strText, AvxTextRender::FrameBuffer & trd, TextConfig const& textConfig) throw (AvxException)
@@ -239,6 +284,7 @@ namespace avxsynth
 
         cairo_surface_destroy (pSurface);
     }
+    
     
     void AvxTextRender::RenderText
     (
@@ -302,48 +348,17 @@ namespace avxsynth
         
         if(options & RenderOptions_Scroll_SFN)
         {
-            //
-            // In addition to rendering the specified frame number, render also N previous
-            // frame numbers. The value of N depends on 
-            //  a) how much was specified through the optionsParam value
-            //  b) how many can fit the screen
-            //
-            // Scrolling will observe the left coordinate, but will incrementally adjust
-            // the top coordinate to achieve the scrolling effect
-            // 
-            unsigned int nAvailableRows = trd.height/fontSize;
-            unsigned int nRowsToDisplay = optionsParam < nAvailableRows ? optionsParam + 1 : nAvailableRows;
-            unsigned int nStartFrameNumber = atoi(strText); 
-            
-            unsigned int nInitialOffsetFromTop = (optionsParam + nAvailableRows - 2) % nAvailableRows;
-            unsigned int nInitialOffsetFromBottom = (nAvailableRows - 1 - nInitialOffsetFromTop); // 0 to 9
-            unsigned int nTopCoordinate;
-            for(unsigned int i = 0; i < nRowsToDisplay; i++)
-            {
-                unsigned int nOffsetFromBottom = (nInitialOffsetFromBottom + i) % nAvailableRows;
-                nTopCoordinate = trd.height - (nOffsetFromBottom + 1)*fontSize;
-                if(nTopCoordinate < 0)
-                {
-                    int nStopHere = 1;
-                }
-                cairo_move_to(cr, x, nTopCoordinate);
-                char temp[6] = {0,0,0,0,0,0};
-                sprintf(temp, "%05d", nStartFrameNumber);
-                
-                pango_layout_set_text (layout, temp, -1);
-                pango_cairo_show_layout(cr, layout);
-                
-                nStartFrameNumber--;
-            }
+            avxsubtitle::RenderShowFrameNumberScrolling(strText, trd, textConfig, cr, layout, x, optionsParam);            
         }
         else
         {
             cairo_move_to (cr, x, y);
             pango_cairo_show_layout (cr, layout);
-            if(textConfig.strokeSize)
-                avxsubtitle::RenderOutlineText(trd, cr, font_description, x, y, textConfig, strText, hAlign,  options);
         }
-        
+
+        if(textConfig.strokeSize)
+            avxsubtitle::RenderOutlineText(trd, cr, font_description, x, y, textConfig, strText, hAlign,  options, optionsParam);
+
         g_object_unref (layout);        
                 
         pango_font_description_free (font_description);
