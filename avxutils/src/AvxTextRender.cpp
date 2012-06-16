@@ -302,9 +302,6 @@ namespace avxsynth
         
         if(options & RenderOptions_Scroll_SFN)
         {
-            cairo_move_to (cr, x, y);
-            pango_cairo_show_layout (cr, layout);
-            
             //
             // In addition to rendering the specified frame number, render also N previous
             // frame numbers. The value of N depends on 
@@ -314,30 +311,41 @@ namespace avxsynth
             // Scrolling will observe the left coordinate, but will incrementally adjust
             // the top coordinate to achieve the scrolling effect
             // 
-            unsigned int nAvailableRowsAbove = y/fontSize;
-            unsigned int nExtraRowsToDisplay = optionsParam < nAvailableRowsAbove ? optionsParam + 1 : nAvailableRowsAbove + 1;
-            int nNumber = atoi(strText);
-            for(unsigned int i = 1; i < nExtraRowsToDisplay; i++)
+            unsigned int nAvailableRows = trd.height/fontSize;
+            unsigned int nRowsToDisplay = optionsParam < nAvailableRows ? optionsParam + 1 : nAvailableRows;
+            unsigned int nStartFrameNumber = atoi(strText); 
+            
+            unsigned int nInitialOffsetFromTop = (optionsParam + nAvailableRows - 2) % nAvailableRows;
+            unsigned int nInitialOffsetFromBottom = (nAvailableRows - 1 - nInitialOffsetFromTop); // 0 to 9
+            unsigned int nTopCoordinate;
+            for(unsigned int i = 0; i < nRowsToDisplay; i++)
             {
-                cairo_move_to(cr, x, y - i*fontSize);
-                nNumber--;
+                unsigned int nOffsetFromBottom = (nInitialOffsetFromBottom + i) % nAvailableRows;
+                nTopCoordinate = trd.height - (nOffsetFromBottom + 1)*fontSize;
+                if(nTopCoordinate < 0)
+                {
+                    int nStopHere = 1;
+                }
+                cairo_move_to(cr, x, nTopCoordinate);
                 char temp[6] = {0,0,0,0,0,0};
-                sprintf(temp, "%05d", nNumber);
+                sprintf(temp, "%05d", nStartFrameNumber);
+                
                 pango_layout_set_text (layout, temp, -1);
                 pango_cairo_show_layout(cr, layout);
+                
+                nStartFrameNumber--;
             }
         }
         else
         {
             cairo_move_to (cr, x, y);
             pango_cairo_show_layout (cr, layout);
+            if(textConfig.strokeSize)
+                avxsubtitle::RenderOutlineText(trd, cr, font_description, x, y, textConfig, strText, hAlign,  options);
         }
         
         g_object_unref (layout);        
-        
-        if(textConfig.strokeSize)
-            avxsubtitle::RenderOutlineText(trd, cr, font_description, x, y, textConfig, strText, hAlign,  options);
-        
+                
         pango_font_description_free (font_description);
         cairo_destroy (cr);
         //cairo_surface_write_to_png (pSurface, <your_home_directory>/Desktop/firstTry.png");
