@@ -90,11 +90,12 @@ class AvxFrameServer(object):
         '''Delete generated files listed in self.extra_file_list and reset
         self.ready'''
         for i in self.extra_file_list:
-            try:
-                os.unlink(i)
-            except OSError:
-                errmsg = 'Auto-generated file {0} was not found\n'
-                sys.stderr.write(errmsg.format(i))
+            if os.path.isfile(i):
+                try:
+                    os.unlink(i)
+                except OSError:
+                    errmsg = 'Auto-generated file {0} was not deleted\n'
+                    sys.stderr.write(errmsg.format(i))
         self._main_hash = None
         self._extra_hash_table = {}
         self.ready = True

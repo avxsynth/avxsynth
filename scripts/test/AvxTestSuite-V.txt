@@ -15,7 +15,7 @@ SCRIPT,"coloryuv.avs",36502e065a7bb3f11a78713d82a83a74
 SCRIPT,"compare-RGB24.avs",ERROR
 "compare-RGB24-AC-RB.log",ERROR
 "compare-RGB24-AB-RGB.log",ERROR
-"compare-RGB24-G.log",ERROR
+"compare-RGB24-AC-G.log",ERROR
 "compare-RGB24-BC-RGB.log",ERROR
 SCRIPT,"compare-RGB32.avs",ERROR
 "compare-RGB32-AB-RG.log",ERROR

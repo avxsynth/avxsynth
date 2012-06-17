@@ -153,6 +153,8 @@ def main(infile, outfile):
     for i in unit_tests:
         test_name = i.avs_name
         try:
+            # Some filters will append instead of overwriting.
+            i.cleanup()
             i.run()
         except (AvxScriptError, AvxRuntimeError, AvxFileError) as err:
             test_has_failed.append(test_name)
@@ -161,6 +163,7 @@ def main(infile, outfile):
             out.write('SCRIPT,"{0}",{1}\n'.format(test_name, 'ERROR'))
             for j in i.extra_hash_table.keys():
                 out.write('"{0}",{1}\n'.format(j, 'ERROR'))
+            i.cleanup()
             continue
         # check_results() returns a list of failed files.
         test_result = i.check_results()
