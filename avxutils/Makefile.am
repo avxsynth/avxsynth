@@ -21,3 +21,7 @@ libavxutils_la_CXXFLAGS = \
 	$(AM_CXXFLAGS)
 
 libavxutils_la_LDFLAGS = -version-info 0:0:0 $(AM_LDFLAGS)
+
+# For some reason libtool refuses to run ldconfig
+install-exec-hook:
+	-ldconfig
