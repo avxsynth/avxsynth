@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+plugindir=${libdir}/@PACKAGE_NAME@
+includedir=@includedir@/@PACKAGE_NAME@
+
+Name: AvxSynth
+Description: AvxSynth (AviSynth for Linux)
+Version: @PACKAGE_VERSION@
+Requires: avxutils = @PACKAGE_VERSION@
+Libs.private: -ldl -lm @PTHREAD_LIBS@ @PTHREAD_CFLAGS@ @PTHREAD_LIBS@
+Libs: -L"$libdir" -lavxsynth
+Cflags: -I"$includedir"
