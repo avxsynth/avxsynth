@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <dirent.h>
 
 namespace avxsynth{  
     
@@ -49,7 +50,28 @@ char *_strlwr(char *str)
 
 intptr_t _findfirst(const char *filespec, struct _finddata_t *fileinfo)
 {
-	return 0;
+    DIR* pDir = opendir(".");
+    if(NULL == pDir)
+        return 0;
+    
+    struct dirent* pFolderItem;
+    while(1)
+    {
+        pFolderItem = readdir(pDir);
+        if(NULL == pFolderItem)
+            break;
+
+        DIR* pTemp = opendir((const char*)pFolderItem->d_name);
+        if(pTemp)
+            closedir(pTemp);
+        else
+        {
+            if(0 == strcmp(filespec, pFolderItem->d_name))
+                return 1;
+        }
+    };
+    closedir(pDir);
+	return -1;
 }
 
 
