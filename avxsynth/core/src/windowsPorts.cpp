@@ -54,24 +54,13 @@ intptr_t _findfirst(const char *filespec, struct _finddata_t *fileinfo)
     if(NULL == pDir)
         return 0;
     
-    struct dirent* pFolderItem;
-    while(1)
-    {
-        pFolderItem = readdir(pDir);
-        if(NULL == pFolderItem)
-            break;
-
-        DIR* pTemp = opendir((const char*)pFolderItem->d_name);
-        if(pTemp)
-            closedir(pTemp);
-        else
-        {
-            if(0 == strcmp(filespec, pFolderItem->d_name))
-                return 1;
-        }
-    };
-    closedir(pDir);
-	return -1;
+    char fullFilename[PATH_MAX];
+    memset(fullFilename, 0, PATH_MAX*sizeof(char));
+    char* pRetVal = realpath(filespec, fullFilename);
+    if((NULL == pRetVal) || (0 == strlen(fullFilename)))
+        return -1;
+    
+	return 0;
 }
 
 
