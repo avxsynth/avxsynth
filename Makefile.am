@@ -37,4 +37,4 @@ SUBDIRS = \
 dist_doc_DATA = README.md
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = avxsynth.pc
+pkgconfig_DATA = avxsynth.pc avxutils.pc
