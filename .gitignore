@@ -6,6 +6,12 @@
 *.pyc
 *.ffindex
 *.pc
+*.dirstamp
+*.deps
+*.libs
+*.sub
+*.cache
+libtool
 apps/AVXEdit/AVXEdit
 apps/avxframeserver/frameserverapp/avxFrameServer
 apps/AVXEdit/src/moc_mainwindow.cpp
