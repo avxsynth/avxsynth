@@ -818,11 +818,11 @@ Compare::Compare(PClip _child1, PClip _child2, const char* channels, const char 
   if (fname[0] != 0) {
     log = fopen(fname, "wt");
     if (log) {
-      AVXLOG_INFO("Comparing channel(s) %s\n\n",channels);
-      AVXLOG_INFO("%s", "           Mean               Max    Max             \n");
-      AVXLOG_INFO("%s", "         Absolute     Mean    Pos.   Neg.            \n");
-      AVXLOG_INFO("%s", " Frame     Dev.       Dev.    Dev.   Dev.  PSNR (dB) \n");
-      AVXLOG_INFO("%s", "-----------------------------------------------------\n");
+      fprintf(log, "Comparing channel(s) %s\n\n",channels);
+      fprintf(log, "%s", "           Mean               Max    Max             \n");
+      fprintf(log, "%s", "         Absolute     Mean    Pos.   Neg.            \n");
+      fprintf(log, "%s", " Frame     Dev.       Dev.    Dev.   Dev.  PSNR (dB) \n");
+      fprintf(log, "%s", "-----------------------------------------------------\n");
     } else
       env->ThrowError("Compare: unable to create file %s", fname);
   } else {
@@ -838,13 +838,13 @@ Compare::Compare(PClip _child1, PClip _child2, const char* channels, const char 
 Compare::~Compare()
 {
   if (log) {
-    AVXLOG_INFO("\n\n\nTotal frames processed: %d\n\n", framecount);
-    AVXLOG_INFO("%s", "                           Minimum   Average   Maximum\n");
-    AVXLOG_INFO("Mean Absolute Deviation: %9.4f %9.4f %9.4f\n", MAD_min, MAD_tot/framecount, MAD_max);
-    AVXLOG_INFO("         Mean Deviation: %+9.4f %+9.4f %+9.4f\n", MD_min, MD_tot/framecount, MD_max);
-    AVXLOG_INFO("                   PSNR: %9.4f %9.4f %9.4f\n", PSNR_min, PSNR_tot/framecount, PSNR_max);
+    fprintf(log, "\n\n\nTotal frames processed: %d\n\n", framecount);
+    fprintf(log, "%s", "                           Minimum   Average   Maximum\n");
+    fprintf(log, "Mean Absolute Deviation: %9.4f %9.4f %9.4f\n", MAD_min, MAD_tot/framecount, MAD_max);
+    fprintf(log, "         Mean Deviation: %+9.4f %+9.4f %+9.4f\n", MD_min, MD_tot/framecount, MD_max);
+    fprintf(log, "                   PSNR: %9.4f %9.4f %9.4f\n", PSNR_min, PSNR_tot/framecount, PSNR_max);
     double PSNR_overall = 10.0 * log10(bytecount_overall * 255.0 * 255.0 / SSD_overall);
-    AVXLOG_INFO("           Overall PSNR: %9.4f\n", PSNR_overall);
+    fprintf(log, "           Overall PSNR: %9.4f\n", PSNR_overall);
     fclose(log);
   }
   if (psnrs) delete[] psnrs;
@@ -1091,7 +1091,7 @@ PVideoFrame __stdcall Compare::GetFrame(int n, IScriptEnvironment* env)
 
   if (log)
   {
-      AVXLOG_INFO("%6u  %8.4f  %+9.4f  %3d    %3d    %8.4f\n", n, MAD, MD, pos_D, neg_D, PSNR);
+      fprintf(log, "%6u  %8.4f  %+9.4f  %3d    %3d    %8.4f\n", n, MAD, MD, pos_D, neg_D, PSNR);
   }
   else {
     env->MakeWritable(&f1);
