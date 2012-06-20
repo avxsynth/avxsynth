@@ -14,6 +14,7 @@
 libtool
 apps/AVXEdit/AVXEdit
 apps/avxframeserver/frameserverapp/avxFrameServer
+apps/avxframeserver/avxFrameServer
 apps/AVXEdit/src/moc_mainwindow.cpp
 apps/AVXEdit/src/qrc_application.cpp
 config.log
