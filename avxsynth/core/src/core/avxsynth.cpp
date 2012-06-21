@@ -1171,6 +1171,10 @@ const char* ScriptEnvironment::GetPluginDirectory()
         AVXLOG_WARN("%s", "*******************************************");
     }
     bool bUseAvxsynthRuntimePluginPath = (runTimePath != NULL) && (NULL != ret) && (0 != strlen(runTimeFullPath));
+    // quick fix: if the AVXSYNTH_PLUGIN_PATH is set to "/", empty the string, as one slash will be 
+    // added immediately below anyways
+    if(0 == strcmp("/", runTimeFullPath))
+        memset(runTimeFullPath, 0, PATH_MAX*sizeof(char));
     if ( bUseAvxsynthRuntimePluginPath)
     {
         nPluginsPathBytes += strlen(runTimeFullPath);
@@ -1206,7 +1210,7 @@ const char* ScriptEnvironment::GetPluginDirectory()
     }
   }
 
-  AVXLOG_INFO("Plugins Dir: %s\n", plugin_dir);      
+  AVXLOG_INFO("Plugins Dir: %s", plugin_dir);      
   return plugin_dir;
 }
 
@@ -1351,8 +1355,17 @@ bool ScriptEnvironment::PluginsFolderIsNotEmpty()
       if(1 == nFilenameLength || 2 == nFilenameLength)
 	  continue; 	// exclude "." and ".." which are mandatory in each folder
 
-      bFolderNotEmpty = true;
-      break;
+      DIR* pIsDir = opendir(pItem->d_name);
+      if(pIsDir)
+          closedir(pIsDir);
+      else
+      {
+        if(strstr(pItem->d_name, ".so") || strstr(pItem->d_name, ".so."))
+        {
+            bFolderNotEmpty = true;
+            break;
+        }
+      }
   }
   
   closedir(pDir);
@@ -1401,7 +1414,7 @@ bool ScriptEnvironment::LoadPluginsMatching(const char* pattern)
 	  continue; 	// exclude "." and ".." which are mandatory in each folder
 
       if(false == IsFileExtension(pItem->d_name, pattern))
-	continue;
+        continue;
       
       unsigned long nPluginPathBytes = 1 + nFolderPathLength + nFilenameLength + 1; // last +1 is for '/' in between 
       
@@ -1411,9 +1424,9 @@ bool ScriptEnvironment::LoadPluginsMatching(const char* pattern)
       
       ++count;
       if (count > 20) {
-	HMODULE* loaded_plugins = (HMODULE*)GetVar("$Plugins$").AsString();
-	FreeLibraries(loaded_plugins, this);
-	count = 0;
+        HMODULE* loaded_plugins = (HMODULE*)GetVar("$Plugins$").AsString();
+        FreeLibraries(loaded_plugins, this);
+        count = 0;
       }
       
       //
