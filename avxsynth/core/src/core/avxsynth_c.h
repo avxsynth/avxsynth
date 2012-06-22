@@ -33,7 +33,7 @@
 #ifndef __AVXSYNTH_C__
 #define __AVXSYNTH_C__
   
-#include "../../../../include/avxplugin.h"
+#include "avxplugin.h"
 
 #ifdef __cplusplus
 #  define EXTERN_C extern "C"
