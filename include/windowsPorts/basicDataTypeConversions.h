@@ -3,6 +3,7 @@
 
 #include <inttypes.h>
 #include <pthread.h>
+#include <wchar.h>
 
 #ifdef __cplusplus
 namespace avxsynth {
@@ -44,9 +45,7 @@ typedef char* LPSTR;
 typedef LPSTR LPOLESTR;
 typedef const char* LPCSTR;
 typedef LPCSTR LPCOLESTR;
-#ifdef __cplusplus
 typedef wchar_t WCHAR;
-#endif // __cplusplus
 typedef unsigned short WORD;
 typedef unsigned int UINT;
 typedef UINT MMRESULT;
