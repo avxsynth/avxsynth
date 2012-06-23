@@ -4,11 +4,17 @@
 #include <inttypes.h>
 #include <pthread.h>
 
+#ifdef __cplusplus
 namespace avxsynth {
-	
+#endif // __cplusplus
+
 typedef int64_t __int64;
 typedef int32_t __int32;
+#ifdef __cplusplus
 typedef bool	BOOL;
+#else
+typedef uint32_t BOOL;
+#endif // __cplusplus
 typedef void* HMODULE;
 typedef void* LPVOID;
 typedef void* PVOID;
@@ -26,8 +32,6 @@ typedef void* HACMSTREAM;
 typedef void* HACMDRIVER;
 typedef void* HIC;
 typedef void* HACMOBJ;
-typedef void* HACMDRIVER;
-typedef void* HACMSTREAM;
 typedef HACMSTREAM* LPHACMSTREAM;
 typedef void* HACMDRIVERID;
 typedef void* LPHACMDRIVER;
@@ -40,7 +44,9 @@ typedef char* LPSTR;
 typedef LPSTR LPOLESTR;
 typedef const char* LPCSTR;
 typedef LPCSTR LPCOLESTR;
+#ifdef __cplusplus
 typedef wchar_t WCHAR;
+#endif // __cplusplus
 typedef unsigned short WORD;
 typedef unsigned int UINT;
 typedef UINT MMRESULT;
@@ -76,5 +82,7 @@ typedef GUID CLSID;
 typedef CLSID* LPCLSID;
 typedef GUID IID;
 
+#ifdef __cplusplus
 }; // namespace avxsynth
+#endif // __cplusplus
 #endif //  __DATA_TYPE_CONVERSIONS_H__

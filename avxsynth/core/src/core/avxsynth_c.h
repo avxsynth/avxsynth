@@ -33,7 +33,8 @@
 #ifndef __AVXSYNTH_C__
 #define __AVXSYNTH_C__
   
-#include "avxplugin.h"
+#include "windowsPorts/windows2linux.h"
+#include <stdarg.h>
 
 #ifdef __cplusplus
 #  define EXTERN_C extern "C"

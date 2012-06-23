@@ -11,7 +11,9 @@
 #include <string.h>
 #include "basicDataTypeConversions.h"
 
+#ifdef __cplusplus
 namespace avxsynth {
+#endif // __cplusplus
 //
 // purposefully define the following MSFT definitions 
 // to mean nothing (as they do not mean anything on Linux)
@@ -72,6 +74,8 @@ namespace avxsynth {
 
 #define MulDiv(nNumber, nNumerator, nDenominator)   (int32_t) (((int64_t) (nNumber) * (int64_t) (nNumerator) + (int64_t) ((nDenominator)/2)) / (int64_t) (nDenominator))
 
+#ifdef __cplusplus
 }; // namespace avxsynth
+#endif // __cplusplus
 
 #endif //  __WINDOWS2LINUX_H__
