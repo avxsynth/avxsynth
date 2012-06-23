@@ -42,6 +42,8 @@
 #include <dlfcn.h>
 #include "avxlog.h"
 #include <limits.h>
+#include <iostream>
+//#include <fstream>
 #include <unistd.h> // gcc 4.7 needs it in order to have the definition of getcwd() (issue #49)
 
 namespace avxsynth {
@@ -71,7 +73,47 @@ void FreeLibraries(void* loaded_plugins, IScriptEnvironment* env) {
   memset(loaded_plugins, 0, max_plugins*sizeof(HMODULE));
 }
 
+static bool IdentifiedLibAvxsynthDuplicate(const char* filename)
+{
+    std::string strCommand          = "nm -CD ";
+    std::string strFilename         = filename;
+    std::string strDiscriminator    = "avxsynth::CAVIFileSynth::DelayInit";
+    std::string strGrepAfter        = std::string(" | grep \"") + strDiscriminator + std::string("\"");
+    std::string strCompleteCommand = strCommand + strFilename + strGrepAfter;
+    
+    FILE* pp = popen(strCompleteCommand.c_str(), "r");
+    if(NULL == pp)
+    {
+        AVXLOG_ERROR("%s", "Failed opening pipe for examining the plugin\n");
+        return false;
+    };
+    
+    fflush(pp);
+    char buffer[PATH_MAX];
+    bool bIdentified = false;
+    while(1)
+    {
+        if(NULL == fgets(buffer, PATH_MAX, pp))
+            break;
+        
+        if(strstr(buffer, strDiscriminator.c_str()))
+        {
+            bIdentified = true;
+            break;
+        }
+    }
+    pclose(pp);
+    return bIdentified;
+}
+
 static bool MyLoadLibrary(const char* filename, HMODULE* hmod, bool quiet, IScriptEnvironment* env) {
+    
+  if(IdentifiedLibAvxsynthDuplicate(filename))
+  {
+    AVXLOG_ERROR("%s plugin identified as duplicate of libavxsynth.so, prevented its loading", filename);
+    return false;
+  }
+  
   HMODULE* loaded_plugins;
   try {
     loaded_plugins = (HMODULE*)env->GetVar("$Plugins$").AsString();
