@@ -1,0 +1,4 @@
+TYPE float
+DEFAULT 1.0
+R 0 4 1.0
+I 5 9 1.0 -1.0

@@ -1,0 +1,28 @@
+#SCRIPTVER=1
+#HASHFORMAT=MD5
+#
+#Remember: This file only records the last known result.
+#Do not use this to assume correctness of behavior.
+#
+SCRIPT,"filewriting/compare-RGB24.avs",ERROR
+"compare-RGB24-AC-RB.log",ERROR
+"compare-RGB24-AB-RGB.log",ERROR
+"compare-RGB24-AC-G.log",ERROR
+"compare-RGB24-BC-RGB.log",ERROR
+SCRIPT,"filewriting/compare-RGB32.avs",ERROR
+"compare-RGB32-AB-RG.log",ERROR
+"compare-RGB32-AC-G.log",ERROR
+"compare-RGB32-BC-A.log",ERROR
+"compare-RGB32-AC-RB.log",ERROR
+SCRIPT,"filewriting/compare-YUY2.avs",ERROR
+"compare-YUY2-AC-UV.log",ERROR
+"compare-YUY2-BC-YUV.log",ERROR
+"compare-YUY2-AC-Y.log",ERROR
+"compare-YUY2-AB-YUV.log",ERROR
+SCRIPT,"filewriting/compare-YV12.avs",ERROR
+"compare-YV12-AB-YUV.log",ERROR
+"compare-YV12-AC-Y.log",ERROR
+"compare-YV12-BC-YUV.log",ERROR
+"compare-YV12-AC-UV.log",ERROR
+SCRIPT,"filewriting/writefile_if_start_end.avs",d45ece122cec62bc8ecf901f5f81bc89
+"writefile.txt",9458048f2e71f5136eea31a70d718546

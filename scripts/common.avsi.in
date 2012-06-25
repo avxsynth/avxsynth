@@ -1,0 +1,7 @@
+# Use these with SetWorkingDir() to make sure tests
+# find the testclips and write logs to the correct place.
+tests_build_dir = "@abs_builddir@" + "/"
+tests_top_build_dir = "@abs_top_builddir@" + "/"
+
+# Use this to check whether importing works.
+blank = BlankClip(width=1, height=1, length=1, pixel_type="RGB24", color=$123456)

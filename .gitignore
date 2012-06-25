@@ -17,6 +17,8 @@ apps/avxframeserver/frameserverapp/avxFrameServer
 apps/avxframeserver/avxFrameServer
 apps/AVXEdit/src/moc_mainwindow.cpp
 apps/AVXEdit/src/qrc_application.cpp
+scripts/tools/avs_c_interface
+scripts/tools/avsgrabber
 config.log
 config.mak
 config.targets

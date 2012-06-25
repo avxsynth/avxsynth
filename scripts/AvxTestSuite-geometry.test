@@ -1,0 +1,11 @@
+#SCRIPTVER=1
+#HASHFORMAT=MD5
+#
+#Remember: This file only records the last known result.
+#Do not use this to assume correctness of behavior.
+#
+SCRIPT,"geometry/crop_cropbottom_addborders_letterbox.avs",79e506289c6e0fbeb933209568b386c7
+SCRIPT,"geometry/flipvertical_horizontal.avs",7f1c066f14daf1d2c4fb8c060b5c18df
+SCRIPT,"geometry/reduceby2.avs",d479807821bed86967a1995d49277940
+SCRIPT,"geometry/stackhorizontal_vertical_showfive.avs",b4433ec189e57f05d3fff094489b5ee2
+SCRIPT,"geometry/turnleft_right_180.avs",f16c82206e9e2f19ac395dd74bde7c69

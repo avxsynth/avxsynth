@@ -1,0 +1,10 @@
+#SCRIPTVER=1
+#HASHFORMAT=MD5
+#
+#Remember: This file only records the last known result.
+#Do not use this to assume correctness of behavior.
+#
+SCRIPT,"frameaverage/merge_rgb.avs",101857ef5f711915261164289a6e14fd
+SCRIPT,"frameaverage/merge_yuv.avs",a68b09d467093f1a89c527bd911fcf74
+SCRIPT,"frameaverage/subtract_rgb.avs",460912fdd3b535b0ec750772a9a084ab
+SCRIPT,"frameaverage/subtract_yuv.avs",9f8a11c15738de97bf8531970342ec47

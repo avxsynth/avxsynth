@@ -1,0 +1,9 @@
+#SCRIPTVER=1
+#HASHFORMAT=MD5
+#
+#Remember: This file only records the last known result.
+#Do not use this to assume correctness of behavior.
+#
+SCRIPT,"conditional/conditionalfilter.avs",5421fab194347d7293af3502579b0017
+SCRIPT,"conditional/conditionalreader.avs",f005460f0b6e03d1aeeedec9df1af409
+SCRIPT,"conditional/scriptclip_frameevaluate.avs",570d9b7b8a6ad1d64ca9a962072b12b7

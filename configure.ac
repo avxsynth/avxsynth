@@ -8,7 +8,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_SRCDIR([avxutils/src/AvxTextRender.cpp])
 
 AC_INIT([avxsynth], [4.0])
-AM_INIT_AUTOMAKE([foreign subdir-objects -Wall])
+AM_INIT_AUTOMAKE([foreign subdir-objects -Wall parallel-tests])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES]) # Automake 1.11 is required for silent build.
 
 # Check for required programs.
@@ -415,6 +415,13 @@ AS_IF(
   [enable_avxedit="no"]
 )
 
+# Test harness programs check.
+AC_CHECK_PROGS([PYTHON], [python2.7 python3 python2 python], [python])
+AS_IF(
+  [test ! "x$PYTHON" = "xpython2.7"],
+  [AC_MSG_WARN([detected python not python2.7, test suite may not work])]
+)
+
 # Record enabled features
 AM_CONDITIONAL([OPT_autocrop], [test "x$enable_autocrop" = "xyes"])
 AM_CONDITIONAL([OPT_framecapture], [test "x$enable_framecapture" = "xyes"])
@@ -434,6 +441,8 @@ AC_CONFIG_FILES(
     plugins/avxsubtitle/Makefile
     apps/avxframeserver/Makefile
     apps/AVXEdit/Makefile
+    scripts/Makefile
+    scripts/common.avsi
     avxsynth.pc
     avxutils.pc
   ]
@@ -499,5 +508,5 @@ final destination. Additionally, DESTDIR-installed libraries
 require "libtool --finish <dir>" after their final install.
 
 Other valid targets:
-    dist clean distclean
+    check dist clean distclean
 EOF

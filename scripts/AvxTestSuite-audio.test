@@ -1,0 +1,25 @@
+#SCRIPTVER=1
+#HASHFORMAT=MD5
+#
+#Remember: This file only records the last known result.
+#Do not use this to assume correctness of behavior.
+#
+SCRIPT,"audio/alignedsplice.avs",2d976953565af5f828f710bb30bb68b3
+SCRIPT,"audio/amplify.avs",3d5c7dbbf7c0e34f87366068d86c981c
+SCRIPT,"audio/amplifydb.avs",06e771c5fa46f89c1a07e3ab9afe0f1b
+SCRIPT,"audio/assumesamplerate.avs",b8fb1c7d240f0028132914a84806d3c1
+SCRIPT,"audio/audiodub_ex_audio.avs",fc7ccfdc051461dc22e9e6365ecbd6aa
+SCRIPT,"audio/audiodub_ex_video.avs",50756b79cac51ee9aa9874f8c47b1a95
+SCRIPT,"audio/convertaudio.avs",0697868c9c26e43b429be70cf0d4eb75
+SCRIPT,"audio/converttomono.avs",bbc7b2f7ab5dfa57a25819ef494af71b
+SCRIPT,"audio/delayaudio.avs",d52906188c10f380736d8a04e0c29292
+SCRIPT,"audio/dissolve_audio.avs",2e7eb47b0dbc9d7014b6307ac0a8e6fe
+SCRIPT,"audio/fade_in_out_io_0_2_audio.avs",a82c255fb76ec00b61b7226557d67440
+SCRIPT,"audio/getchannels.avs",e5ac432dcf4d8160daa9b698f0f42e91
+SCRIPT,"audio/loop_audio.avs",8dfd84c09d305d8907ba3023791f4335
+SCRIPT,"audio/mergechannels.avs",740dfa55393413b165168a009b7ea1aa
+SCRIPT,"audio/mixaudio.avs",7ab96b0e0e8cafc22254beab5f94d122
+SCRIPT,"audio/monotostereo.avs",f4483e55bfcf0f3463a9becf36ebd1c8
+SCRIPT,"audio/normalize.avs",b0886c19724bc3e1fccf524a721a2be3
+SCRIPT,"audio/resampleaudio.avs",e7d5e1066821b683fbf4fe4c3f27a1a0
+SCRIPT,"audio/unalignedsplice.avs",8dfd84c09d305d8907ba3023791f4335

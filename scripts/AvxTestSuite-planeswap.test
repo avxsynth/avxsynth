@@ -1,0 +1,13 @@
+#SCRIPTVER=1
+#HASHFORMAT=MD5
+#
+#Remember: This file only records the last known result.
+#Do not use this to assume correctness of behavior.
+#
+SCRIPT,"planeswap/mergeargb.avs",45f40e27b22ebec87f983f59ad0ab820
+SCRIPT,"planeswap/mergechroma_luma.avs",215181eb93e4c813f9805bdc941b8680
+SCRIPT,"planeswap/mergergb.avs",f1bf80f3e3b539985c4ad87d5279bde1
+SCRIPT,"planeswap/resetmask_showalpha.avs",a01498ca7c7abdd0de516b4fe4de2602
+SCRIPT,"planeswap/showred_green_blue.avs",033af153ea2ac41cc3ac51448322282f
+SCRIPT,"planeswap/swapuv.avs",af5c140dd91a587017c7eb7bd4c668b1
+SCRIPT,"planeswap/utoy_vtoy_ytouv.avs",6a7d6d4452054f5aa7a2cd41bb18d84e
