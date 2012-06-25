@@ -338,7 +338,7 @@ void __stdcall MergeChannels::GetAudio(void* buf, __int64 start, __int64 count, 
       }
 	case 4: { // mono float/32 bit, stereo 16 bit
         for (int l = 0, k=dst_offset; l < count; l++, k+=bps) {
-          *(int*)(samples+k) = ((int*)src_buf)[l];
+          *(int32_t*)(samples+k) = ((int32_t*)src_buf)[l];
         }
         break;
       }
@@ -471,8 +471,8 @@ void __stdcall GetChannel::GetAudio(void* buf, __int64 start, __int64 count, ISc
 	  break;
     }
   case 4: {    // float/32 bit
-      int* samples = (int*)buf;
-      int* tbuff = (int*)tempbuffer;
+      int32_t* samples = (int32_t*)buf;
+      int32_t* tbuff = (int32_t*)tempbuffer;
       for (int i = 0; i < count; i++) {
         for (int k = 0; k < numchannels; k++) {
           *(samples++) = tbuff[channel[k]];
