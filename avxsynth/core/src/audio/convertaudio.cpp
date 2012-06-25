@@ -384,6 +384,7 @@ void __stdcall ConvertAudio::GetAudio(void* buf, __int64 start, __int64 count, I
 
     if (src_format != SAMPLE_FLOAT) {  // Skip initial copy, if samples are already float
 // Someone with an AMD beast decide which code runs better SSE2 or 3DNow   :: FIXME
+#ifdef ENABLE_INLINE_ASSEMBLY_MMX_SSE
         if ((env->GetCPUFlags() & CPUF_3DNOW_EXT)) {
             convertToFloat_3DN(tempbuffer, tmp_fb, src_format, count*channels);
         } else if (((((size_t)tmp_fb) & 3) == 0) && (env->GetCPUFlags() & CPUF_SSE2)) {
@@ -393,12 +394,16 @@ void __stdcall ConvertAudio::GetAudio(void* buf, __int64 start, __int64 count, I
         } else {
             convertToFloat(tempbuffer, tmp_fb, src_format, count*channels);
         }
+#else
+        convertToFloat(tempbuffer, tmp_fb, src_format, count*channels);
+#endif 
     } else {
         tmp_fb = (float*)tempbuffer;
     }
 
     if (dst_format != SAMPLE_FLOAT) {  // Skip final copy, if samples are to be float
 // Someone with an AMD beast decide which code runs better SSE2 or 3DNow   :: FIXME
+#ifdef ENABLE_INLINE_ASSEMBLY_MMX_SSE
         if ((env->GetCPUFlags() & CPUF_3DNOW_EXT)) {
             convertFromFloat_3DN(tmp_fb, buf, dst_format, count*channels);
         } else if ((env->GetCPUFlags() & CPUF_SSE2)) {
@@ -408,6 +413,9 @@ void __stdcall ConvertAudio::GetAudio(void* buf, __int64 start, __int64 count, I
         } else {
             convertFromFloat(tmp_fb, buf, dst_format, count*channels);
         }
+#else
+        convertFromFloat(tmp_fb, buf, dst_format, count*channels);
+#endif
     }
 }
 
