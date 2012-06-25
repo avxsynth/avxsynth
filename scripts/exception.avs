@@ -1,3 +1,5 @@
+# Use this to verify that exception handling works.
+
 try {
 	Assert(false, "RAISED AN EXCEPTION")
 	s = "DIDNT RAISE AN EXCEPTION"

@@ -1,3 +1,5 @@
+# Use this to verify that changing the working directory works.
+
 s = Exist("setworkingdir.avs") ? "x" : Assert(false, "script not in its own path")
 
 # 0 == success, -1 == fail

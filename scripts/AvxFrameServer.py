@@ -54,8 +54,7 @@ class AvxFrameServer(object):
             process = subprocess.Popen(
                 ['avxFrameServer', avsfile, 'N'],
 #                ['avs2pipemod', avsfile, '-rawvideo'],
-                bufsize=BUFSIZE, stdout=subprocess.PIPE,
-                stderr=errlog)
+                bufsize=BUFSIZE, stdout=subprocess.PIPE, stderr=errlog)
         except OSError as err:
             raise AvxScriptError(err)        
         start_time = datetime.datetime.now()
