@@ -825,6 +825,7 @@ Tone::~Tone()
        s = NULL;
    }
 }
+
 void __stdcall Tone::GetAudio(void* buf, __int64 start, __int64 count, IScriptEnvironment* env) {
 
     // Where in the cycle are we in?
