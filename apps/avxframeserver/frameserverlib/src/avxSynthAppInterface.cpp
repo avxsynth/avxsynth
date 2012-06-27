@@ -734,6 +734,7 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
     
     dlclose(hAvxSynth);
 
+    AVXLOG_TERMINATE();
     return result;
 }
 } // namespace avxsynth

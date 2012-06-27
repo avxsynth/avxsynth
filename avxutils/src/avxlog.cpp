@@ -197,4 +197,13 @@ AvxLog::AvxLog()
     m_category.setPriority(log4cpp::Priority::INFO);
 };
 
+void AvxLog::TerminateLogging()
+{
+    if(AvxLog::g_pLoggingServices)
+    {
+        delete AvxLog::g_pLoggingServices;
+        AvxLog::g_pLoggingServices = NULL;
+    }
+}
+
 } // namespace avxsynth

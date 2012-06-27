@@ -65,7 +65,7 @@ namespace avxsynth
 #define AVXLOG_CRIT(format,   ...)	AvxLog::Crit  (FROM(MODULE_NAME), format, __VA_ARGS__);
 #define AVXLOG_ALERT(format,  ...) 	AvxLog::Alert (FROM(MODULE_NAME), format, __VA_ARGS__);
 #define AVXLOG_FATAL(format,  ...) 	AvxLog::Fatal (FROM(MODULE_NAME), format, __VA_ARGS__);
-
+#define AVXLOG_TERMINATE()          AvxLog::TerminateLogging();
 class AvxLog
 {
 public:
@@ -78,6 +78,8 @@ public:
 	static void Alert (const char* pStrModule, const char* pStrformat, ...);
 	static void Fatal (const char* pStrModule, const char* pStrformat, ...);
 	
+    static void TerminateLogging();
+    
 private:	
 	static AvxLog* g_pLoggingServices;
 	
