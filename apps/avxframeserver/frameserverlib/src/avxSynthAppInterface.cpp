@@ -57,6 +57,9 @@ namespace avxsynth
 
 #define BITS_PER_BYTE   (8)
 
+#define SAFE_DELETE(x)              if((x)){ delete (x); (x) = NULL; }
+#define SAFE_DELETE_ARRAY(x)        if((x)){ delete [] (x); (x) = NULL; }
+
 #define SHELL "/bin/sh"
 typedef void* PLUGIN_HANDLE;
 
@@ -479,8 +482,7 @@ void* ProcessVideoStream(void* pArgument) // very likely to end up being pthread
     if (pInfo->isMPlayerLaunchRequired && mplayerpid)
         TerminateProcess(mplayerpid + 1);
     
-    delete [] pImageBuffer;
-    pImageBuffer = NULL;
+    SAFE_DELETE_ARRAY(pImageBuffer);
 
     return pInfo;
 }
@@ -575,9 +577,9 @@ void* ProcessAudioStream(void* pArgument) // very likely to end up being pthread
     }
     if (pInfo->isMPlayerLaunchRequired && mplayerpid)
         TerminateProcess(mplayerpid + 1);
-    
-    delete [] pAudioBuffer;
-    pAudioBuffer = NULL;
+
+    SAFE_DELETE(pWfx);
+    SAFE_DELETE_ARRAY(pAudioBuffer);
 
     return pInfo;
 }
