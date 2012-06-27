@@ -89,6 +89,7 @@ void printScript(const char* pStrScriptFilename)
         *pTemp = 0;
       AVXLOG_INFO("%s", chStrLine);
     }
+    fclose(fpTemp);
 }
 
 void printVideoInfo(BITMAPINFOHEADER bih)
