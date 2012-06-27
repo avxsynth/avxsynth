@@ -1501,10 +1501,10 @@ bool ScriptEnvironment::LoadAVISynthCustomFunctionScripts(void)
   {
       unsigned long nFilenameLength = strlen(pItem->d_name);
       if(1 == nFilenameLength || 2 == nFilenameLength)
-	  continue; 	// exclude "." and ".." which are mandatory in each folder
+        continue; 	// exclude "." and ".." which are mandatory in each folder
 	  
       if(false == IsFileExtension(pItem->d_name, ".avsi"))
-	continue;
+        continue;
       
       //
       // Import function script
@@ -1516,6 +1516,7 @@ bool ScriptEnvironment::LoadAVISynthCustomFunctionScripts(void)
       Import(AVSValue(&temp, 1), 0, this);
       
   }
+  closedir(pDir);
   return true;
 }
 
@@ -1535,6 +1536,7 @@ void ScriptEnvironment::PrescanPlugins()
     AVXLOG_FATAL("%s", "Failed opening plugin directory, Error: %d", errno);
     return;
   }
+  closedir(pDir);
     
   if(false == PluginsFolderIsNotEmpty())
   {
