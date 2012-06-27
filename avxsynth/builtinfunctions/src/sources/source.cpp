@@ -817,6 +817,14 @@ Tone::Tone(float _length, double _freq, int _samplerate, int _ch, const char* _t
       env->ThrowError("Tone: Type was not recognized!");
 }
 
+Tone::~Tone()
+{
+   if(s)
+   {
+       delete s;
+       s = NULL;
+   }
+}
 void __stdcall Tone::GetAudio(void* buf, __int64 start, __int64 count, IScriptEnvironment* env) {
 
     // Where in the cycle are we in?

@@ -106,6 +106,8 @@ public:
   static AVSValue __cdecl Create(AVSValue args, void*, IScriptEnvironment* env);
 
   Tone(float _length, double _freq, int _samplerate, int _ch, const char* _type, float _level, IScriptEnvironment* env);
+  ~Tone();
+  
   void __stdcall GetAudio(void* buf, __int64 start, __int64 count, IScriptEnvironment* env);
   PVideoFrame __stdcall GetFrame(int n, IScriptEnvironment* env) { return NULL; }
   const VideoInfo& __stdcall GetVideoInfo() { return vi; }
