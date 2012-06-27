@@ -352,19 +352,27 @@ void __stdcall ConvertAudio::GetAudio(void* buf, __int64 start, __int64 count, I
 
     // Special fast cases
     if (src_format == SAMPLE_INT24 && dst_format == SAMPLE_INT16) {
+#ifdef ENABLE_INLINE_ASSEMBLY_MMX_SSE
         if ((env->GetCPUFlags() & CPUF_MMX)) {
             convert24To16_MMX(tempbuffer, buf, count*channels);
         } else {
             convert24To16(tempbuffer, buf, count*channels);
         }
+#else
+    convert24To16(tempbuffer, buf, count*channels);
+#endif // ENABLE_INLINE_ASSEMBLY_MMX_SSE
         return;
     }
     if (src_format == SAMPLE_INT8 && dst_format == SAMPLE_INT16) {
+#ifdef ENABLE_INLINE_ASSEMBLY_MMX_SSE
         if ((env->GetCPUFlags() & CPUF_MMX)) {
             convert8To16_MMX(tempbuffer, buf, count*channels);
         } else {
             convert8To16(tempbuffer, buf, count*channels);
         }
+#else
+    convert8To16(tempbuffer, buf, count*channels);
+#endif // ENABLE_INLINE_ASSEMBLY_MMX_SSE
         return;
     }
     if (src_format == SAMPLE_INT16 && dst_format == SAMPLE_INT8) {
