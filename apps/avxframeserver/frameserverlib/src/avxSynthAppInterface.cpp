@@ -633,6 +633,8 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
     PCREATEAVISYNTH pCreateAVISynth = NULL;
     PDELETEAVISYNTH pDeleteAVISynth = NULL;
     IAVXSynth* pAVXSynth            = NULL;
+    IAVIStream* pVideoStream        = NULL;
+    IAVIStream* pAudioStream        = NULL;
 
     if (scriptName != NULL)
     {
@@ -672,8 +674,6 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
           
           pAVXSynth->Load(scriptName, OF_READ);
               
-          IAVIStream* pVideoStream = NULL;
-          IAVIStream* pAudioStream = NULL;
           DetermineStreamType(pAVXSynth, pVideoStream, pAudioStream);
           
           if((NULL == pVideoStream) && (NULL == pAudioStream))
@@ -701,10 +701,7 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
             pRetValue = (PROCESS_STREAM_INFO*)ProcessAudioStream((void*)&processStreamInfo);               
           }
           if(NULL == pRetValue)
-          {
-              AVXLOG_FATAL("%s", "Stream processing function returns NULL !?");
-              return -1;
-          }
+              throw AvisynthError("Stream processing function returns NULL !?");
           if(pRetValue->pLastError)
               throw pRetValue->pLastError;
           
@@ -724,17 +721,17 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
     }
     
     
-    if(processStreamInfo.pLastError)
-    {
-        delete processStreamInfo.pLastError;
-        processStreamInfo.pLastError = NULL;
-    }
-
+    SAFE_DELETE(processStreamInfo.pLastError);
+    
     if(pDeleteAVISynth)
     {
         pDeleteAVISynth(pAVXSynth);
         pDeleteAVISynth = NULL;
     }
+    
+    SAFE_DELETE(pVideoStream);
+    SAFE_DELETE(pAudioStream);
+    
     dlclose(hAvxSynth);
 
     return result;
