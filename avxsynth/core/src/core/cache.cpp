@@ -101,6 +101,7 @@ Cache::Cache(PClip _child, IScriptEnvironment* env)
   protectcount = 0;
 
   ac_expected_next = 0;
+  ac_too_small_count = 0;
   ac_currentscore = 100;
 
   maxframe = -1;
@@ -648,7 +649,7 @@ void __stdcall Cache::GetAudio(void* buf, __int64 start, __int64 count, IScriptE
 
 // But the current cache might have 99% of what was requested??
 
-    if (ac_too_small_count > 2 && (maxsamplecount < vi.AudioSamplesFromBytes(4096*1024))) {  // Max size = 4MB!
+    if ((ac_too_small_count > 2) && (maxsamplecount < vi.AudioSamplesFromBytes(4096*1024))) {  // Max size = 4MB!
       //automatically upsize cache!
       int new_size = (vi.BytesFromAudioSamples(count)+8192) & -8192;
       new_size = std::min(4096*1024, new_size);
