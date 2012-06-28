@@ -5,4 +5,4 @@
 #Do not use this to assume correctness of behavior.
 #
 SCRIPT,"textrender/messageclip.avs",893820271343864d86e33fc7e1524402
-SCRIPT,"textrender/showframenumber_smpte_time.avs",06602093c1347af8373415390931ba7b
+SCRIPT,"textrender/showframenumber_smpte_time.avs",22af7639bbb79f19f332b9c9a5784bca

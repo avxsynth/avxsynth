@@ -15,7 +15,7 @@ SCRIPT,"audio/converttomono.avs",bbc7b2f7ab5dfa57a25819ef494af71b
 SCRIPT,"audio/delayaudio.avs",d52906188c10f380736d8a04e0c29292
 SCRIPT,"audio/dissolve_audio.avs",2e7eb47b0dbc9d7014b6307ac0a8e6fe
 SCRIPT,"audio/fade_in_out_io_0_2_audio.avs",a82c255fb76ec00b61b7226557d67440
-SCRIPT,"audio/getchannels.avs",e5ac432dcf4d8160daa9b698f0f42e91
+SCRIPT,"audio/getchannels.avs",a7642795c4c3d06053c3d6246810a275
 SCRIPT,"audio/loop_audio.avs",8dfd84c09d305d8907ba3023791f4335
 SCRIPT,"audio/mergechannels.avs",740dfa55393413b165168a009b7ea1aa
 SCRIPT,"audio/mixaudio.avs",7ab96b0e0e8cafc22254beab5f94d122

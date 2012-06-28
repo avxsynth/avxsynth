@@ -19,7 +19,7 @@ TESTS = \
 
 TEST_EXTENSIONS = .test
 
-XFAIL_TESTS = AvxTestSuite-audio.test AvxTestSuite-filewriting.test AvxTestSuite-textrender.test
+XFAIL_TESTS = AvxTestSuite-filewriting.test
 
 TEST_LOG_COMPILER = "$(srcdir)/env.sh" $(PYTHON) "$(srcdir)/AvxUnitTest.py"
 
