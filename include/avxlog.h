@@ -80,6 +80,8 @@ public:
 	
     static void TerminateLogging();
     
+    ~AvxLog();
+    
 private:	
 	static AvxLog* g_pLoggingServices;
 	

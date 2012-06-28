@@ -197,6 +197,12 @@ AvxLog::AvxLog()
     m_category.setPriority(log4cpp::Priority::INFO);
 };
 
+AvxLog::~AvxLog()
+{
+    m_category.removeAllAppenders();
+    m_category.shutdown();
+}
+
 void AvxLog::TerminateLogging()
 {
     if(AvxLog::g_pLoggingServices)
