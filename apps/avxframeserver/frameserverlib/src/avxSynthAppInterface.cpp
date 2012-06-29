@@ -529,6 +529,7 @@ void* ProcessAudioStream(void* pArgument) // very likely to end up being pthread
     int nSamplesToRead = pWfx->nSamplesPerSec;
     HRESULT hr;
     pid_t mplayerpid = -1;
+    bool bExit = false;
     while(1)
     {
         int32_t nNextFrameStreamPos = pInfo->pAVIStream->FindSample(pInfo->nFramesSoFar, FIND_KEY);
@@ -556,7 +557,7 @@ void* ProcessAudioStream(void* pArgument) // very likely to end up being pthread
           )
         {
             AVXLOG_INFO("Read less bytes than expected, frame %02ld: nSamplesRead=%d, nBytesRead=%d, nImageBytes=%ld", pInfo->nFramesSoFar, nSamplesRead, nBytesRead, nAudioFrameBytes);
-            break;
+            bExit = true;
         }
                           
         if(pInfo->isMPlayerLaunchRequired && 0 == pInfo->nFramesSoFar)
@@ -568,13 +569,15 @@ void* ProcessAudioStream(void* pArgument) // very likely to end up being pthread
             }
         } 
               // send output to stdout
-        if (nAudioBufferBytes != (nWrittenAudioBytes = fwrite(pAudioBuffer, 1, nAudioBufferBytes, stdout)))
+        if (nBytesRead != (nWrittenAudioBytes = fwrite(pAudioBuffer, 1, nBytesRead, stdout)))
         {
             AVXLOG_ERROR("Wrote only %d out of %d bytes. ERROR: %d (%s)",
-                                nWrittenAudioBytes, nAudioBufferBytes, errno, strerror(errno));
+                                nWrittenAudioBytes, nBytesRead, errno, strerror(errno));
             break;
         }
-        pInfo->nFramesSoFar+= nSamplesToRead;
+        pInfo->nFramesSoFar+= nSamplesRead;
+        if(bExit)
+            break;
     }
     if (pInfo->isMPlayerLaunchRequired && mplayerpid)
         TerminateProcess(mplayerpid + 1);
