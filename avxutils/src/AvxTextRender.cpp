@@ -90,20 +90,40 @@ namespace avxsynth
             // the buffer that matches the libcairo stride requirements
             //
             strideBuf.nCairoStride = cairo_format_stride_for_width(CAIRO_FORMAT_RGB24, trd.width);        
-            
+            strideBuf.pData = new unsigned char[trd.height*strideBuf.nCairoStride];
+            if(NULL == strideBuf.pData)
             {
-                strideBuf.pData = new unsigned char[trd.height*strideBuf.nCairoStride];
-                if(NULL == strideBuf.pData)
-                {
-                    throw AvxException
-                    (
-                        "Failed allocating %d bytes (%d x %d bytes) for Cairo surface",
-                        trd.height*strideBuf.nCairoStride, trd.height, strideBuf.nCairoStride
-                    );
-                }
-
+                throw AvxException
+                (
+                    "Failed allocating %d bytes (%d x %d bytes) for Cairo surface",
+                    trd.height*strideBuf.nCairoStride, trd.height, strideBuf.nCairoStride
+                );
+            }
+            
+            if(strideBuf.nCairoStride == trd.originalStride)
+            {
                 //
-                // Repack pixels to cairo-style stride
+                // Repacking RGB32 to RGB32 with inversion
+                //
+                for(int i = 0; i < trd.height; i++)
+                {
+                    // single pass through this loop processes one 
+                    // horizontal line
+                    unsigned char* pSrc  = trd.originalBuffer + i*trd.originalStride;
+                    unsigned char* pDest = strideBuf.pData + (trd.height - 1 - i)*strideBuf.nCairoStride;
+                    for(int j = 0; j < trd.width; j++)
+                    {
+                        pDest[4 * j + 0] = pSrc[4*j + 0];
+                        pDest[4 * j + 3] = pSrc[4*j + 1];
+                        pDest[4 * j + 2] = pSrc[4*j + 2];
+                        pDest[4 * j + 1] = pSrc[4*j + 3];
+                    }
+                }
+            }
+            else
+            {
+                //
+                // Repacking RGB24 to RGB32 with inversion
                 //
                 for(int i = 0; i < trd.height; i++)
                 {
@@ -123,20 +143,40 @@ namespace avxsynth
             
         void repackToOriginalStride(AvxTextRender::FrameBuffer const& trd, PangoStrideBuf &strideBuf)
         { 
-            //
-            // Repack pixels to original RGB24 stride
-            //
-            for(int i = 0; i < trd.height; i++)
+            if(strideBuf.nCairoStride == trd.originalStride)
             {
-                // single pass through this loop processes one 
-                // horizontal line
-                unsigned char* pSrc  = strideBuf.pData + (trd.height - 1 - i)*strideBuf.nCairoStride;
-                unsigned char* pDest = trd.originalBuffer + i*trd.originalStride;
-                for(int j = 0; j < trd.width; j++)
+                for(int i = 0; i < trd.height; i++)
                 {
-                    pDest[3*j + 0] = pSrc[4 * j + 2];
-                    pDest[3*j + 1] = pSrc[4 * j + 1];
-                    pDest[3*j + 2] = pSrc[4 * j + 0];
+                    // single pass through this loop processes one 
+                    // horizontal line
+                    unsigned char* pSrc  = strideBuf.pData + (trd.height - 1 - i)*strideBuf.nCairoStride;
+                    unsigned char* pDest = trd.originalBuffer + i*trd.originalStride;
+                    for(int j = 0; j < trd.width; j++)
+                    {
+                        pDest[4*j + 0] = /*B*/ pSrc[4 * j + 2];
+                        pDest[4*j + 1] = /*G*/ pSrc[4 * j + 1];
+                        pDest[4*j + 2] = /*R*/ pSrc[4 * j + 0];
+                        pDest[4*j + 3] = /*alpha*/ pSrc[4 * j + 3];
+                    }
+                }
+            }
+            else
+            {
+                //
+                // Repack pixels to original RGB24 stride
+                //
+                for(int i = 0; i < trd.height; i++)
+                {
+                    // single pass through this loop processes one 
+                    // horizontal line
+                    unsigned char* pSrc  = strideBuf.pData + (trd.height - 1 - i)*strideBuf.nCairoStride;
+                    unsigned char* pDest = trd.originalBuffer + i*trd.originalStride;
+                    for(int j = 0; j < trd.width; j++)
+                    {
+                        pDest[3*j + 0] = pSrc[4 * j + 2];
+                        pDest[3*j + 1] = pSrc[4 * j + 1];
+                        pDest[3*j + 2] = pSrc[4 * j + 0];
+                    }
                 }
             }
          }            
