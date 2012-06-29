@@ -73,62 +73,8 @@ void FreeLibraries(void* loaded_plugins, IScriptEnvironment* env) {
   memset(loaded_plugins, 0, max_plugins*sizeof(HMODULE));
 }
 
-static bool PluginFilenameIsUnsafe(const char* filename)
-{
-    // Linux allows all kinds of strange filenames, opening up the opportunities
-    // for people who might name the file something like 'rm -rf /' and toss it
-    // to the avxplugins folder. Using such name to construct a string to execute
-    // within the shell may cause a lot of trouble. 
-    //
-    // To prevent the security threat, we will here scrutinize the name of loaded
-    // library file against the typical practices of naming Linux libraries
-    //
-    
-    //
-    // Extract the pure filename first
-    //
-    std::string strTest = filename;
-    size_t nLastSlashPos = strTest.find_last_of("/");
-    if(std::string::npos != nLastSlashPos)
-        strTest = strTest.substr(nLastSlashPos + 1);
-    
-    // 
-    // It must start with "lib", otherwise is not plugin
-    //
-    if(0 != strTest.find("lib"))
-        return true;
-    
-    //
-    // It must have '.so' somewhere in the filename
-    //
-    if(std::string::npos == strTest.find(".so"))
-        return true;
-    
-    //
-    // The names containing shell special characters will be rejected
-    //
-    size_t nLength = strTest.length();
-    for(size_t i = 0; i < nLength; i++)
-    {
-        char chTest = strTest[i];
-        if((';'  == chTest)  || 
-           ('*'  == chTest)  || 
-           ('?'  == chTest)  || 
-           ('^'  == chTest)  ||
-           ('$'  == chTest)  ||
-           ('@'  == chTest)  ||
-           ('\'' == chTest) ||
-           ('\\' == chTest))
-                return true;
-    }
-    return false;
-}
-
 static bool IdentifiedLibAvxsynthDuplicate(const char* filename)
-{
-    if(PluginFilenameIsUnsafe(filename))
-        return true;
-    
+{    
     std::string strCommand          = "nm -CD ";
     std::string strFilename         = std::string("\"") + std::string(filename) + std::string("\"");
     std::string strDiscriminator    = "avxsynth::CAVIFileSynth::DelayInit";
@@ -164,7 +110,7 @@ static bool MyLoadLibrary(const char* filename, HMODULE* hmod, bool quiet, IScri
     
   if(IdentifiedLibAvxsynthDuplicate(filename))
   {
-    AVXLOG_ERROR("%s plugin identified as duplicate of libavxsynth.so, prevented its loading", filename);
+    AVXLOG_ERROR("plugin \"%s\" identified as duplicate of libavxsynth.so, prevented its loading", filename);
     return false;
   }
   
@@ -202,9 +148,9 @@ static bool MyLoadLibrary(const char* filename, HMODULE* hmod, bool quiet, IScri
     {
         AVXLOG_ERROR("Failed loading %s, error = %s\n", filename, dlerror());
         if (quiet)
-        return false;
+            return false;
         else
-        env->ThrowError("LoadPlugin: unable to load \"%s\"", filename);
+            env->ThrowError("LoadPlugin: unable to load \"%s\"", filename);
     }
   }
   // see if we've loaded this already, and add it to the list if not
