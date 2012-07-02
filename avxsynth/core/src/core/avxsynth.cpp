@@ -1578,7 +1578,9 @@ bool ScriptEnvironment::LoadAVISynthCustomFunctionScripts(void)
       //
       AVXLOG_INFO("Importing script file %s", pItem->d_name);
       
-      AVSValue name(pItem->d_name);
+      std::string strFullPluginPath = plugin_dir;
+      strFullPluginPath += std::string(pItem->d_name);
+      AVSValue name(strFullPluginPath.c_str());
       AVSValue temp(&name, 1);
       Import(AVSValue(&temp, 1), 0, this);
       
