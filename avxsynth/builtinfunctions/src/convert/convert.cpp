@@ -142,9 +142,9 @@ PVideoFrame __stdcall ConvertToRGB::GetFrame(int n, IScriptEnvironment* env)
 	  for (int y=vi.height; y>0; --y) {
 		srcp -= src_pitch;
 		for (int x=0; x<vi.width; x+=2) {
-		  YUV2RGB(srcp[x*2+0], srcp[x*2+1], srcp[x*2+3], &dstp[x*4]);
+		  YUV2RGB(srcp[x*2+0], srcp[x*2+1], srcp[x*2+3], &dstp[x*4], theMatrix);
 		  dstp[x*4+3] = 255;
-		  YUV2RGB(srcp[x*2+2], srcp[x*2+1], srcp[x*2+3], &dstp[x*4+4]);
+		  YUV2RGB(srcp[x*2+2], srcp[x*2+1], srcp[x*2+3], &dstp[x*4+4], theMatrix);
 		  dstp[x*4+7] = 255;
 		}
 		dstp += dst_pitch;
@@ -155,8 +155,8 @@ PVideoFrame __stdcall ConvertToRGB::GetFrame(int n, IScriptEnvironment* env)
 	  for (int y=vi.height; y>0; --y) {
 		srcp -= src_pitch;
 		for (int x=0; x<vi.width; x+=2) {
-		  YUV2RGB(srcp[x*2+0], srcp[x*2+1], srcp[x*2+3], &dstp[x*3]);
-		  YUV2RGB(srcp[x*2+2], srcp[x*2+1], srcp[x*2+3], &dstp[x*3+3]);
+		  YUV2RGB(srcp[x*2+0], srcp[x*2+1], srcp[x*2+3], &dstp[x*3], theMatrix);
+		  YUV2RGB(srcp[x*2+2], srcp[x*2+1], srcp[x*2+3], &dstp[x*3+3], theMatrix);
 		}
 		dstp += dst_pitch;
 	  }

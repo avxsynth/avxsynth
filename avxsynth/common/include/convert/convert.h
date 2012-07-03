@@ -45,19 +45,97 @@ namespace avxsynth {
  *******   Colorspace Single-Byte Conversions   ******
  ****************************************************/
 
-
-inline void YUV2RGB(int y, int u, int v, BYTE* out) 
+inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix) 
 {
-  const int crv = int(1.596*65536+0.5);
-  const int cgv = int(0.813*65536+0.5);
-  const int cgu = int(0.391*65536+0.5);
-  const int cbu = int(2.018*65536+0.5);
+    switch(matrix)
+    {
+    case 0: // Rec601
+    default:
+        {               
+            /*
+            http://www.fourcc.org/fccyvrgb.php
+            YUV to RGB Conversion
 
-  int scaled_y = (y - 16) * int((255.0/219.0)*65536+0.5);
+            B ́ = Y601                  + 1.732(U – 128)
+            G ́ = Y601 – 0.698(V – 128) – 0.336(U – 128)
+            R ́ = Y601 + 1.371(V – 128)
 
-  out[0] = ScaledPixelClip(scaled_y + (u-128) * cbu); // blue
-  out[1] = ScaledPixelClip(scaled_y - (u-128) * cgu - (v-128) * cgv); // green
-  out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red
+            */
+            const int crv = int(1.371*65536+0.5);
+            const int cgv = int(0.698*65536+0.5);
+            const int cgu = int(0.336*65536+0.5);
+            const int cbu = int(1.732*65536+0.5);
+
+            int scaled_y = (y - 16) * int((255.0/219.0)*65536+0.5);
+
+            out[0] = ScaledPixelClip(scaled_y + (u-128) * cbu); // blue
+            out[1] = ScaledPixelClip(scaled_y - (u-128) * cgu - (v-128) * cgv); // green
+            out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red
+        }        
+        break;
+    case 1: // Rec709=1
+        {
+            /*
+            B ́ = Y709                   + 1.816(Cb – 128)
+            G ́ = Y709 – 0.459(Cr – 128) – 0.183(Cb – 128)
+            R ́ = Y709 + 1.540(Cr – 128)
+            */
+            
+            const int crv = int(1.540*65536+0.5);
+            const int cgv = int(0.459*65536+0.5);
+            const int cgu = int(0.183*65536+0.5);
+            const int cbu = int(1.816*65536+0.5);
+
+            int scaled_y = (y - 16) * int((255.0/219.0)*65536+0.5);
+            
+            out[0] = ScaledPixelClip(scaled_y + (u-128) * cbu); // blue
+            out[1] = ScaledPixelClip(scaled_y - (u-128) * cgu - (v-128) * cgv); // green
+            out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red   
+        }
+        break;
+    case 3: // PC_601
+        {               
+            /*
+            http://www.fourcc.org/fccyvrgb.php
+            YUV to RGB Conversion
+
+            B = 1.164(Y - 16)                   + 2.018(U - 128)
+            G = 1.164(Y - 16) - 0.813(V - 128) - 0.391(U - 128)
+            R = 1.164(Y - 16) + 1.596(V - 128) 
+            */
+            const int crv = int(1.596*65536+0.5);
+            const int cgv = int(0.813*65536+0.5);
+            const int cgu = int(0.391*65536+0.5);
+            const int cbu = int(2.018*65536+0.5);
+
+            int scaled_y = (y - 16) * int((255.0/219.0)*65536+0.5);
+
+            out[0] = ScaledPixelClip(scaled_y + (u-128) * cbu); // blue
+            out[1] = ScaledPixelClip(scaled_y - (u-128) * cgu - (v-128) * cgv); // green
+            out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red
+        }
+        break;
+    case 7: // PC_709=7
+        {
+            /*
+            B ́ = 1.164(Y709 – 16)                  + 2.115(U – 128)
+            G ́ = 1.164(Y709 – 16) – 0.534(V – 128) – 0.213(U – 128)
+            R ́ = 1.164(Y709 – 16) + 1.793(V – 128) 
+            */
+            
+            const int crv = int(1.793*65536+0.5);
+            const int cgv = int(0.534*65536+0.5);
+            const int cgu = int(0.213*65536+0.5);
+            const int cbu = int(2.115*65536+0.5);
+
+            int scaled_y = (y - 16) * int((255.0/219.0)*65536+0.5);
+
+            out[0] = ScaledPixelClip(scaled_y + (u-128) * cbu); // blue
+            out[1] = ScaledPixelClip(scaled_y - (u-128) * cgu - (v-128) * cgv); // green
+            out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red
+        }
+        break;
+    }
 }
 
 // in convert_a.asm

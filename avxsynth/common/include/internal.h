@@ -117,6 +117,10 @@ static __inline BYTE ScaledPixelClip(int i) {
   return PixelClip((i+32768) >> 16);
 }
 
+static __inline BYTE ScaledPixelClipRec709(int i) {
+  return PixelClip((i+8192) >> 14);
+}        
+
 static __inline int RGB2YUV(int rgb) 
 {
   const int cyb = int(0.114*219/255*65536+0.5);
