@@ -146,7 +146,7 @@ static bool MyLoadLibrary(const char* filename, HMODULE* hmod, bool quiet, IScri
     *hmod = dlopen(strTryingCurrentPath.c_str(), RTLD_NOW | RTLD_GLOBAL);
     if(!*hmod)
     {
-        AVXLOG_ERROR("Failed loading %s, error = %s\n", filename, dlerror());
+        AVXLOG_ERROR("Failed loading %s, error = %s", filename, dlerror());
         if (quiet)
             return false;
         else
