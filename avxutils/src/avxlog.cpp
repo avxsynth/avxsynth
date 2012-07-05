@@ -185,11 +185,19 @@ void AvxLog::Fatal(const char* pStrModule, const char* pStrFormat, ...)
 }	
 	
 AvxLog::AvxLog()
-	: m_pAppender(NULL)
+	: m_pOstream(NULL)
+	, m_pAppender(NULL)
 	, m_pLayout(NULL)
 	, m_category(log4cpp::Category::getInstance("Category"))
 {
-	m_pAppender = new log4cpp::OstreamAppender("OstreamAppender", &std::cerr);
+#ifdef USE_CUSTOM_LOGFILE    
+    m_fb.open("<your_log_file_path>log.txt", std::ios::out);
+    m_pOstream = new std::ostream(&m_fb);
+#else
+    m_pOstream = &std::cerr;
+#endif // USE_CUSTOM_LOGFILE
+    
+	m_pAppender = new log4cpp::OstreamAppender("OstreamAppender", m_pOstream);
 	m_pLayout   = new log4cpp::SimpleLayout();
 
 	m_pAppender->setLayout(m_pLayout);
@@ -199,6 +207,14 @@ AvxLog::AvxLog()
 
 AvxLog::~AvxLog()
 {
+#ifdef USE_CUSTOM_LOGFILE
+    m_fb.close();
+    if(m_pOstream)
+    {
+        delete m_pOstream;
+        m_pOstream = NULL;
+    }
+#endif // USE_CUSTOM_LOGFILE
     m_category.removeAllAppenders();
     m_category.shutdown();
 }
