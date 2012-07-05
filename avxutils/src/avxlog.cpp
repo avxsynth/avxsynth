@@ -35,7 +35,10 @@
 // import and export plugins, or graphical user interfaces.auto
 
 #include "avxlog.h"
+#include <stdlib.h>
+#include <sys/types.h>
 #include <memory.h>
+#include <limits.h>
 
 namespace avxsynth
 {
@@ -191,8 +194,23 @@ AvxLog::AvxLog()
 	, m_category(log4cpp::Category::getInstance("Category"))
 {
 #ifdef USE_CUSTOM_LOGFILE    
-    m_fb.open("<your_log_file_path>log.txt", std::ios::out);
-    m_pOstream = new std::ostream(&m_fb);
+    char strLogFilename[PATH_MAX];
+    memset(strLogFilename, 0, PATH_MAX*sizeof(char));
+    
+    char* pStrHomeFolder = getenv("HOME");
+    if(pStrHomeFolder)
+    {
+        pid_t currentPID = getpid();
+    
+        sprintf(strLogFilename, "%s/Desktop/logAvxsynth_pid_%08d.txt", pStrHomeFolder, currentPID);
+        m_fb.open(strLogFilename, std::ios::out);
+        m_pOstream = new std::ostream(&m_fb);
+    }
+    else
+    {
+        fprintf(stderr, "AVXLog: could not determine the value of $HOME env variable\n");
+        m_pOstream = &std::cerr;
+    }
 #else
     m_pOstream = &std::cerr;
 #endif // USE_CUSTOM_LOGFILE
@@ -209,12 +227,12 @@ AvxLog::~AvxLog()
 {
 #ifdef USE_CUSTOM_LOGFILE
     m_fb.close();
-    if(m_pOstream)
+#endif // USE_CUSTOM_LOGFILE
+    if(m_pOstream && (&std::cerr != m_pOstream))
     {
         delete m_pOstream;
         m_pOstream = NULL;
     }
-#endif // USE_CUSTOM_LOGFILE
     m_category.removeAllAppenders();
     m_category.shutdown();
 }
