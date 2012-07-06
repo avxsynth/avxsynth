@@ -88,12 +88,11 @@ private:
 	
 private:
 	AvxLog();
-	
+	const char* DetermineLoggingFolderPath();
+
 private:
 	static char 		m_varArgsBuffer[1 + MAX_VARARGS_LEN];
-#ifdef USE_CUSTOM_LOGFILE
     std::filebuf        m_fb;
-#endif // USE_CUSTOM_LOGFILE
     std::ostream*       m_pOstream;
 	log4cpp::Appender*	m_pAppender;
 	log4cpp::Layout*	m_pLayout;

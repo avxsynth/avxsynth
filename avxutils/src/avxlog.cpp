@@ -187,33 +187,162 @@ void AvxLog::Fatal(const char* pStrModule, const char* pStrFormat, ...)
 	g_pLoggingServices->m_category.fatal(AvxLog::m_varArgsBuffer);
 }	
 	
+const char* AvxLog::DetermineLoggingFolderPath(void)
+{
+    //
+    // The default location for log files is $HOME/.avxsynth/logs
+    //
+    char* pStrHomeFolderPath = getenv("HOME");
+    if(NULL == pStrHomeFolderPath)
+    {
+        fprintf(stderr, "Failed retrieving the value of $HOME env variable\n");
+        return NULL;
+    }
+    
+    std::string strAvxSynthFolder   = std::string(pStrHomeFolderPath) + std::string("/.avxsynth");
+    std::string strLoggingConfFile  = strAvxSynthFolder + std::string("/avxsynthlog.conf");
+    std::string strDefaultLogPath   = strAvxSynthFolder + std::string("/log");
+    
+    struct stat st;
+    bool bAvxSynthFolderExists      = (0 == stat(strAvxSynthFolder.c_str(), &st));
+    bool bLoggingConfFileExists     = (0 == stat(strLoggingConfFile.c_str(), &st));
+    bool bDefaultLogFolderExists    = (0 == stat(strDefaultLogPath.c_str(), &st));
+    
+    if(bAvxSynthFolderExists)
+    {
+        if(bLoggingConfFileExists)
+        {
+            //
+            // We will read the file $HOME/.avxsynth/avxsynthlogs.conf and
+            // extract from there the information about the logging folder path
+            //
+            FILE* fp = fopen(strLoggingConfFile.c_str(), "r");
+            if(NULL == fp)
+            {
+                fprintf(stderr, "Failed opening %s for reading\n", strLoggingConfFile.c_str());
+                return NULL;
+            }
+            
+            std::string strSpecifiedLogPath;
+            char strLine[PATH_MAX];
+            memset(strLine, 0, PATH_MAX*sizeof(char));
+            while(1)
+            {
+                if(NULL == fgets(strLine, PATH_MAX, fp))
+                    break;
+                
+                if(strLine == strstr(strLine, "LOG_PATH="))
+                {
+                    strSpecifiedLogPath = strLine;
+                    strSpecifiedLogPath.replace(0, strlen("LOG_PATH="), "");
+                    size_t nNewlinePos = strSpecifiedLogPath.find("\n");
+                    if(std::string::npos != nNewlinePos)
+                        strSpecifiedLogPath.replace(nNewlinePos, 1, "");
+                    break;
+                }
+            }
+            fclose(fp);
+            fp = NULL;
+            
+            if(strSpecifiedLogPath.empty())
+            {
+                fprintf(stderr, "No valid avxsynth log path found in %s\n", strLoggingConfFile.c_str());
+                return NULL;
+            }
+            else
+            {
+                bool bSpecifiedLogPathExists = (0 == stat(strSpecifiedLogPath.c_str(), &st));
+                if(false == bSpecifiedLogPathExists)
+                {
+                    if(mkdir(strSpecifiedLogPath.c_str(), 0777))
+                    {
+                        fprintf(stderr, "Failed creating non-existing folder %s (specified in %s)\n", 
+                                            strSpecifiedLogPath.c_str(), strLoggingConfFile.c_str());
+                        return NULL;
+                    }
+                }
+                return strSpecifiedLogPath.c_str();
+            }
+        }
+        else
+        {
+            //
+            // $HOME/.avxsynth/avxsynthconf.log does not exist
+            // 
+            FILE* fp = fopen(strLoggingConfFile.c_str(), "w");
+            if(NULL == fp)
+            {
+                fprintf(stderr, "Failed creating non-existent %s\n", strLoggingConfFile.c_str());
+                return NULL;
+            }
+            
+            if(false == bDefaultLogFolderExists)
+            {
+                if(mkdir(strDefaultLogPath.c_str(), 0777))
+                {
+                    fclose(fp);
+                    fp = NULL;
+                    fprintf(stderr, "Failed creating non-existent default log folder %s\n", strDefaultLogPath.c_str());
+                    return NULL;
+                }
+            }
+            fprintf(fp, "# Syntax: LOG_PATH=<log folder path> // do not use double quotes\n");
+            fprintf(fp, "LOG_PATH=%s\n", strDefaultLogPath.c_str());
+            fclose(fp);
+            fp = NULL;
+            return strDefaultLogPath.c_str();
+        }
+    }
+    else
+    {
+        //
+        // Let's create defaults all the way
+        // 
+        if(mkdir(strAvxSynthFolder.c_str(), 0777))
+        {
+            fprintf(stderr, "Failed creating non-existent %s folder\n", strAvxSynthFolder.c_str());
+            return NULL;
+        }
+        if(mkdir(strDefaultLogPath.c_str(), 0777))
+        {
+            fprintf(stderr, "Failed creating non-existent default logging folder %s\n", strDefaultLogPath.c_str());
+            return NULL;
+        }
+        FILE* fp = fopen(strLoggingConfFile.c_str(), "w");
+        if(NULL == fp)
+        {
+            fprintf(stderr, "Failed creating non-existent %s file\n", strLoggingConfFile.c_str());
+            return NULL;
+        }
+        fprintf(fp, "# Syntax: LOG_PATH=<log folder path> // do not use double quotes\n");
+        fprintf(fp, "LOG_PATH=%s\n", strDefaultLogPath.c_str());
+        fclose(fp);
+        fp = NULL;
+        return strDefaultLogPath.c_str();
+    }
+    return NULL;
+}
+
 AvxLog::AvxLog()
 	: m_pOstream(NULL)
 	, m_pAppender(NULL)
 	, m_pLayout(NULL)
 	, m_category(log4cpp::Category::getInstance("Category"))
 {
-#ifdef USE_CUSTOM_LOGFILE    
-    char strLogFilename[PATH_MAX];
-    memset(strLogFilename, 0, PATH_MAX*sizeof(char));
-    
-    char* pStrHomeFolder = getenv("HOME");
-    if(pStrHomeFolder)
+    const char* pStrLogFolder = DetermineLoggingFolderPath();
+    if(pStrLogFolder)
     {
+        char strLogFilename[PATH_MAX];
+        memset(strLogFilename, 0, PATH_MAX*sizeof(char));
+        
         pid_t currentPID = getpid();
-    
-        sprintf(strLogFilename, "%s/Desktop/logAvxsynth_pid_%08d.txt", pStrHomeFolder, currentPID);
+        
+        sprintf(strLogFilename, "%s/logAvxsynth_pid_%08d.txt", pStrLogFolder, currentPID);
         m_fb.open(strLogFilename, std::ios::out);
         m_pOstream = new std::ostream(&m_fb);
     }
     else
-    {
-        fprintf(stderr, "AVXLog: could not determine the value of $HOME env variable\n");
         m_pOstream = &std::cerr;
-    }
-#else
-    m_pOstream = &std::cerr;
-#endif // USE_CUSTOM_LOGFILE
     
 	m_pAppender = new log4cpp::OstreamAppender("OstreamAppender", m_pOstream);
 	m_pLayout   = new log4cpp::SimpleLayout();
@@ -225,11 +354,9 @@ AvxLog::AvxLog()
 
 AvxLog::~AvxLog()
 {
-#ifdef USE_CUSTOM_LOGFILE
-    m_fb.close();
-#endif // USE_CUSTOM_LOGFILE
     if(m_pOstream && (&std::cerr != m_pOstream))
     {
+        m_fb.close();
         delete m_pOstream;
         m_pOstream = NULL;
     }
