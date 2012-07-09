@@ -36,6 +36,7 @@
 
 #include "avxlog.h"
 #include <stdlib.h>
+#include <unistd.h>
 #include <sys/types.h>
 #include <memory.h>
 #include <limits.h>
