@@ -124,7 +124,7 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
             G ́ = 1.164(Y709 – 16) – 0.534(V – 128) – 0.213(U – 128)
             R ́ = 1.164(Y709 – 16) + 1.793(V – 128) 
             */
-            const int cy  = int((255.0/219.0)*65536+0.5);
+            const int cy  = int((255.0/219.0)*65536+0.5)
             const int crv = int(1.793*65536+0.5);
             const int cgv = int(0.534*65536+0.5);
             const int cgu = int(0.213*65536+0.5);
