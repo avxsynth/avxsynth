@@ -85,7 +85,7 @@ static PVideoFrame CreateBlankFrame(const VideoInfo& vi, int color, int mode, IS
 
   PVideoFrame frame = env->NewVideoFrame(vi);
   BYTE* p = frame->GetWritePtr();
-  int size = frame->GetPitch() * frame->GetHeight();
+  int32_t size = frame->GetPitch() * frame->GetHeight();
 
   if (vi.IsPlanar()) {
     int32_t color_yuv =(mode == COLOR_MODE_YUV) ? color : RGB2YUV(color);
