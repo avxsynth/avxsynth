@@ -45,13 +45,16 @@ namespace avxsynth {
  *******   Colorspace Single-Byte Conversions   ******
  ****************************************************/
 
+#define KEEP_THREE_DECIMALS(x)    (((int)(1000.0*(x) + 0.5))/1000.0)
+
 inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix) 
 {
     switch(matrix)
     {
     case 0: // Rec601
     default:
-        {               
+        {
+#if 0 // By the book
             /*
             http://www.fourcc.org/fccyvrgb.php
             YUV to RGB Conversion
@@ -72,6 +75,20 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
             out[0] = ScaledPixelClip(scaled_y + (u-128) * cbu); // blue
             out[1] = ScaledPixelClip(scaled_y - (u-128) * cgu - (v-128) * cgv); // green
             out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red
+
+#else // infered from avisynth MMX code
+            const float cy  = KEEP_THREE_DECIMALS(255.0/219.0);
+            const float crv = KEEP_THREE_DECIMALS(((1-0.299)*255.0)/112.0);
+            const float cgv = KEEP_THREE_DECIMALS((1-0.299)*(0.299/0.587)*(255.0/112.0));
+            const float cgu = KEEP_THREE_DECIMALS((1-0.114)*(0.114/0.587)*(255.0/112.0));
+            const float cbu = KEEP_THREE_DECIMALS(((1-0.114)*255.0)/112.0);
+
+            int scaled_y = (y - 16) * cy;
+            
+            out[0] = int(scaled_y + (u-128) * cbu + 0.5); // blue
+            out[1] = int(scaled_y - (u-128) * cgu - (v-128) * cgv + 0.5); // green
+            out[2] = int(scaled_y + (v-128) * crv + 0.5); // red
+#endif
         }        
         break;
     case 1: // Rec709=1
