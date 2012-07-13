@@ -85,9 +85,9 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
 
             int scaled_y = (y - 16) * cy;
             
-            out[0] = int(scaled_y + (u-128) * cbu + 0.5); // blue
-            out[1] = int(scaled_y - (u-128) * cgu - (v-128) * cgv + 0.5); // green
-            out[2] = int(scaled_y + (v-128) * crv + 0.5); // red
+            out[0] = BYTE(scaled_y + (u-128) * cbu + 0.5); // blue
+            out[1] = BYTE(scaled_y - (u-128) * cgu - (v-128) * cgv + 0.5); // green
+            out[2] = BYTE(scaled_y + (v-128) * crv + 0.5); // red
 #endif
         }        
         break;
