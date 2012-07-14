@@ -85,9 +85,26 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
 
             int scaled_y = (y - 16) * cy;
             
-            out[0] = BYTE(scaled_y + (u-128) * cbu + 0.5); // blue
-            out[1] = BYTE(scaled_y - (u-128) * cgu - (v-128) * cgv + 0.5); // green
-            out[2] = BYTE(scaled_y + (v-128) * crv + 0.5); // red
+            float fBlue = scaled_y + (u-128) * cbu + 0.5;
+            if(fBlue > 255)
+                fBlue = 255;
+            else if(fBlue < 0)
+                fBlue = 0;
+            out[0] = BYTE(fBlue);
+            
+            float fGreen = scaled_y - (u-128) * cgu - (v-128) * cgv + 0.5;
+            if(fGreen > 255)
+                fGreen = 255;
+            else if(fGreen < 0)
+                fGreen = 0;
+            out[1] = BYTE(fGreen);
+            
+            float fRed  = scaled_y + (v-128) * crv + 0.5;
+            if(fRed > 255)
+                fRed = 255;
+            else if(fRed < 0)
+                fRed = 0;
+            out[2] = BYTE(fRed);
 #endif
         }        
         break;
@@ -138,7 +155,6 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
                 fRed = 255;
             else if(fRed < 0)
                 fRed = 0;
-            
             out[2] = BYTE(fRed);
 #endif 
         }
@@ -174,9 +190,26 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
 
             int scaled_y = y * cy;
             
-            out[0] = BYTE(scaled_y + (u-128) * cbu + 0.5); // blue
-            out[1] = BYTE(scaled_y - (u-128) * cgu - (v-128) * cgv + 0.5); // green
-            out[2] = BYTE(scaled_y + (v-128) * crv + 0.5); // red
+            float fBlue = scaled_y + (u-128) * cbu + 0.5;
+            if(fBlue > 255)
+                fBlue = 255;
+            else if(fBlue < 0)
+                fBlue = 0;
+            out[0] = BYTE(fBlue);
+            
+            float fGreen = scaled_y - (u-128) * cgu - (v-128) * cgv + 0.5;
+            if(fGreen > 255)
+                fGreen = 255;
+            else if(fGreen < 0)
+                fGreen = 0;
+            out[1] = BYTE(fGreen);
+            
+            float fRed  = scaled_y + (v-128) * crv + 0.5;
+            if(fRed > 255)
+                fRed = 255;
+            else if(fRed < 0)
+                fRed = 0;
+            out[2] = BYTE(fRed);
 #endif
         }
         break;
@@ -227,7 +260,6 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
                 fRed = 255;
             else if(fRed < 0)
                 fRed = 0;
-            
             out[2] = BYTE(fRed);
 #endif 
         }
