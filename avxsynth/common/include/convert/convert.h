@@ -134,7 +134,7 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
             out[1] = ScaledPixelClip(scaled_y - (u-128) * cgu - (v-128) * cgv); // green
             out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red
 #else // infered from avisynth MMX code
-            const float cy  = 1.0; // KEEP_THREE_DECIMALS(255.0/219.0);
+            const float cy  = 1.0;
             const float crv = KEEP_THREE_DECIMALS(((1-0.299)*255.0)/127.0);
             const float cgv = KEEP_THREE_DECIMALS((1-0.299)*(0.299/0.587)*(255.0/127.0));
             const float cgu = KEEP_THREE_DECIMALS((1-0.114)*(0.114/0.587)*(255.0/127.0));
@@ -150,6 +150,7 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
         break;
     case 7: // PC_709=7
         {
+#if 0 // By the book
             /*
             B ́ = 1.164(Y709 – 16)                  + 2.115(U – 128)
             G ́ = 1.164(Y709 – 16) – 0.534(V – 128) – 0.213(U – 128)
@@ -166,6 +167,40 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
             out[0] = ScaledPixelClip(scaled_y + (u-128) * cbu); // blue
             out[1] = ScaledPixelClip(scaled_y - (u-128) * cgu - (v-128) * cgv); // green
             out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red
+#else // infered from avisynth MMX code
+//                        dq  03298000032980000h      ; 12952        = ((1-0.2126)*255./127.)<<13+0.5                      
+//                        dq  0F0F6F9FBF0F6F9FBh      ; -3850, -1541 = (((K-1)*K/0.7152)*255./127.)<<13-0.5, K=(0.2126, 0.0722)
+//                        dq  000003B9D00003B9Dh      ;        15261 = ((1-0.0722)*255./127.)<<13+
+            const float cy  = 1.0; 
+            const float crv = KEEP_THREE_DECIMALS(((1-0.2126)*255.0)/127.0);
+            const float cgv = KEEP_THREE_DECIMALS((1-0.2126)*(0.2126/0.7152)*(255.0/127.0));
+            const float cgu = KEEP_THREE_DECIMALS((1-0.0722)*(0.0722/0.7152)*(255.0/127.0));
+            const float cbu = KEEP_THREE_DECIMALS(((1-0.0722)*255.0)/127.0);
+
+            int scaled_y = y * cy;
+            
+            float fBlue = scaled_y + (u-128) * cbu + 0.5;
+            if(fBlue > 255)
+                fBlue = 255;
+            else if(fBlue < 0)
+                fBlue = 0;
+            out[0] = BYTE(fBlue);
+            
+            float fGreen = scaled_y - (u-128) * cgu - (v-128) * cgv + 0.5;
+            if(fGreen > 255)
+                fGreen = 255;
+            else if(fGreen < 0)
+                fGreen = 0;
+            out[1] = BYTE(fGreen);
+            
+            float fRed  = scaled_y + (v-128) * crv + 0.5;
+            if(fRed > 255)
+                fRed = 255;
+            else if(fRed < 0)
+                fRed = 0;
+            
+            out[2] = BYTE(fRed);
+#endif 
         }
         break;
     }
