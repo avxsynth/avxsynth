@@ -77,11 +77,11 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
             out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red
 
 #else // infered from avisynth MMX code
-            const float cy  = KEEP_THREE_DECIMALS(255.0/219.0);
-            const float crv = KEEP_THREE_DECIMALS(((1-0.299)*255.0)/112.0);
-            const float cgv = KEEP_THREE_DECIMALS((1-0.299)*(0.299/0.587)*(255.0/112.0));
-            const float cgu = KEEP_THREE_DECIMALS((1-0.114)*(0.114/0.587)*(255.0/112.0));
-            const float cbu = KEEP_THREE_DECIMALS(((1-0.114)*255.0)/112.0);
+            const float cy  = KEEP_THREE_DECIMALS(255.0/219.0);                             // 1.164
+            const float crv = KEEP_THREE_DECIMALS(((1-0.299)*255.0)/112.0);                 // 1.596
+            const float cgv = KEEP_THREE_DECIMALS((1-0.299)*(0.299/0.587)*(255.0/112.0));   // 0.392
+            const float cgu = KEEP_THREE_DECIMALS((1-0.114)*(0.114/0.587)*(255.0/112.0));   // 0.813
+            const float cbu = KEEP_THREE_DECIMALS(((1-0.114)*255.0)/112.0);                 // 2.017
 
             int scaled_y = (y - 16) * cy;
             
@@ -128,11 +128,11 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
             out[1] = ScaledPixelClip(scaled_y - (u-128) * cgu - (v-128) * cgv); // green
             out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red   
 #else // Infered from avisynth MMX code
-            const float cy  = KEEP_THREE_DECIMALS(255.0/219.0);
-            const float crv = KEEP_THREE_DECIMALS(((1-0.2126)*255.0)/112.0);
-            const float cgv = KEEP_THREE_DECIMALS((1-0.2126)*(0.2126/0.7152)*(255.0/112.0));
-            const float cgu = KEEP_THREE_DECIMALS((1-0.0722)*(0.0722/0.7152)*(255.0/112.0));
-            const float cbu = KEEP_THREE_DECIMALS(((1-0.0722)*255.0)/112.0);
+            const float cy  = KEEP_THREE_DECIMALS(255.0/219.0);                                 // 1.164
+            const float crv = KEEP_THREE_DECIMALS(((1-0.2126)*255.0)/112.0);                    // 1.793
+            const float cgv = KEEP_THREE_DECIMALS((1-0.2126)*(0.2126/0.7152)*(255.0/112.0));    // 0.213
+            const float cgu = KEEP_THREE_DECIMALS((1-0.0722)*(0.0722/0.7152)*(255.0/112.0));    // 0.533
+            const float cbu = KEEP_THREE_DECIMALS(((1-0.0722)*255.0)/112.0);                    // 2.112
 
             int scaled_y = (y - 16) * cy;
             
@@ -183,10 +183,10 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
             out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red
 #else // infered from avisynth MMX code
             const float cy  = 1.0;
-            const float crv = KEEP_THREE_DECIMALS(((1-0.299)*255.0)/127.0);
-            const float cgv = KEEP_THREE_DECIMALS((1-0.299)*(0.299/0.587)*(255.0/127.0));
-            const float cgu = KEEP_THREE_DECIMALS((1-0.114)*(0.114/0.587)*(255.0/127.0));
-            const float cbu = KEEP_THREE_DECIMALS(((1-0.114)*255.0)/127.0);
+            const float crv = KEEP_THREE_DECIMALS(((1-0.299)*255.0)/127.0);                 // 1.408
+            const float cgv = KEEP_THREE_DECIMALS((1-0.299)*(0.299/0.587)*(255.0/127.0));   // 0.345
+            const float cgu = KEEP_THREE_DECIMALS((1-0.114)*(0.114/0.587)*(255.0/127.0));   // 0.717
+            const float cbu = KEEP_THREE_DECIMALS(((1-0.114)*255.0)/127.0);                 // 1.780
 
             int scaled_y = y * cy;
             
@@ -234,10 +234,10 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
             out[2] = ScaledPixelClip(scaled_y + (v-128) * crv); // red
 #else // infered from avisynth MMX code
             const float cy  = 1.0; 
-            const float crv = KEEP_THREE_DECIMALS(((1-0.2126)*255.0)/127.0);
-            const float cgv = KEEP_THREE_DECIMALS((1-0.2126)*(0.2126/0.7152)*(255.0/127.0));
-            const float cgu = KEEP_THREE_DECIMALS((1-0.0722)*(0.0722/0.7152)*(255.0/127.0));
-            const float cbu = KEEP_THREE_DECIMALS(((1-0.0722)*255.0)/127.0);
+            const float crv = KEEP_THREE_DECIMALS(((1-0.2126)*255.0)/127.0);                    // 1.580
+            const float cgv = KEEP_THREE_DECIMALS((1-0.2126)*(0.2126/0.7152)*(255.0/127.0));    // 0.188
+            const float cgu = KEEP_THREE_DECIMALS((1-0.0722)*(0.0722/0.7152)*(255.0/127.0));    // 0.470
+            const float cbu = KEEP_THREE_DECIMALS(((1-0.0722)*255.0)/127.0);                    // 1.863
 
             int scaled_y = y * cy;
             
