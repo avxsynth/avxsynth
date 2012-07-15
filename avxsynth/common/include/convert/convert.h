@@ -83,7 +83,7 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
             const float cgu = KEEP_THREE_DECIMALS((1-0.114)*(0.114/0.587)*(255.0/112.0));   // 0.813
             const float cbu = KEEP_THREE_DECIMALS(((1-0.114)*255.0)/112.0);                 // 2.017
 
-            int scaled_y = (y - 16) * cy;
+            float scaled_y = (y - 16) * cy;
             
             float fBlue = scaled_y + (u-128) * cbu + 0.5;
             if(fBlue > 255)
@@ -134,7 +134,7 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
             const float cgu = KEEP_THREE_DECIMALS((1-0.0722)*(0.0722/0.7152)*(255.0/112.0));    // 0.533
             const float cbu = KEEP_THREE_DECIMALS(((1-0.0722)*255.0)/112.0);                    // 2.112
 
-            int scaled_y = (y - 16) * cy;
+            float scaled_y = (y - 16) * cy;
             
             float fBlue = scaled_y + (u-128) * cbu + 0.5;
             if(fBlue > 255)
@@ -188,7 +188,7 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
             const float cgu = KEEP_THREE_DECIMALS((1-0.114)*(0.114/0.587)*(255.0/127.0));   // 0.717
             const float cbu = KEEP_THREE_DECIMALS(((1-0.114)*255.0)/127.0);                 // 1.780
 
-            int scaled_y = y * cy;
+            float scaled_y = y * cy;
             
             float fBlue = scaled_y + (u-128) * cbu + 0.5;
             if(fBlue > 255)
@@ -239,7 +239,7 @@ inline void YUV2RGB(int y, int u, int v, BYTE* out, int matrix)
             const float cgu = KEEP_THREE_DECIMALS((1-0.0722)*(0.0722/0.7152)*(255.0/127.0));    // 0.470
             const float cbu = KEEP_THREE_DECIMALS(((1-0.0722)*255.0)/127.0);                    // 1.863
 
-            int scaled_y = y * cy;
+            float scaled_y = y * cy;
             
             float fBlue = scaled_y + (u-128) * cbu + 0.5;
             if(fBlue > 255)
