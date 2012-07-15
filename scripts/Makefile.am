@@ -3,6 +3,9 @@
 
 TESTS = \
 	tools/avs_c_interface              \
+	scriptfunctions/clip.sh            \
+	scriptfunctions/math.sh            \
+	scriptfunctions/string.sh          \
 	AvxTestSuite-SANITY.test           \
 	AvxTestSuite-audio.test            \
 	AvxTestSuite-colors.test           \
@@ -17,15 +20,18 @@ TESTS = \
 	AvxTestSuite-textrender.test       \
 	AvxTestSuite-timeline.test
 
-TEST_EXTENSIONS = .test
+TEST_EXTENSIONS = .test .sh
 
 XFAIL_TESTS = AvxTestSuite-filewriting.test
+
+SH_LOG_COMPILER = bash
 
 TEST_LOG_COMPILER = "$(srcdir)/env.sh" $(PYTHON) "$(srcdir)/AvxUnitTest.py"
 
 AM_TEST_LOG_FLAGS = --save-files --source-chdir $(srcdir) --output-chdir output
 
-# Run sanity test first.  Unfortunately, there is no way to exit if it fails.
+# Run sanity tests first.  Unfortunately, there is no way to exit if it fails.
+AvxTestSuite-SANITY.log: clip.log math.log string.log
 AvxTestSuite-audio.log: AvxTestSuite-SANITY.log
 AvxTestSuite-colors.log: AvxTestSuite-SANITY.log
 AvxTestSuite-colorspaces.log: AvxTestSuite-SANITY.log
