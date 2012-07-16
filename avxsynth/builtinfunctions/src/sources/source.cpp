@@ -93,14 +93,14 @@ static PVideoFrame CreateBlankFrame(const VideoInfo& vi, int color, int mode, IS
     Cval |= (Cval<<8)|(Cval<<16)|(Cval<<24);
     for (int i=0; i<size; i+=sizeof(int32_t))
       *(uint32_t*)(p+i) = Cval;
-    p = frame->GetWritePtr(PLANAR_U);
-    size = frame->GetPitch(PLANAR_U) * frame->GetHeight(PLANAR_U);
+    p = frame->GetWritePtr(PLANAR_V); // originally was U, not V
+    size = frame->GetPitch(PLANAR_V) * frame->GetHeight(PLANAR_V);
     Cval = (color_yuv>>8)&0xff;
     Cval |= (Cval<<8)|(Cval<<16)|(Cval<<24);
     for (int i=0; i<size; i+=sizeof(int32_t))
       *(uint32_t*)(p+i) = Cval;
-    size = frame->GetPitch(PLANAR_V) * frame->GetHeight(PLANAR_V);
-    p = frame->GetWritePtr(PLANAR_V);
+    p = frame->GetWritePtr(PLANAR_U); // originally was V, not U
+    size = frame->GetPitch(PLANAR_U) * frame->GetHeight(PLANAR_U);
     Cval = (color_yuv)&0xff;
     Cval |= (Cval<<8)|(Cval<<16)|(Cval<<24);
     for (int i=0; i<size; i+=sizeof(uint32_t))
