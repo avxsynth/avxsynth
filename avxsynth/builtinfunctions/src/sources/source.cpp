@@ -586,8 +586,8 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 			for (int i=0; i<7; i++) {
 				for (; x < (w*(i+1)+3)/7; ++x) {
 					pY[x] = pY[x+pitchY] = top_two_thirdsY[i];
-					pU[x] = top_two_thirdsU[i];
-					pV[x] = top_two_thirdsV[i];
+					pV[x] = top_two_thirdsU[i]; // used to be pU[x]
+					pU[x] = top_two_thirdsV[i]; // used to be pV[x]
 				}
 			}
 			pY += pitchY*2; pU += pitchUV; pV += pitchUV;
@@ -600,8 +600,8 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 			for (int i=0; i<7; i++) {
 				for (; x < (w*(i+1)+3)/7; ++x) {
 					pY[x] = pY[x+pitchY] = two_thirds_to_three_quartersY[i];
-					pU[x] = two_thirds_to_three_quartersU[i];
-					pV[x] = two_thirds_to_three_quartersV[i];
+					pV[x] = two_thirds_to_three_quartersU[i]; // used to be pU[x]
+					pU[x] = two_thirds_to_three_quartersV[i]; // used to be pV[x]
 				}
 			}
 			pY += pitchY*2; pU += pitchUV; pV += pitchUV;
@@ -614,21 +614,21 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 			for (int i=0; i<4; ++i) {
 				for (; x < (w*(i+1)*5+14)/28; ++x) {
 					pY[x] = pY[x+pitchY] = bottom_quarterY[i];
-					pU[x] = bottom_quarterU[i];
-					pV[x] = bottom_quarterV[i];
+					pV[x] = bottom_quarterU[i]; // used to be pU[x]
+					pU[x] = bottom_quarterV[i]; // used to be pV[x]
 				}
 			}
 			for (int j=4; j<7; ++j) {
 				for (; x < (w*(j+12)+10)/21; ++x) {
 					pY[x] = pY[x+pitchY] = bottom_quarterY[j];
-					pU[x] = bottom_quarterU[j];
-					pV[x] = bottom_quarterV[j];
+					pV[x] = bottom_quarterU[j]; // used to be pU[x]
+					pU[x] = bottom_quarterV[j]; // used to be pV[x]
 				}
 			}
 			for (; x < w; ++x) {
 				pY[x] = pY[x+pitchY] = bottom_quarterY[7];
-				pU[x] = bottom_quarterU[7];
-				pV[x] = bottom_quarterV[7];
+				pV[x] = bottom_quarterU[7]; // used to be pU[x]
+				pU[x] = bottom_quarterV[7]; // used to be pV[x]
 			}
 			pY += pitchY*2; pU += pitchUV; pV += pitchUV;
 		}

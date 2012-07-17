@@ -231,7 +231,7 @@ bool launchMPlayerToRenderVideo(BITMAPINFOHEADER const& bih)
     switch(bih.biCompression)
     {
     case 0x32315659:        // '21VY'
-        sprintf(colorspace, "yv12");                       
+        sprintf(colorspace, "i420"); // yv12 is for some reason producing reverted colors
         break;
     case 0x32595559:        // '2YUY
         sprintf(colorspace, "yuy2");
