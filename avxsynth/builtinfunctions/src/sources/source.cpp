@@ -93,14 +93,14 @@ static PVideoFrame CreateBlankFrame(const VideoInfo& vi, int color, int mode, IS
     Cval |= (Cval<<8)|(Cval<<16)|(Cval<<24);
     for (int i=0; i<size; i+=sizeof(int32_t))
       *(uint32_t*)(p+i) = Cval;
-    p = frame->GetWritePtr(PLANAR_V); // originally was U, not V
-    size = frame->GetPitch(PLANAR_V) * frame->GetHeight(PLANAR_V);
+    p = frame->GetWritePtr(PLANAR_U);
+    size = frame->GetPitch(PLANAR_U) * frame->GetHeight(PLANAR_U);
     Cval = (color_yuv>>8)&0xff;
     Cval |= (Cval<<8)|(Cval<<16)|(Cval<<24);
     for (int i=0; i<size; i+=sizeof(int32_t))
       *(uint32_t*)(p+i) = Cval;
-    p = frame->GetWritePtr(PLANAR_U); // originally was V, not U
-    size = frame->GetPitch(PLANAR_U) * frame->GetHeight(PLANAR_U);
+    p = frame->GetWritePtr(PLANAR_V); // originally was V, not U
+    size = frame->GetPitch(PLANAR_V) * frame->GetHeight(PLANAR_V);
     Cval = (color_yuv)&0xff;
     Cval |= (Cval<<8)|(Cval<<16)|(Cval<<24);
     for (int i=0; i<size; i+=sizeof(uint32_t))
@@ -586,8 +586,8 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 			for (int i=0; i<7; i++) {
 				for (; x < (w*(i+1)+3)/7; ++x) {
 					pY[x] = pY[x+pitchY] = top_two_thirdsY[i];
-					pV[x] = top_two_thirdsU[i]; // used to be pU[x]
-					pU[x] = top_two_thirdsV[i]; // used to be pV[x]
+					pU[x] = top_two_thirdsU[i];
+					pV[x] = top_two_thirdsV[i];
 				}
 			}
 			pY += pitchY*2; pU += pitchUV; pV += pitchUV;
@@ -600,8 +600,8 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 			for (int i=0; i<7; i++) {
 				for (; x < (w*(i+1)+3)/7; ++x) {
 					pY[x] = pY[x+pitchY] = two_thirds_to_three_quartersY[i];
-					pV[x] = two_thirds_to_three_quartersU[i]; // used to be pU[x]
-					pU[x] = two_thirds_to_three_quartersV[i]; // used to be pV[x]
+					pU[x] = two_thirds_to_three_quartersU[i];
+					pV[x] = two_thirds_to_three_quartersV[i];
 				}
 			}
 			pY += pitchY*2; pU += pitchUV; pV += pitchUV;
@@ -614,8 +614,8 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 			for (int i=0; i<4; ++i) {
 				for (; x < (w*(i+1)*5+14)/28; ++x) {
 					pY[x] = pY[x+pitchY] = bottom_quarterY[i];
-					pV[x] = bottom_quarterU[i]; // used to be pU[x]
-					pU[x] = bottom_quarterV[i]; // used to be pV[x]
+					pU[x] = bottom_quarterU[i];
+					pV[x] = bottom_quarterV[i];
 				}
 			}
 			for (int j=4; j<7; ++j) {
@@ -627,8 +627,8 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 			}
 			for (; x < w; ++x) {
 				pY[x] = pY[x+pitchY] = bottom_quarterY[7];
-				pV[x] = bottom_quarterU[7]; // used to be pU[x]
-				pU[x] = bottom_quarterV[7]; // used to be pV[x]
+				pU[x] = bottom_quarterU[7];
+				pV[x] = bottom_quarterV[7];
 			}
 			pY += pitchY*2; pU += pitchUV; pV += pitchUV;
 		}
