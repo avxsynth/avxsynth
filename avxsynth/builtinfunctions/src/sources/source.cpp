@@ -621,8 +621,8 @@ ColorBars::ColorBars(int w, int h, const char* pixel_type, IScriptEnvironment* e
 			for (int j=4; j<7; ++j) {
 				for (; x < (w*(j+12)+10)/21; ++x) {
 					pY[x] = pY[x+pitchY] = bottom_quarterY[j];
-					pV[x] = bottom_quarterU[j]; // used to be pU[x]
-					pU[x] = bottom_quarterV[j]; // used to be pV[x]
+					pU[x] = bottom_quarterU[j];
+					pV[x] = bottom_quarterV[j];
 				}
 			}
 			for (; x < w; ++x) {
