@@ -9,5 +9,5 @@ Description: AvxSynth (AviSynth for Linux)
 Version: @PACKAGE_VERSION@
 Requires: avxutils = @PACKAGE_VERSION@
 Libs.private: -ldl -lm @PTHREAD_LIBS@ @PTHREAD_CFLAGS@ @PTHREAD_LIBS@
-Libs: -L"$libdir" -lavxsynth
-Cflags: -I"$includedir"
+Libs: -L"${libdir}" -lavxsynth
+Cflags: -I"${includedir}"
