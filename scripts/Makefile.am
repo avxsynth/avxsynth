@@ -2,7 +2,8 @@
 # Process this file with automake to produce a Makefile.	
 
 TESTS = \
-	tools/avs_c_interface              \
+	api_test/avs_c_interface           \
+	api_test/multiple_script_env       \
 	scriptfunctions/clip.sh            \
 	scriptfunctions/math.sh            \
 	scriptfunctions/string.sh          \
@@ -45,24 +46,36 @@ AvxTestSuite-planeswap.log: AvxTestSuite-SANITY.log
 AvxTestSuite-textrender.log: AvxTestSuite-SANITY.log
 AvxTestSuite-timeline.log: AvxTestSuite-SANITY.log
 
-check_PROGRAMS = tools/avsgrabber tools/avs_c_interface
+check_PROGRAMS = \
+	api_test/avs_c_interface     \
+	api_test/multiple_script_env \
+	tools/avsgrabber
 
 check_LTLIBRARIES = tools/dummy_plugin.la tools/dummy_plugin2.la
+
+api_test_avs_c_interface_SOURCES = tools/avs_c_interface.c
+
+api_test_avs_c_interface_CPPFLAGS = \
+	-I$(top_srcdir)/avxsynth/core/src/core \
+	-I$(top_srcdir)/include                \
+	$(AM_CPPFLAGS)
+
+api_test_avs_c_interface_LDADD = $(top_builddir)/avxsynth/libavxsynth.la
+
+api_test_multiple_script_env_SOURCES = tools/multiple_script_env.cpp
+
+api_test_multiple_script_env_CPPFLAGS = \
+	-I$(top_srcdir)/avxsynth/core/src/core \
+	-I$(top_srcdir)/include                \
+	$(AM_CPPFLAGS)
+
+api_test_multiple_script_env_LDADD = $(top_builddir)/avxsynth/libavxsynth.la
 
 tools_avsgrabber_SOURCES = tools/avsgrabber.cpp
 
 tools_avsgrabber_CPPFLAGS = -I$(top_srcdir)/include $(AM_CPPFLAGS)
 
 tools_avsgrabber_LDADD = $(top_builddir)/avxsynth/libavxsynth.la
-
-tools_avs_c_interface_SOURCES = tools/avs_c_interface.c
-
-tools_avs_c_interface_CPPFLAGS = \
-	-I$(top_srcdir)/avxsynth/core/src/core \
-	-I$(top_srcdir)/include                \
-	$(AM_CPPFLAGS)
-
-tools_avs_c_interface_LDADD = $(top_builddir)/avxsynth/libavxsynth.la
 
 tools_dummy_plugin_la_SOURCES = tools/dummy_plugin.cpp
 
