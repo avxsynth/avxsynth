@@ -62,7 +62,8 @@ namespace avxsynth {
 #define _stricmp                            strcasecmp
 #define InterlockedIncrement(x)             __sync_fetch_and_add((x), 1)
 #define InterlockedDecrement(x)             __sync_fetch_and_sub((x), 1)
-#define InterlockedCompareExchange(x,y,z)   __sync_val_compare_and_swap(x,y,z)
+// Windows uses (new, old) ordering but GCC has (old, new)
+#define InterlockedCompareExchange(x,y,z)   __sync_val_compare_and_swap(x,z,y)
 #define InitializeCriticalSection(x)        pthread_mutex_init(x, NULL)
 #define EnterCriticalSection(x)             pthread_mutex_lock(x)
 #define LeaveCriticalSection(x)             pthread_mutex_unlock(x)
