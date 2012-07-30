@@ -53,52 +53,37 @@ check_PROGRAMS = \
 
 check_LTLIBRARIES = tools/dummy_plugin.la tools/dummy_plugin2.la
 
-api_test_avs_c_interface_SOURCES = tools/avs_c_interface.c
+api_CPPFLAGS = -I$(top_srcdir)/include $(AM_CPPFLAGS)
+api_LDADD = $(top_builddir)/avxsynth/libavxsynth.la
 
-api_test_avs_c_interface_CPPFLAGS = \
-	-I$(top_srcdir)/avxsynth/core/src/core \
-	-I$(top_srcdir)/include                \
-	$(AM_CPPFLAGS)
+api_test_avs_c_interface_SOURCES = api_test/avs_c_interface.c
+api_test_avs_c_interface_CPPFLAGS = -I$(top_srcdir)/avxsynth/core/src/core $(api_CPPFLAGS)
+api_test_avs_c_interface_LDADD = $(api_LDADD)
 
-api_test_avs_c_interface_LDADD = $(top_builddir)/avxsynth/libavxsynth.la
-
-api_test_multiple_script_env_SOURCES = tools/multiple_script_env.cpp
-
-api_test_multiple_script_env_CPPFLAGS = \
-	-I$(top_srcdir)/avxsynth/core/src/core \
-	-I$(top_srcdir)/include                \
-	$(AM_CPPFLAGS)
-
-api_test_multiple_script_env_LDADD = $(top_builddir)/avxsynth/libavxsynth.la
+api_test_multiple_script_env_SOURCES = api_test/multiple_script_env.cpp
+api_test_multiple_script_env_CPPFLAGS = $(api_CPPFLAGS)
+api_test_multiple_script_env_LDADD = $(api_LDADD)
 
 tools_avsgrabber_SOURCES = tools/avsgrabber.cpp
-
-tools_avsgrabber_CPPFLAGS = -I$(top_srcdir)/include $(AM_CPPFLAGS)
-
-tools_avsgrabber_LDADD = $(top_builddir)/avxsynth/libavxsynth.la
+tools_avsgrabber_CPPFLAGS = $(api_CPPFLAGS)
+tools_avsgrabber_LDADD = $(api_LDADD)
 
 tools_dummy_plugin_la_SOURCES = tools/dummy_plugin.cpp
-
 tools_dummy_plugin_la_CXXFLAGS = $(AM_CXXFLAGS) -shared
-
-tools_dummy_plugin_la_CPPFLAGS = -I$(top_srcdir)/include $(AM_CPPFLAGS)
-
+tools_dummy_plugin_la_CPPFLAGS = $(api_CPPFLAGS)
 # -rpath /nowhere/ is a hack to force libtool to actually link something.
 tools_dummy_plugin_la_LDFLAGS = \
 	$(AM_LDFLAGS) -module -shared -avoid-version -export-dynamic -rpath /nowhere/
 
 tools_dummy_plugin2_la_SOURCES = tools/dummy_plugin2.cpp
-
 tools_dummy_plugin2_la_CXXFLAGS = $(AM_CXXFLAGS) -shared
-
-tools_dummy_plugin2_la_CPPFLAGS = -I$(top_srcdir)/include $(AM_CPPFLAGS)
-
+tools_dummy_plugin2_la_CPPFLAGS = $(api_CPPFLAGS)
 # -rpath /nowhere/ is a hack to force libtool to actually link something.
 tools_dummy_plugin2_la_LDFLAGS = \
 	$(AM_LDFLAGS) -module -shared -avoid-version -export-dynamic -rpath /nowhere/
 
 clean-local:
-	-rm -fr emptydir autoload output testclips/*.ffindex *.pyc
+	-rm -fr emptydir autoload output testclips/*.ffindex *.pyc avxtemp-*.avs
 
 # Automake doesn't know about our test scripts.
 EXTRA_DIST = \
