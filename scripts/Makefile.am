@@ -2,23 +2,24 @@
 # Process this file with automake to produce a Makefile.	
 
 TESTS = \
-	api_test/avs_c_interface           \
-	api_test/multiple_script_env       \
-	scriptfunctions/clip.sh            \
-	scriptfunctions/math.sh            \
-	scriptfunctions/string.sh          \
-	AvxTestSuite-SANITY.test           \
-	AvxTestSuite-audio.test            \
-	AvxTestSuite-colors.test           \
-	AvxTestSuite-colorspaces.test      \
-	AvxTestSuite-conditional.test      \
-	AvxTestSuite-field.test            \
-	AvxTestSuite-filewriting.test      \
-	AvxTestSuite-focus.test            \
-	AvxTestSuite-frameaverage.test     \
-	AvxTestSuite-geometry.test         \
-	AvxTestSuite-planeswap.test        \
-	AvxTestSuite-textrender.test       \
+	api_test/avs_c_interface         \
+	api_test/invoke_positional_args  \
+	api_test/multiple_script_env     \
+	scriptfunctions/clip.sh          \
+	scriptfunctions/math.sh          \
+	scriptfunctions/string.sh        \
+	AvxTestSuite-SANITY.test         \
+	AvxTestSuite-audio.test          \
+	AvxTestSuite-colors.test         \
+	AvxTestSuite-colorspaces.test    \
+	AvxTestSuite-conditional.test    \
+	AvxTestSuite-field.test          \
+	AvxTestSuite-filewriting.test    \
+	AvxTestSuite-focus.test          \
+	AvxTestSuite-frameaverage.test   \
+	AvxTestSuite-geometry.test       \
+	AvxTestSuite-planeswap.test      \
+	AvxTestSuite-textrender.test     \
 	AvxTestSuite-timeline.test
 
 TEST_EXTENSIONS = .test .sh
@@ -47,8 +48,9 @@ AvxTestSuite-textrender.log: AvxTestSuite-SANITY.log
 AvxTestSuite-timeline.log: AvxTestSuite-SANITY.log
 
 check_PROGRAMS = \
-	api_test/avs_c_interface     \
-	api_test/multiple_script_env \
+	api_test/avs_c_interface        \
+	api_test/invoke_positional_args \
+	api_test/multiple_script_env    \
 	tools/avsgrabber
 
 check_LTLIBRARIES = tools/dummy_plugin.la tools/dummy_plugin2.la
@@ -57,6 +59,10 @@ api_CPPFLAGS = -I$(top_srcdir)/include $(AM_CPPFLAGS)
 api_LDADD = $(top_builddir)/avxsynth/libavxsynth.la
 
 api_test_avs_c_interface_SOURCES = api_test/avs_c_interface.c
+api_test_avs_c_interface_CPPFLAGS = -I$(top_srcdir)/avxsynth/core/src/core $(api_CPPFLAGS)
+api_test_avs_c_interface_LDADD = $(api_LDADD)
+
+api_test_invoke_positional_args_SOURCES = api_test/invoke_positional_args.c
 api_test_avs_c_interface_CPPFLAGS = -I$(top_srcdir)/avxsynth/core/src/core $(api_CPPFLAGS)
 api_test_avs_c_interface_LDADD = $(api_LDADD)
 
