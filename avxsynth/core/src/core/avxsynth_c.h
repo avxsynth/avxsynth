@@ -446,6 +446,7 @@ struct AVS_Value {
     void * clip; // do not use directly, use avs_take_clip
     char boolean;
     int integer;
+    INT64 integer64; // match addition of __int64 to avxplugin.h
     float floating_pt;
     const char * string;
     const AVS_Value * array;
