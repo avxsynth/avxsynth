@@ -164,7 +164,7 @@ static bool MyLoadLibrary(const char* filename, HMODULE* hmod, bool quiet, IScri
       char* t_string = _strrev(strdup(filename));
       int len = strlen(filename);
       int pos = len-strcspn(t_string, ".");
-      int pos2 = len-strcspn(t_string, "\\");
+      int pos2 = len-strcspn(t_string, "/");
       free(t_string);  // Tritical May 2005
       strncat(result, filename+pos2, pos-pos2-1);
       if (loadplugin_prefix) free((void*)loadplugin_prefix);  // Tritical May 2005

@@ -17,6 +17,7 @@ args[0] = avs_invoke(env, "blankclip", avs_void, NULL);
 ret = avs_invoke(env, "converttorgb24", avs_new_value_array(args, 3), NULL);
 if ( avs_is_error(ret) ) {
 	printf("%s\n", "error");
+	return -1;
 }
 
 avs_delete_script_environment(env);
