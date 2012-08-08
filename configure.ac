@@ -232,11 +232,12 @@ AS_IF(
   [test "x$enable_ffms2" = "xyes" || test "x$enable_ffms2" = "x"],
   [
     # We add -shared to the LDFLAGS for checking to prevent turtles-all-the-way-down issues.
+    # This has the unfortunate side effect of preventing symbol checking from working.
     # Note that when compiling we will need to link ffms2 before libav.
     PKG_CHECK_MODULES([ffms2], [ffms2], [], [true])
     SAVE_COMPILER_FLAGS
     CFLAGS="$CFLAGS $lt_prog_compiler_pic $ffms2_CFLAGS" LIBS="$LIBS $ffms2_LIBS"
-    LDFLAGS="$LDFLAGS -shared $lt_prog_compiler_pic"
+    LDFLAGS="$LDFLAGS $lt_prog_compiler_pic -shared"
     AC_MSG_CHECKING([if ffms2 works])
     AC_LINK_IFELSE(
       [AC_LANG_PROGRAM(
@@ -271,7 +272,7 @@ AS_IF(
           avformat_close_input(NULL);
           avutil_license();
           pp_free_context(NULL);
-          swscale_freeContext(NULL);
+          sws_freeContext(NULL);
         ]
       )],
       [without_Bsymbolic="yes"], [without_Bsymbolic="no"]
@@ -294,7 +295,7 @@ AS_IF(
             avformat_close_input(NULL);
             avutil_license();
             pp_free_context(NULL);
-            swscale_freeContext(NULL);
+            sws_freeContext(NULL);
           ]
         )],
         [with_Bsymbolic="yes"], [with_Bsymbolic="no"]
