@@ -207,8 +207,12 @@ VideoFrameBuffer::~VideoFrameBuffer() {
 //  _ASSERTE(refcount == 0);
   InterlockedIncrement(&sequence_number); // HACK : Notify any children with a pointer, this buffer has changed!!!
   if (data) delete[] data;
-  //(BYTE*)data = 0; // and mark it invalid!!
-  //(int)data_size = 0;   // and don't forget to set the size to 0 as well!
+// Trick GCC into writing to a const variable.  This behavior is undefined.
+// The VFB class is in the public API so we are stuck with this hack.
+  BYTE** not_data = const_cast<BYTE**>(&data);
+  int* not_data_size = const_cast<int*>(&data_size);
+  *not_data = 0;
+  *not_data_size = 0;
 }
 #endif
 
