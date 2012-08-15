@@ -51,8 +51,8 @@ namespace avxsynth
     {
     public:
 
-        Utf8String() : basic_string(){};
-        Utf8String(const char* str) : basic_string(str){};
+        Utf8String() : basic_string<char>(){};
+        Utf8String(const char* str) : basic_string<char>(str){};
         Utf8String(basic_string<char> const& cpy){*this = cpy;}
 
         operator const char*() {return c_str();}
@@ -61,7 +61,7 @@ namespace avxsynth
         {
             if(this != &cpy)
             {
-                basic_string::assign(cpy.c_str());
+                basic_string<char>::assign(cpy.c_str());
             }
 
             return *this;
@@ -69,7 +69,7 @@ namespace avxsynth
 
         Utf8String& operator=(const char* cpy)
         {
-            basic_string::assign(cpy);
+            basic_string<char>::assign(cpy);
             return *this;
         }
         
@@ -82,7 +82,7 @@ namespace avxsynth
             vector<char> buf(bufSize);
             char* p = &buf[0];
             vsnprintf(p, buf.size(), fmt, args);
-            basic_string::assign(&buf[0]);
+            basic_string<char>::assign(&buf[0]);
         }
 
         static Utf8String Build(const char* fmt, ...)
@@ -149,7 +149,7 @@ namespace avxsynth
 
         Utf8String Parse(Utf8String const& seperators)
         {
-            size_t offset = basic_string::find_first_of(seperators);
+            size_t offset = basic_string<char>::find_first_of(seperators);
 
             if(offset == npos)
                 return *this;       
