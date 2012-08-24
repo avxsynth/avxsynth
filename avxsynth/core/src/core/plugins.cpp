@@ -160,7 +160,7 @@ static bool MyLoadLibrary(const char* filename, HMODULE* hmod, bool quiet, IScri
       return false;
     }
     if (loaded_plugins[j] == 0) {
-      char result[512] = "\0";
+      char result[PATH_MAX] = "\0";
       char* t_string = _strrev(strdup(filename));
       int len = strlen(filename);
       int pos = len-strcspn(t_string, ".");

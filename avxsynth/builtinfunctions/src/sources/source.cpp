@@ -755,7 +755,7 @@ AVSValue __cdecl Create_SegmentedSource(AVSValue args, void* use_directshow, ISc
   PClip result = 0;
   const char* error_msg=0;
   for (int i = 0; i < args.ArraySize(); ++i) {
-    char basename[260];
+    char basename[PATH_MAX]; // 260];
     strcpy(basename, args[i].AsString());
     char* extension = strrchr(basename, '.');
     if (extension)
@@ -763,7 +763,7 @@ AVSValue __cdecl Create_SegmentedSource(AVSValue args, void* use_directshow, ISc
     else
       extension = (char*)"";
     for (int j = 0; j < 100; ++j) {
-      char filename[260];
+      char filename[PATH_MAX]; // 260];
       sprintf(filename, "%s.%02d.%s", basename, j, extension);
       if (GetFileAttributes(filename) != (DWORD)-1) {   // check if file exists
           PClip clip;

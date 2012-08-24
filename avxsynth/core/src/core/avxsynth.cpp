@@ -470,7 +470,7 @@ public:
     LocalFunction *f2 = NULL;
     if (loadplugin_prefix) {
       AVXLOG_DEBUG("  Plugin name %s", loadplugin_prefix);
-      char result[512];
+      char result[PATH_MAX];
       strcpy(result, loadplugin_prefix);
       strcat(result, "_");
       strcat(result, name);
