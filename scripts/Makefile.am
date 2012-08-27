@@ -19,7 +19,6 @@ TESTS = \
 	AvxTestSuite-frameaverage.test   \
 	AvxTestSuite-geometry.test       \
 	AvxTestSuite-planeswap.test      \
-	AvxTestSuite-textrender.test     \
 	AvxTestSuite-timeline.test
 
 TEST_EXTENSIONS = .test .sh
@@ -47,7 +46,6 @@ AvxTestSuite-focus.log: AvxTestSuite-SANITY.log
 AvxTestSuite-frameaverage.log: AvxTestSuite-SANITY.log
 AvxTestSuite-geometry.log: AvxTestSuite-SANITY.log
 AvxTestSuite-planeswap.log: AvxTestSuite-SANITY.log
-AvxTestSuite-textrender.log: AvxTestSuite-SANITY.log
 AvxTestSuite-timeline.log: AvxTestSuite-SANITY.log
 
 check_PROGRAMS = \
