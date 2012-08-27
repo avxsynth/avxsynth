@@ -1,8 +1,0 @@
-#SCRIPTVER=1
-#HASHFORMAT=MD5
-#
-#Remember: This file only records the last known result.
-#Do not use this to assume correctness of behavior.
-#
-SCRIPT,"textrender/messageclip.avs",6d9142cfec746dc46b9675a5436aec54
-SCRIPT,"textrender/showframenumber_smpte_time.avs",22af7639bbb79f19f332b9c9a5784bca

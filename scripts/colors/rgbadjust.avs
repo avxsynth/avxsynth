@@ -20,5 +20,3 @@ last + RGBAdjust(o1, rb=-64, gb=-64, bb=-64, ab=-64)
 # Testing gamma parameter 1.5, 0.5, expected average: 161, 64
 last + RGBAdjust(o1, rg=1.5, gg=1.5, bg=1.5, ag=1.5)
 last + RGBAdjust(o1, rg=0.5, gg=0.5, bg=0.5, ag=0.5)
-
-# StackVertical(RGBAdjust(analyze=true), ShowAlpha().RGBAdjust(analyze=true))
