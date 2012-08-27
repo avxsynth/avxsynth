@@ -5,8 +5,8 @@
 #Do not use this to assume correctness of behavior.
 #
 SCRIPT,"colorspaces/convertbacktoyuy2.avs",8865eace1e79cb49d892e5edb9cbc918
-SCRIPT,"colorspaces/converttorgb24.avs",c451608a1a0dfbf3c37f01f11e5e9408
-SCRIPT,"colorspaces/converttorgb32.avs",5391a066fa8b31d71696db74ce5e673f
+SCRIPT,"colorspaces/converttorgb24.avs",f0a9f064830fe239a3885e4c000d7844
+SCRIPT,"colorspaces/converttorgb32.avs",563ba483f6e043098237865a00bf1495
 SCRIPT,"colorspaces/converttoyuy2.avs",71363a2925b62c8f1bf01e7f88d730a4
 SCRIPT,"colorspaces/converttoyv12.avs",bc255e628d9b03b2c8bc1d4adec51185
 SCRIPT,"colorspaces/grayscale.avs",3ff8c2c5007796c074734a50e32b9f47
