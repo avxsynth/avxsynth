@@ -2,9 +2,8 @@
 #
 # Expected behavior:
 #
-# 12 frames total, the first 9 with diagnostic output from
-# ColorYUV(analyze=true) overlaid. The expected output is
-# provided in inline comments below.
+# 12 frames total.  The expected output is provided in inline comments.
+# Compliance can be checked by the command ColorYUV(analyze=true).
 
 # UV == <+0.5, -0.5>, HUE == 135deg in normalized units
 o1 = BlankClip(pixel_type="YV12", color_yuv=$8040C0, height=240, length=1).KillAudio()
@@ -34,7 +33,7 @@ last + Tweak(o1, cont=1.5)
 # (0, 1, 1, 255, 255, 255) (16, 16, 16, 235, 240, 240)
 last + Tweak(o2, cont=1.1, sat=1.1)
 
-ColorYUV(analyze=true)
+# ColorYUV(analyze=true)
 
 # Testing sat range parameters, expected behavior:
 # Pink and blue (bars 2 and 7) are grey. The small bar below bar 1 is also grey.

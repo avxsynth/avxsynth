@@ -2,9 +2,8 @@
 #
 # Expected behavior:
 #
-# 12 frames total, each with diagnostic output from
-# ColorYUV(analyze=true) overlaid. The expected output is
-# provided in inline comments below.
+# 12 frames total.  The expected output is provided in inline comments.
+# Compliance can be checked by the command ColorYUV(analyze=true).
 
 # For automated testing environment.
 try {
@@ -54,5 +53,3 @@ last + ColorYUV(o5, autogain=true, autowhite=true)
 
 # Testing showYUV parameter:
 last + ColorYUV(showYUV=true).PointResize(width, height).Trim(0, -1)
-
-ColorYUV(analyze=true)

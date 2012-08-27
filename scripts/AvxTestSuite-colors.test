@@ -4,9 +4,9 @@
 #Remember: This file only records the last known result.
 #Do not use this to assume correctness of behavior.
 #
-SCRIPT,"colors/coloryuv.avs",36502e065a7bb3f11a78713d82a83a74
+SCRIPT,"colors/coloryuv.avs",09dfa04bb9b5b97ed62d07cf569dad9e
 SCRIPT,"colors/levels_rgb.avs",a772d88e25b53f9dfac1cf9fbd27730d
 SCRIPT,"colors/levels_yuv.avs",5563a775aa5b752987204566ffc65b4e
 SCRIPT,"colors/limiter.avs",b9c0eb8d25d259c35d25376d2eb11fbc
-SCRIPT,"colors/rgbadjust.avs",137f2e604f8e47d39783a423dbbe52f9
-SCRIPT,"colors/tweak.avs",2cef235878b3b667d43f7469117abd88
+SCRIPT,"colors/rgbadjust.avs",0be09e5560f158268957934e77b65797
+SCRIPT,"colors/tweak.avs",f80d59d0ace2c17ea1089ced9be257dd
