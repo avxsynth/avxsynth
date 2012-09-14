@@ -315,6 +315,11 @@ int AVSC_CC
 // AVS_ScriptEnvironment
 //
 
+const char * AVSC_CC avs_get_error(AVS_ScriptEnvironment * p) // return 0 if no error
+{
+	return p->error;
+}
+
 long AVSC_CC avs_get_cpu_flags(AVS_ScriptEnvironment * p)
 {
 	p->error = 0;
@@ -403,23 +408,36 @@ int AVSC_CC avs_set_global_var(AVS_ScriptEnvironment * p, const char* name, AVS_
 AVS_VideoFrame * AVSC_CC avs_new_video_frame_a(AVS_ScriptEnvironment * p, const AVS_VideoInfo *  vi, int align)
 {
 	p->error = 0;
+	try {
 	PVideoFrame f0 = p->env->NewVideoFrame(*(const VideoInfo *)vi, align);
 	AVS_VideoFrame * f;
 	new((PVideoFrame *)&f) PVideoFrame(f0);
 	return f;
+	} catch(AvisynthError err) {
+		p->error = err.msg;
+	}
+	return 0;
 }
 
 int AVSC_CC avs_make_writable(AVS_ScriptEnvironment * p, AVS_VideoFrame * * pvf)
 {
 	p->error = 0;
-	int res = p->env->MakeWritable((PVideoFrame *)(pvf));
-	return res;
+	try {
+		return p->env->MakeWritable((PVideoFrame *)(pvf));
+	} catch (AvisynthError err) {
+		p->error = err.msg;
+	}
+	return -1;
 }
 
 void AVSC_CC avs_bit_blt(AVS_ScriptEnvironment * p, unsigned char* dstp, int dst_pitch, const unsigned char* srcp, int src_pitch, int row_size, int height)
 {
 	p->error = 0;
+	try {
 	p->env->BitBlt(dstp, dst_pitch, srcp, src_pitch, row_size, height);
+	} catch (AvisynthError err) {
+		p->error = err.msg;
+	}
 }
 
 struct ShutdownFuncData
@@ -520,7 +538,12 @@ int AVSC_CC avs_set_working_dir(AVS_ScriptEnvironment * p, const char * newdir)
 AVS_ScriptEnvironment * AVSC_CC avs_create_script_environment(int version)
 {
 	AVS_ScriptEnvironment * e = new AVS_ScriptEnvironment;
+	try {
 	e->env = CreateScriptEnvironment(version);
+	} catch (AvisynthError err) {
+		e->error = err.msg;
+		e->env = 0;
+	}
 	return e;
 }
 
@@ -552,7 +575,7 @@ AVSValue __cdecl load_c_plugin(AVSValue args, void * user_data,
 	
     HMODULE plugin = dlopen(filename, RTLD_NOW | RTLD_GLOBAL);
 	if (!plugin)
-		env->ThrowError("Unable to load C Plugin: %s", filename);
+		env->ThrowError("Unable to load C Plugin: \"%s\", error=0x%x", filename, dlerror());
 		
     AvisynthCPluginInitFunc func = 0;
 	func = (AvisynthCPluginInitFunc)dlsym(plugin, "avisynth_c_plugin_init");

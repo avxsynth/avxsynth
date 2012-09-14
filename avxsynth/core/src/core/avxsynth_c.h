@@ -50,12 +50,18 @@
 #  define AVSC_CC __stdcall
 #endif
 
-#define AVSC_EXPORT EXTERN_C __declspec(dllexport)
 #define AVSC_INLINE static __inline
+
 #ifdef AVISYNTH_C_EXPORTS
-#  define AVSC_API(ret) EXTERN_C __declspec(dllexport) ret AVSC_CC
+#  define AVSC_EXPORT EXTERN_C
+#  define AVSC_API(ret, name) EXTERN_C __declspec(dllexport) ret AVSC_CC name
 #else
-#  define AVSC_API(ret) EXTERN_C __declspec(dllimport) ret AVSC_CC
+#  define AVSC_EXPORT EXTERN_C __declspec(dllexport)
+#  ifndef AVSC_NO_DECLSPEC
+#    define AVSC_API(ret, name) EXTERN_C __declspec(dllimport) ret AVSC_CC name
+#  else
+#    define AVSC_API(ret, name) typedef ret (AVSC_CC *name##_func)
+#  endif
 #endif
 
 #ifdef __GNUC__
@@ -71,7 +77,7 @@ typedef __int64 INT64;
 //
 
 #ifndef __AVXSYNTH_H__
-enum { AVISYNTH_INTERFACE_VERSION = 2 };
+enum { AVISYNTH_INTERFACE_VERSION = 3 };
 #endif
 
 enum {AVS_SAMPLE_INT8  = 1<<0,
@@ -130,7 +136,12 @@ enum {  //SUBTYPES
 
 enum {
   AVS_CACHE_NOTHING=0,
-  AVS_CACHE_RANGE=1 };
+  AVS_CACHE_RANGE=1,
+  AVS_CACHE_ALL=2,
+  AVS_CACHE_AUDIO=3,
+  AVS_CACHE_AUDIO_NONE=4,
+  AVS_CACHE_AUDIO_AUTO=5
+};
 
 #define AVS_FRAME_ALIGN 16 
 
@@ -409,19 +420,19 @@ AVSC_INLINE unsigned char* avs_get_write_ptr_p(const AVS_VideoFrame * p, int pla
 extern "C"
 {
 #endif // __cplusplus
-AVSC_API(void) avs_release_video_frame(AVS_VideoFrame *);
+AVSC_API(void, avs_release_video_frame)(AVS_VideoFrame *);
 // makes a shallow copy of a video frame
-AVSC_API(AVS_VideoFrame *) avs_copy_video_frame(AVS_VideoFrame *);
+AVSC_API(AVS_VideoFrame *, avs_copy_video_frame)(AVS_VideoFrame *);
 #if defined __cplusplus
 }
 #endif // __cplusplus
 
+#ifndef AVSC_NO_DECLSPEC
 AVSC_INLINE void avs_release_frame(AVS_VideoFrame * f)
   {avs_release_video_frame(f);}
 AVSC_INLINE AVS_VideoFrame * avs_copy_frame(AVS_VideoFrame * f)
   {return avs_copy_video_frame(f);}
-
-
+#endif
 
 /////////////////////////////////////////////////////////////////////
 //
@@ -459,8 +470,8 @@ struct AVS_Value {
 // a pointer to NULL
 static const AVS_Value avs_void = {'v'};
 
-AVSC_API(void) avs_copy_value(AVS_Value * dest, AVS_Value src);
-AVSC_API(void) avs_release_value(AVS_Value);
+AVSC_API(void, avs_copy_value)(AVS_Value * dest, AVS_Value src);
+AVSC_API(void, avs_release_value)(AVS_Value);
 
 AVSC_INLINE int avs_defined(AVS_Value v) { return v.type != 'v'; }
 AVSC_INLINE int avs_is_clip(AVS_Value v) { return v.type == 'c'; }
@@ -475,8 +486,8 @@ AVSC_INLINE int avs_is_error(AVS_Value v) { return v.type == 'e'; }
 extern "C"
 {
 #endif // __cplusplus
-AVSC_API(AVS_Clip *) avs_take_clip(AVS_Value, AVS_ScriptEnvironment *);
-AVSC_API(void) avs_set_to_clip(AVS_Value *, AVS_Clip *);
+AVSC_API(AVS_Clip *, avs_take_clip)(AVS_Value, AVS_ScriptEnvironment *);
+AVSC_API(void, avs_set_to_clip)(AVS_Value *, AVS_Clip *);
 #if defined __cplusplus
 }
 #endif // __cplusplus
@@ -510,8 +521,10 @@ AVSC_INLINE AVS_Value avs_new_value_float(float v0)
         { AVS_Value v; v.type = 'f'; v.d.floating_pt = v0; return v;}
 AVSC_INLINE AVS_Value avs_new_value_error(const char * v0) 
         { AVS_Value v; v.type = 'e'; v.d.string = v0; return v; }
+#ifndef AVSC_NO_DECLSPEC
 AVSC_INLINE AVS_Value avs_new_value_clip(AVS_Clip * v0)
         { AVS_Value v; avs_set_to_clip(&v, v0); return v; }
+#endif
 AVSC_INLINE AVS_Value avs_new_value_array(AVS_Value * v0, int size)
         { AVS_Value v; v.type = 'a'; v.d.array = v0; v.array_size = size; return v; }
 
@@ -523,26 +536,26 @@ AVSC_INLINE AVS_Value avs_new_value_array(AVS_Value * v0, int size)
 extern "C"
 {
 #endif // __cplusplus
-AVSC_API(void) avs_release_clip(AVS_Clip *);
-AVSC_API(AVS_Clip *) avs_copy_clip(AVS_Clip *);
+AVSC_API(void, avs_release_clip)(AVS_Clip *);
+AVSC_API(AVS_Clip *, avs_copy_clip)(AVS_Clip *);
 
-AVSC_API(const char *) avs_clip_get_error(AVS_Clip *); // return 0 if no error
+AVSC_API(const char *, avs_clip_get_error)(AVS_Clip *); // return 0 if no error
 
-AVSC_API(const AVS_VideoInfo *) avs_get_video_info(AVS_Clip *);
+AVSC_API(const AVS_VideoInfo *, avs_get_video_info)(AVS_Clip *);
 
-AVSC_API(int) avs_get_version(AVS_Clip *);
+AVSC_API(int, avs_get_version)(AVS_Clip *);
  
-AVSC_API(AVS_VideoFrame *) avs_get_frame(AVS_Clip *, int n);
+AVSC_API(AVS_VideoFrame *, avs_get_frame)(AVS_Clip *, int n);
 // The returned video frame must be released with avs_release_video_frame
 
-AVSC_API(int) avs_get_parity(AVS_Clip *, int n); 
+AVSC_API(int, avs_get_parity)(AVS_Clip *, int n); 
 // return field parity if field_based, else parity of first field in frame
 
-AVSC_API(int) avs_get_audio(AVS_Clip *, void * buf, 
+AVSC_API(int, avs_get_audio)(AVS_Clip *, void * buf, 
                                   INT64 start, INT64 count); 
 // start and count are in samples
 
-AVSC_API(int) avs_set_cache_hints(AVS_Clip *, 
+AVSC_API(int, avs_set_cache_hints)(AVS_Clip *, 
                                         int cachehints, size_t frame_range);
 #if defined __cplusplus
 }
@@ -585,7 +598,7 @@ struct AVS_FilterInfo
 extern "C"
 {
 #endif // __cplusplus
-AVSC_API(AVS_Clip *) avs_new_c_filter(AVS_ScriptEnvironment * e,
+AVSC_API(AVS_Clip *, avs_new_c_filter)(AVS_ScriptEnvironment * e,
                                       AVS_FilterInfo * * fi,
                                       AVS_Value child, int store_child);
 #if defined __cplusplus
@@ -617,42 +630,45 @@ enum {
 extern "C"
 {
 #endif // __cplusplus
-AVSC_API(long) avs_get_cpu_flags(AVS_ScriptEnvironment *);
-AVSC_API(int) avs_check_version(AVS_ScriptEnvironment *, int version);
+AVSC_API(const char *, avs_get_error)(AVS_ScriptEnvironment *); // return 0 if no error
 
-AVSC_API(char *) avs_save_string(AVS_ScriptEnvironment *, const char* s, int length);
-AVSC_API(char *) avs_sprintf(AVS_ScriptEnvironment *, const char * fmt, ...);
+AVSC_API(long, avs_get_cpu_flags)(AVS_ScriptEnvironment *);
+AVSC_API(int, avs_check_version)(AVS_ScriptEnvironment *, int version);
 
-AVSC_API(char *) avs_vsprintf(AVS_ScriptEnvironment *, const char * fmt, va_list val);
+AVSC_API(char *, avs_save_string)(AVS_ScriptEnvironment *, const char* s, int length);
+AVSC_API(char *, avs_sprintf)(AVS_ScriptEnvironment *, const char * fmt, ...);
+
+AVSC_API(char *, avs_vsprintf)(AVS_ScriptEnvironment *, const char * fmt, va_list val);
  // note: val is really a va_list; I hope everyone typedefs va_list to a pointer
 
-AVSC_API(int) avs_add_function(AVS_ScriptEnvironment *, 
+AVSC_API(int, avs_add_function)(AVS_ScriptEnvironment *, 
 				     const char * name, const char * params, 
 				     AVS_ApplyFunc apply, void * user_data);
 
-AVSC_API(int) avs_function_exists(AVS_ScriptEnvironment *, const char * name);
+AVSC_API(int, avs_function_exists)(AVS_ScriptEnvironment *, const char * name);
 
-AVSC_API(AVS_Value) avs_invoke(AVS_ScriptEnvironment *, const char * name, 
+AVSC_API(AVS_Value, avs_invoke)(AVS_ScriptEnvironment *, const char * name, 
                                AVS_Value args, const char** arg_names);
 // The returned value must be be released with avs_release_value
 
-AVSC_API(AVS_Value) avs_get_var(AVS_ScriptEnvironment *, const char* name);
+AVSC_API(AVS_Value, avs_get_var)(AVS_ScriptEnvironment *, const char* name);
 // The returned value must be be released with avs_release_value
 
-AVSC_API(int) avs_set_var(AVS_ScriptEnvironment *, const char* name, AVS_Value val);
+AVSC_API(int, avs_set_var)(AVS_ScriptEnvironment *, const char* name, AVS_Value val);
 
-AVSC_API(int) avs_set_global_var(AVS_ScriptEnvironment *, const char* name, const AVS_Value val);
+AVSC_API(int, avs_set_global_var)(AVS_ScriptEnvironment *, const char* name, const AVS_Value val);
 
 //void avs_push_context(AVS_ScriptEnvironment *, int level=0);
 //void avs_pop_context(AVS_ScriptEnvironment *);
 
-AVSC_API(AVS_VideoFrame *) avs_new_video_frame_a(AVS_ScriptEnvironment *, 
+AVSC_API(AVS_VideoFrame *, avs_new_video_frame_a)(AVS_ScriptEnvironment *, 
                                           const AVS_VideoInfo * vi, int align);
 // align should be at least 16
 #if defined __cplusplus
 }
 #endif // __cplusplus
 
+#ifndef AVSC_NO_DECLSPEC
 AVSC_INLINE 
 AVS_VideoFrame * avs_new_video_frame(AVS_ScriptEnvironment * env, 
                                      const AVS_VideoInfo * vi)
@@ -662,28 +678,29 @@ AVSC_INLINE
 AVS_VideoFrame * avs_new_frame(AVS_ScriptEnvironment * env, 
                                const AVS_VideoInfo * vi)
   {return avs_new_video_frame_a(env,vi,AVS_FRAME_ALIGN);}
+#endif
 
 #if defined __cplusplus
 extern "C"
 {
 #endif // __cplusplus
-AVSC_API(int) avs_make_writable(AVS_ScriptEnvironment *, AVS_VideoFrame * * pvf);
+AVSC_API(int, avs_make_writable)(AVS_ScriptEnvironment *, AVS_VideoFrame * * pvf);
 
-AVSC_API(void) avs_bit_blt(AVS_ScriptEnvironment *, unsigned char* dstp, int dst_pitch, const unsigned char* srcp, int src_pitch, int row_size, int height);
+AVSC_API(void, avs_bit_blt)(AVS_ScriptEnvironment *, unsigned char* dstp, int dst_pitch, const unsigned char* srcp, int src_pitch, int row_size, int height);
 
 typedef void (AVSC_CC *AVS_ShutdownFunc)(void* user_data, AVS_ScriptEnvironment * env);
-AVSC_API(void) avs_at_exit(AVS_ScriptEnvironment *, AVS_ShutdownFunc function, void * user_data);
+AVSC_API(void, avs_at_exit)(AVS_ScriptEnvironment *, AVS_ShutdownFunc function, void * user_data);
 
-AVSC_API(AVS_VideoFrame *) avs_subframe(AVS_ScriptEnvironment *, AVS_VideoFrame * src, int rel_offset, int new_pitch, int new_row_size, int new_height);
+AVSC_API(AVS_VideoFrame *, avs_subframe)(AVS_ScriptEnvironment *, AVS_VideoFrame * src, int rel_offset, int new_pitch, int new_row_size, int new_height);
 // The returned video frame must be be released
 
-AVSC_API(int) avs_set_memory_max(AVS_ScriptEnvironment *, int mem);
+AVSC_API(int, avs_set_memory_max)(AVS_ScriptEnvironment *, int mem);
 
-AVSC_API(int) avs_set_working_dir(AVS_ScriptEnvironment *, const char * newdir);
+AVSC_API(int, avs_set_working_dir)(AVS_ScriptEnvironment *, const char * newdir);
 
 // avisynth.dll exports this; it's a way to use it as a library, without
 // writing an AVS script or without going through AVIFile.
-AVSC_API(AVS_ScriptEnvironment *) avs_create_script_environment(int version);
+AVSC_API(AVS_ScriptEnvironment *, avs_create_script_environment)(int version);
 #if defined __cplusplus
 }
 #endif // __cplusplus
@@ -698,10 +715,10 @@ const char * AVSC_CC avisynth_c_plugin_init(AVS_ScriptEnvironment* env);
 extern "C"
 {
 #endif // __cplusplus
-AVSC_API(void) avs_delete_script_environment(AVS_ScriptEnvironment *);
+AVSC_API(void, avs_delete_script_environment)(AVS_ScriptEnvironment *);
 
 
-AVSC_API(AVS_VideoFrame *) avs_subframe_planar(AVS_ScriptEnvironment *, AVS_VideoFrame * src, int rel_offset, int new_pitch, int new_row_size, int new_height, int rel_offsetU, int rel_offsetV, int new_pitchUV);
+AVSC_API(AVS_VideoFrame *, avs_subframe_planar)(AVS_ScriptEnvironment *, AVS_VideoFrame * src, int rel_offset, int new_pitch, int new_row_size, int new_height, int rel_offsetU, int rel_offsetV, int new_pitchUV);
 // The returned video frame must be be released
 #if defined __cplusplus
 }
