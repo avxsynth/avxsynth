@@ -388,7 +388,8 @@ EOF
           #include <QApplication>
         ],
         [
-          QApplication app(0, 0);
+          int argc=0;
+          QApplication app(argc, 0);
           Test t;
           QObject::connect(&t, SIGNAL(send()), &t, SLOT(receive()));
         ]
