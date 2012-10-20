@@ -63,6 +63,12 @@ namespace avxsynth
 #define SHELL "/bin/sh"
 typedef void* PLUGIN_HANDLE;
 
+#ifdef __APPLE__
+#define LIB_SUFFIX ".dylib"
+#else
+#define LIB_SUFFIX ".so"
+#endif
+
 typedef struct
 {
     bool            isMPlayerLaunchRequired;
@@ -647,10 +653,10 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
           AVXLOG_INFO("Processing script %s:", scriptName);
           printScript(scriptName);
           
-          hAvxSynth = dlopen("libavxsynth.so", RTLD_NOW | RTLD_GLOBAL);
+          hAvxSynth = dlopen("libavxsynth" LIB_SUFFIX , RTLD_NOW | RTLD_GLOBAL);
           if(NULL == hAvxSynth)
           {
-              AVXLOG_ERROR("%s", "Failed loading libavxsynth.so");
+              AVXLOG_ERROR("%s", "Failed loading libavxsynth" LIB_SUFFIX);
               AVXLOG_ERROR("Error: %s", dlerror());
               return -1;
           }
