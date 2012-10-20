@@ -892,7 +892,7 @@ private:
   Cache* CacheHead;
 
   HRESULT hrfromcoinit;
-  DWORD coinitThreadId;
+  pthread_t coinitThreadId;
 
   static long refcount; // Global to all ScriptEnvironment objects
 };
@@ -938,6 +938,8 @@ ScriptEnvironment::ScriptEnvironment()
 //      memory_max = (__int64)memstatus.dwAvailPhys >> 2;
 //    else
 //      memory_max = 16*1024*1024;
+#elif defined(__APPLE__)
+    memory_max = 0;
 #else      
     long nPageSize               = sysconf(_SC_PAGE_SIZE);
     long nAvailablePhysicalPages = sysconf(_SC_AVPHYS_PAGES);
