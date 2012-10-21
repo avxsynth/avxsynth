@@ -73,11 +73,19 @@ void FreeLibraries(void* loaded_plugins, IScriptEnvironment* env) {
   memset(loaded_plugins, 0, max_plugins*sizeof(HMODULE));
 }
 
+#ifdef __APPLE__
+#define NMCMD "nm "
+#define NMSYM "N8avxsynth13CAVIFileSynth9DelayInitE"
+#else
+#define NMCMD "nm -CD "
+#define NMSYM "avxsynth::CAVIFileSynth::DelayInit"
+#endif
+
 static bool IdentifiedLibAvxsynthDuplicate(const char* filename)
 {    
-    std::string strCommand          = "nm -CD ";
+    std::string strCommand          = NMCMD;
     std::string strFilename         = std::string("\"") + std::string(filename) + std::string("\"");
-    std::string strDiscriminator    = "avxsynth::CAVIFileSynth::DelayInit";
+    std::string strDiscriminator    = NMSYM;
     std::string strGrepAfter        = std::string(" | grep \"") + strDiscriminator + std::string("\"");
     std::string strCompleteCommand = strCommand + strFilename + strGrepAfter;
     
