@@ -102,7 +102,7 @@ am__dirstamp = $(am__leading_dot)dirstamp
 am_libavxffms2_la_OBJECTS = src/libavxffms2_la-avsutils_avx.lo \
 	src/libavxffms2_la-ffswscale_avx.lo \
 	src/libavxffms2_la-avssources_avx.lo \
-	src/libavxffms2_la-ffpp_avx.lo src/libavxffms2_la-avxffms2.lo
+	src/libavxffms2_la-avxffms2.lo
 libavxffms2_la_OBJECTS = $(am_libavxffms2_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -290,7 +290,6 @@ libavxffms2_la_SOURCES = \
 	src/avsutils_avx.cpp   \
 	src/ffswscale_avx.cpp  \
 	src/avssources_avx.cpp \
-	src/ffpp_avx.cpp       \
 	src/avxffms2.cpp
 
 libavxffms2_la_LIBADD = \
@@ -391,8 +390,6 @@ src/libavxffms2_la-ffswscale_avx.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 src/libavxffms2_la-avssources_avx.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
-src/libavxffms2_la-ffpp_avx.lo: src/$(am__dirstamp) \
-	src/$(DEPDIR)/$(am__dirstamp)
 src/libavxffms2_la-avxffms2.lo: src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 libavxffms2.la: $(libavxffms2_la_OBJECTS) $(libavxffms2_la_DEPENDENCIES) $(EXTRA_libavxffms2_la_DEPENDENCIES) 
@@ -406,8 +403,6 @@ mostlyclean-compile:
 	-rm -f src/libavxffms2_la-avsutils_avx.lo
 	-rm -f src/libavxffms2_la-avxffms2.$(OBJEXT)
 	-rm -f src/libavxffms2_la-avxffms2.lo
-	-rm -f src/libavxffms2_la-ffpp_avx.$(OBJEXT)
-	-rm -f src/libavxffms2_la-ffpp_avx.lo
 	-rm -f src/libavxffms2_la-ffswscale_avx.$(OBJEXT)
 	-rm -f src/libavxffms2_la-ffswscale_avx.lo
 
@@ -417,7 +412,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/libavxffms2_la-avssources_avx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/libavxffms2_la-avsutils_avx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/libavxffms2_la-avxffms2.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/libavxffms2_la-ffpp_avx.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/libavxffms2_la-ffswscale_avx.Plo@am__quote@
 
 .cpp.o:
@@ -464,13 +458,6 @@ src/libavxffms2_la-avssources_avx.lo: src/avssources_avx.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/avssources_avx.cpp' object='src/libavxffms2_la-avssources_avx.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libavxffms2_la_CPPFLAGS) $(CPPFLAGS) $(libavxffms2_la_CXXFLAGS) $(CXXFLAGS) -c -o src/libavxffms2_la-avssources_avx.lo `test -f 'src/avssources_avx.cpp' || echo '$(srcdir)/'`src/avssources_avx.cpp
-
-src/libavxffms2_la-ffpp_avx.lo: src/ffpp_avx.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libavxffms2_la_CPPFLAGS) $(CPPFLAGS) $(libavxffms2_la_CXXFLAGS) $(CXXFLAGS) -MT src/libavxffms2_la-ffpp_avx.lo -MD -MP -MF src/$(DEPDIR)/libavxffms2_la-ffpp_avx.Tpo -c -o src/libavxffms2_la-ffpp_avx.lo `test -f 'src/ffpp_avx.cpp' || echo '$(srcdir)/'`src/ffpp_avx.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) src/$(DEPDIR)/libavxffms2_la-ffpp_avx.Tpo src/$(DEPDIR)/libavxffms2_la-ffpp_avx.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/ffpp_avx.cpp' object='src/libavxffms2_la-ffpp_avx.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libavxffms2_la_CPPFLAGS) $(CPPFLAGS) $(libavxffms2_la_CXXFLAGS) $(CXXFLAGS) -c -o src/libavxffms2_la-ffpp_avx.lo `test -f 'src/ffpp_avx.cpp' || echo '$(srcdir)/'`src/ffpp_avx.cpp
 
 src/libavxffms2_la-avxffms2.lo: src/avxffms2.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libavxffms2_la_CPPFLAGS) $(CPPFLAGS) $(libavxffms2_la_CXXFLAGS) $(CXXFLAGS) -MT src/libavxffms2_la-avxffms2.lo -MD -MP -MF src/$(DEPDIR)/libavxffms2_la-avxffms2.Tpo -c -o src/libavxffms2_la-avxffms2.lo `test -f 'src/avxffms2.cpp' || echo '$(srcdir)/'`src/avxffms2.cpp

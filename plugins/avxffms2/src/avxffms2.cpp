@@ -22,7 +22,6 @@
 #include <ffms.h>
 #include "avssources_avx.h"
 #include "ffswscale_avx.h"
-#include "ffpp_avx.h"
 #include "avsutils_avx.h"
 
 static avxsynth::AVSValue __cdecl CreateFFIndex(avxsynth::AVSValue Args, void* UserData, avxsynth::IScriptEnvironment* Env) {
@@ -107,16 +106,15 @@ static avxsynth::AVSValue __cdecl CreateFFVideoSource(avxsynth::AVSValue Args, v
 	const char *CacheFile = Args[3].AsString("");
 	int FPSNum = Args[4].AsInt(-1);
 	int FPSDen = Args[5].AsInt(1);
-	const char *PP = Args[6].AsString("");
-	int Threads = Args[7].AsInt(-1);
-	const char *Timecodes = Args[8].AsString("");
-	int SeekMode = Args[9].AsInt(1);
-	int RFFMode = Args[10].AsInt(0);
-	int Width = Args[11].AsInt(0);
-	int Height = Args[12].AsInt(0);
-	const char *Resizer = Args[13].AsString("BICUBIC");
-	const char *ColorSpace = Args[14].AsString("yv12");
-	const char *VarPrefix = Args[16].AsString("");
+	int Threads = Args[6].AsInt(-1);
+	const char *Timecodes = Args[7].AsString("");
+	int SeekMode = Args[8].AsInt(1);
+	int RFFMode = Args[9].AsInt(0);
+	int Width = Args[10].AsInt(0);
+	int Height = Args[11].AsInt(0);
+	const char *Resizer = Args[12].AsString("BICUBIC");
+	const char *ColorSpace = Args[13].AsString("");
+	const char *VarPrefix = Args[15].AsString("");
 
 	if (FPSDen < 1)
 		Env->ThrowError("FFVideoSource: FPS denominator needs to be 1 or higher");
@@ -181,13 +179,10 @@ static avxsynth::AVSValue __cdecl CreateFFVideoSource(avxsynth::AVSValue Args, v
 		}
 	}
 
-	if (!strcmp(PP, ""))
-		PP = NULL;
-
 	AvisynthVideoSource *Filter;
 
 	try {
-        Filter = new AvisynthVideoSource(Source, Track, Index, FPSNum, FPSDen, PP, Threads, SeekMode, RFFMode, Width, Height, Resizer, VarPrefix, ColorSpace, Env);
+		Filter = new AvisynthVideoSource(Source, Track, Index, FPSNum, FPSDen, Threads, SeekMode, RFFMode, Width, Height, Resizer, ColorSpace, VarPrefix, Env);
 	} catch (...) {
 		FFMS_DestroyIndex(Index);
 		throw;
@@ -284,7 +279,7 @@ static avxsynth::AVSValue __cdecl CreateFFAudioSource(avxsynth::AVSValue Args, v
 	AvisynthAudioSource *Filter;
 
 	try {
-        Filter = new AvisynthAudioSource(Source, Track, Index, AdjustDelay, VarPrefix, Env);
+		Filter = new AvisynthAudioSource(Source, Track, Index, AdjustDelay, VarPrefix, Env);
 	} catch (...) {
 		FFMS_DestroyIndex(Index);	
 		throw;
@@ -293,16 +288,6 @@ static avxsynth::AVSValue __cdecl CreateFFAudioSource(avxsynth::AVSValue Args, v
 	FFMS_DestroyIndex(Index);
 	return Filter;
 }
-
-#ifdef FFMS_USE_POSTPROC
-static avxsynth::AVSValue __cdecl CreateFFPP(avxsynth::AVSValue Args, void* UserData, avxsynth::IScriptEnvironment* Env) {
-	return new FFPP(Args[0].AsClip(), Args[1].AsString(""), Env);
-}
-static avxsynth::AVSValue __cdecl CreateFFDeinterlace(avxsynth::AVSValue Args, void* UserData, avxsynth::IScriptEnvironment* Env) {
-	return new FFPP(Args[0].AsClip(), "fd", Env);
-}
-
-#endif // FFMS_USE_POSTPROC
 
 static avxsynth::AVSValue __cdecl CreateSWScale(avxsynth::AVSValue Args, void* UserData, avxsynth::IScriptEnvironment* Env) {
 	return new SWScale(Args[0].AsClip(), Args[1].AsInt(0), Args[2].AsInt(0), Args[3].AsString("BICUBIC"), Args[4].AsString(""), Env);
@@ -339,29 +324,19 @@ static avxsynth::AVSValue __cdecl FFGetVersion(avxsynth::AVSValue Args, void* Us
 }
 
 extern "C" __declspec(dllexport) const char* __stdcall AvisynthPluginInit2(avxsynth::IScriptEnvironment* Env) {
-  
     Env->AddFunction("FFIndex", "[source]s[cachefile]s[indexmask]i[dumpmask]i[audiofile]s[errorhandling]i[overwrite]b[utf8]b[demuxer]s", CreateFFIndex, 0);
-    Env->AddFunction("FFVideoSource", "[source]s[track]i[cache]b[cachefile]s[fpsnum]i[fpsden]i[pp]s[threads]i[timecodes]s[seekmode]i[rffmode]i[width]i[height]i[resizer]s[colorspace]s[utf8]b[varprefix]s", CreateFFVideoSource, 0);
-    Env->AddFunction("FFAudioSource", "[source]s[track]i[cache]b[cachefile]s[adjustdelay]i[utf8]b[varprefix]s", CreateFFAudioSource, 0);
-#ifdef FFMS_USE_POSTPROC
-    Env->AddFunction("FFPP", "c[pp]s", CreateFFPP, 0);
-#endif // FFMS_USE_POSTPROC
-    Env->AddFunction("SWScale", "c[width]i[height]i[resizer]s[colorspace]s", CreateSWScale, 0);	
-    Env->AddFunction("FFGetLogLevel", "", FFGetLogLevel, 0);
-    Env->AddFunction("FFSetLogLevel", "i", FFSetLogLevel, 0);
-    Env->AddFunction("FFGetVersion", "", FFGetVersion, 0);
-    
-#ifdef FFMS_USE_POSTPROC
-    // Postprocessing filters implemented using FFPP    
-    Env->AddFunction("FFDeinterlace", "c", CreateFFDeinterlace, 0);    
-#endif // FFMS_USE_POSTPROC
-    
+	Env->AddFunction("FFVideoSource", "[source]s[track]i[cache]b[cachefile]s[fpsnum]i[fpsden]i[threads]i[timecodes]s[seekmode]i[rffmode]i[width]i[height]i[resizer]s[colorspace]s[utf8]b[varprefix]s", CreateFFVideoSource, 0);
+	Env->AddFunction("FFAudioSource", "[source]s[track]i[cache]b[cachefile]s[adjustdelay]i[utf8]b[varprefix]s", CreateFFAudioSource, 0);
+	Env->AddFunction("SWScale", "c[width]i[height]i[resizer]s[colorspace]s", CreateSWScale, 0);
+	Env->AddFunction("FFGetLogLevel", "", FFGetLogLevel, 0);
+	Env->AddFunction("FFSetLogLevel", "i", FFSetLogLevel, 0);
+	Env->AddFunction("FFGetVersion", "", FFGetVersion, 0);
+
     // Colorspace conversion filters implemented using SWScale (matrix/interlaced not implemented)
     Env->AddFunction("FFConvertToRGB24", "c[matrix]s[interlaced]b", CreateFFConvertToRGB24, 0);
     Env->AddFunction("FFConvertToRGB32", "c[matrix]s[interlaced]b", CreateFFConvertToRGB32, 0);	
     Env->AddFunction("FFConvertToYV12", "c[matrix]s[interlaced]b", CreateFFConvertToYV12, 0);
     Env->AddFunction("FFConvertToYUY2", "c[matrix]s[interlaced]b", CreateFFConvertToYUY2, 0);
-	
+
     return "FFmpegSource - The Second Coming V2.0 Final";
 }
-
