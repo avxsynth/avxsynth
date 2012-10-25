@@ -898,7 +898,7 @@ private:
   Cache* CacheHead;
 
   HRESULT hrfromcoinit;
-  DWORD coinitThreadId;
+  pthread_t coinitThreadId;
 
   static long refcount; // Global to all ScriptEnvironment objects
 };
