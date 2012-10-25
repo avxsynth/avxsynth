@@ -73,44 +73,17 @@ void FreeLibraries(void* loaded_plugins, IScriptEnvironment* env) {
   memset(loaded_plugins, 0, max_plugins*sizeof(HMODULE));
 }
 
-#ifdef __APPLE__
-#define NMCMD "nm "
-#define NMSYM "N8avxsynth13CAVIFileSynth9DelayInitE"
-#else
-#define NMCMD "nm -CD "
-#define NMSYM "avxsynth::CAVIFileSynth::DelayInit"
-#endif
-
 static bool IdentifiedLibAvxsynthDuplicate(const char* filename)
-{    
-    std::string strCommand          = NMCMD;
-    std::string strFilename         = std::string("\"") + std::string(filename) + std::string("\"");
-    std::string strDiscriminator    = NMSYM;
-    std::string strGrepAfter        = std::string(" | grep \"") + strDiscriminator + std::string("\"");
-    std::string strCompleteCommand = strCommand + strFilename + strGrepAfter;
-    
-    FILE* pp = popen(strCompleteCommand.c_str(), "r");
-    if(NULL == pp)
-    {
-        AVXLOG_ERROR("%s", "Failed opening pipe for examining the plugin\n");
-        return false;
-    };
-    
-    fflush(pp);
-    char buffer[PATH_MAX];
+{
     bool bIdentified = false;
-    while(1)
-    {
-        if(NULL == fgets(buffer, PATH_MAX, pp))
-            break;
-        
-        if(strstr(buffer, strDiscriminator.c_str()))
-        {
+	HMODULE hmod = dlopen(filename, RTLD_LOCAL | RTLD_NOW | RTLD_FIRST);
+	if(hmod) {
+		if(dlsym(hmod, "add_built_in_functions_Audio_filters")) {
+			dlclose(hmod);
             bIdentified = true;
-            break;
-        }
-    }
-    pclose(pp);
+		}
+		dlclose(hmod);
+	}
     return bIdentified;
 }
 

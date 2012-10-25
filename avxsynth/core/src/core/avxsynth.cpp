@@ -51,6 +51,12 @@ using std::string;
 #include <sys/types.h>
 #include <dirent.h>
 #include <vector>
+#ifdef __APPLE__
+#include <mach/host_info.h>
+#include <mach/mach_host.h>
+#elif defined(BSD)
+#include <sys/sysctl.h>
+#endif
 #include "windowsPorts.h"
 #include "builtInFunctionsExportDefinitions.h"
 #include "avxlog.h"
@@ -770,7 +776,7 @@ char* StringDump::SaveString(const char* s, int len) {
     len = strlen(s);
   if (block_pos+len+1 > block_size) {
     char* new_block = new char[block_size = std::max((unsigned long)block_size, (unsigned long)(len+1+sizeof(char*)))];
-    AVXLOG_INFO("s", "StringDump: Allocating new stringblock.");
+    AVXLOG_INFO("%s", "StringDump: Allocating new stringblock.");
     *(char**)new_block = current_block;   // beginning of block holds pointer to previous block
     current_block = new_block;
     block_pos = sizeof(char*);
@@ -938,11 +944,20 @@ ScriptEnvironment::ScriptEnvironment()
 //      memory_max = (__int64)memstatus.dwAvailPhys >> 2;
 //    else
 //      memory_max = 16*1024*1024;
-#elif defined(__APPLE__)
-    memory_max = 0;
-#else      
-    long nPageSize               = sysconf(_SC_PAGE_SIZE);
-    long nAvailablePhysicalPages = sysconf(_SC_AVPHYS_PAGES);
+#else
+    long nPageSize = sysconf(_SC_PAGE_SIZE);
+    __int64 nAvailablePhysicalPages;
+#ifdef __APPLE__
+    vm_statistics64_data_t vmstats;
+    mach_msg_type_number_t vmstatsz = HOST_VM_INFO64_COUNT;
+    host_statistics64(mach_host_self(), HOST_VM_INFO64, (host_info_t)&vmstats, &vmstatsz);
+    nAvailablePhysicalPages = vmstats.free_count;
+#elif defined(BSD)
+    size_t nAvailablePhysicalPagesLen = sizeof(nAvailablePhysicalPages);
+    sysctlbyname("vm.stats.vm.v_free_count", &nAvailablePhysicalPages, &nAvailablePhysicalPagesLen, NULL, 0);
+#else // Linux
+    nAvailablePhysicalPages = sysconf(_SC_AVPHYS_PAGES);
+#endif
     memory_max = (__int64)(nPageSize*nAvailablePhysicalPages) >> 2;
 #endif
     if (memory_max <= 0 || memory_max > 512*1024*1024) // More than 0.5GB
@@ -1054,29 +1069,38 @@ void ScriptEnvironment::FreeAllBuiltInPlugins(void)
 }
 
 int ScriptEnvironment::SetMemoryMax(int mem) {
-#if 0
   if (mem > 0) {
-    MEMORYSTATUS memstatus;
     __int64 mem_limit;
-
-    GlobalMemoryStatus(&memstatus); // Correct call for a 32Bit process. -Ex gives numbers we cannot use!
-
     memory_max = mem * (__int64)1048576;                          // mem as megabytes
     if (memory_max < memory_used) memory_max = memory_used; // can't be less than we already have
 
+#if 0 // win32
+    MEMORYSTATUS memstatus;
+    GlobalMemoryStatus(&memstatus); // Correct call for a 32Bit process. -Ex gives numbers we cannot use!
 	if (memstatus.dwAvailVirtual < memstatus.dwAvailPhys) // Check for big memory in Vista64
 	  mem_limit = (__int64)memstatus.dwAvailVirtual;
 	else
       mem_limit = (__int64)memstatus.dwAvailPhys;
+#else
+#ifdef __APPLE__
+    vm_statistics64_data_t vmstats;
+    mach_msg_type_number_t vmstatsz = HOST_VM_INFO64_COUNT;
+    host_statistics64(mach_host_self(), HOST_VM_INFO64, (host_info_t)&vmstats, &vmstatsz);
+    mem_limit = vmstats.free_count;
+#elif defined(BSD)
+    size_t szAvailPages = sizeof(mem_limit);
+    sysctlbyname("vm.stats.vm.v_free_count", &mem_limit, &szAvailPages, NULL, 0);
+#else // Linux
+    mem_limit = sysconf(_SC_AVPHYS_PAGES);
+#endif
+    mem_limit *= sysconf(_SC_PAGE_SIZE);
+#endif
 
     mem_limit += memory_used - (__int64)5242880;
     if (memory_max > mem_limit) memory_max = mem_limit;     // can't be more than 5Mb less than total
     if (memory_max < (__int64)4194304) memory_max = (__int64)4194304;	  // can't be less than 4Mb -- Tritical Jan 2006
   }
-  return (int)(memory_max/(__int64)1048576);
-#else
-   return 777;
-#endif
+ return (int)(memory_max/(__int64)1048576);
 }
 
 int ScriptEnvironment::SetWorkingDir(const char * newdir) {

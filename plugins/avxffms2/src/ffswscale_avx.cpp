@@ -55,15 +55,15 @@ SwsContext *FFGetSwsContext(int SrcW, int SrcH, PixelFormat SrcFormat, int DstW,
     else // explicit limited range, or unspecified
         Range = 0;
 
-    av_set_int(Context, "sws_flags", Flags);
-    av_set_int(Context, "srcw",       SrcW);
-    av_set_int(Context, "srch",       SrcH);
-    av_set_int(Context, "dstw",       DstW);
-    av_set_int(Context, "dsth",       DstH);
-    av_set_int(Context, "src_range",  Range);
-    av_set_int(Context, "dst_range",  Range);
-    av_set_int(Context, "src_format", SrcFormat);
-    av_set_int(Context, "dst_format", DstFormat);
+    av_opt_set_int(Context, "sws_flags", Flags,      0);
+    av_opt_set_int(Context, "srcw",       SrcW,      0);
+    av_opt_set_int(Context, "srch",       SrcH,      0);
+    av_opt_set_int(Context, "dstw",       DstW,      0);
+    av_opt_set_int(Context, "dsth",       DstH,      0);
+    av_opt_set_int(Context, "src_range",  Range,     0);
+    av_opt_set_int(Context, "dst_range",  Range,     0);
+    av_opt_set_int(Context, "src_format", SrcFormat, 0);
+    av_opt_set_int(Context, "dst_format", DstFormat, 0);
 
     sws_setColorspaceDetails(Context, sws_getCoefficients(ColorSpace), Range, sws_getCoefficients(ColorSpace), Range, 0, 1<<16, 1<<16);
 
