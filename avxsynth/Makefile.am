@@ -128,6 +128,9 @@ libavxsynth_la_SOURCES = \
 	core/src/filters/conditional/conditional_functions.h   \
 	core/src/filters/conditional/conditional_reader.h
 
+pkginclude_HEADERS = \
+	core/src/core/avxsynth_c.h
+
 libavxsynth_la_CPPFLAGS = \
 	-DAVXSYNTH_PLUGIN_PATH='"$(pkglibdir)"' \
 	-I$(srcdir)/common/include              \
