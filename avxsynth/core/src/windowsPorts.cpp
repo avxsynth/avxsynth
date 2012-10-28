@@ -4,7 +4,6 @@
 #include <ctype.h>
 #include <string.h>
 #include <dirent.h>
-#include <limits.h>
 
 namespace avxsynth{  
     
