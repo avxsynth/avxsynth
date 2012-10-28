@@ -293,7 +293,9 @@ namespace avxsynth
         pango_font_description_set_family (font_description, textConfig.fontname.c_str());
         pango_font_description_set_weight (font_description, PANGO_WEIGHT_BOLD);
         pango_font_description_set_absolute_size (font_description, PANGO_SCALE*(fontSize));
+#ifndef __APPLE__
         pango_font_description_set_stretch(font_description, PANGO_STRETCH_ULTRA_EXPANDED);
+#endif
 
         layout = pango_cairo_create_layout (cr);
         pango_layout_set_alignment(layout, PANGO_ALIGN_CENTER);
@@ -364,7 +366,9 @@ namespace avxsynth
         pango_font_description_set_family (font_description, textConfig.fontname.c_str());
         pango_font_description_set_weight (font_description, PANGO_WEIGHT_BOLD);
         pango_font_description_set_absolute_size (font_description, PANGO_SCALE*(fontSize));
+#ifndef __APPLE__
         pango_font_description_set_stretch(font_description, PANGO_STRETCH_ULTRA_EXPANDED);
+#endif
 
         layout = pango_cairo_create_layout (cr);
         
@@ -426,7 +430,9 @@ namespace avxsynth
         pango_font_description_set_family (desc, textConfig.fontname.c_str());
         pango_font_description_set_weight (desc, PANGO_WEIGHT_BOLD);
         pango_font_description_set_absolute_size (desc, PANGO_SCALE*(textConfig.size));
+#ifndef __APPLE__
         pango_font_description_set_stretch(desc, PANGO_STRETCH_ULTRA_EXPANDED);
+#endif
         pango_layout_set_font_description(layout, desc);
         
         PangoFontMetrics *metrics   = pango_context_get_metrics(context, desc, language);
