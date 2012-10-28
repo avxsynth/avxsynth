@@ -39,7 +39,6 @@
 #define FP_STATE 0x9001f
 
 #include <stdio.h>
-#include <malloc.h>
 #include <limits.h>
 #include <math.h>
 #include <cstdarg>
