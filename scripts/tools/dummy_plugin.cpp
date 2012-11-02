@@ -9,8 +9,6 @@ also subject to any licensing terms in Avi/AvxSynth.
 */
 
 #include <avxplugin.h>
-#include <stdio.h>
-#include <unistd.h>
 
 typedef avxsynth::AVSValue AVSValue;
 typedef avxsynth::IScriptEnvironment IScriptEnvironment;
