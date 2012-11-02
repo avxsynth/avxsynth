@@ -2,7 +2,6 @@
 # Process this file with automake to produce a Makefile.
 
 nobase_pkginclude_HEADERS = \
-	avxiface.h                              \
 	avxlog.h                                \
 	avxplugin.h                             \
 	utils/AvxTextRender.h                   \

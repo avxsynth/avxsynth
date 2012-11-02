@@ -41,6 +41,7 @@
 
 using namespace std;
 
+#include "windowsPorts/WinDefLinux.h"
 #include "windowsPorts.h"
 #include "AvxString.h"
 #include "TextLayout.h"

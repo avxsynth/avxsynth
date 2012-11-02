@@ -92,7 +92,6 @@ libavxsynth_la_SOURCES = \
 	core/src/core/avxsynth_c.cpp                           \
 	core/src/core/avxsynth.cpp                             \
 	core/src/core/cache.cpp                                \
-	core/src/core/main.cpp                                 \
 	core/src/core/memcpy_amd.cpp                           \
 	core/src/core/plugins.cpp                              \
 	core/src/core/parser/expression.cpp                    \
@@ -106,7 +105,6 @@ libavxsynth_la_SOURCES = \
 	core/src/filters/text-overlay.cpp                      \
 	core/src/sources/avi/cpuaccel.cpp                      \
 	core/src/windowsPorts.cpp                              \
-	core/src/core/clip_info.h                              \
 	core/src/core/resource.h                               \
 	core/src/core/memcpy_amd.h                             \
 	core/src/core/parser/expression.h                      \

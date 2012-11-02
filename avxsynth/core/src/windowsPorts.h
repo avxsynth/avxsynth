@@ -2,8 +2,8 @@
 #define __WINDOWS_PORTS_H__
 
 #include <stdarg.h>
-#include "avxiface.h"
 #include <limits.h>
+#include "windowsPorts/windows2linux.h"
 
 namespace avxsynth {
   
