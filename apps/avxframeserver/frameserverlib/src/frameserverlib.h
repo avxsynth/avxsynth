@@ -36,12 +36,10 @@
 #ifndef FRAMESERVERLIB_H
 #define FRAMESERVERLIB_H
 
-#include <dlfcn.h>
-#include <unistd.h>
-
 namespace avxsynth
 {
-    extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired);
+
+	extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired);
 }
 
 

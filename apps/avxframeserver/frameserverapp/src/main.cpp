@@ -35,9 +35,8 @@
 // import and export plugins, or graphical user interfaces.auto
 
 #include <stdio.h>
-#include <string>
+#include <string.h>
 #include <dlfcn.h>
-#include "avxiface.h"
 #include <avxlog.h>
 
 #include "frameserverlib.h"

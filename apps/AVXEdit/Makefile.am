@@ -44,6 +44,7 @@ AVXEdit_LDADD = \
 
 AVXEdit_CPPFLAGS = \
 	-I$(top_srcdir)/apps/avxframeserver/frameserverlib/src \
+	-I$(top_srcdir)/include \
 	$(AM_CPPFLAGS)
 
 AVXEdit_CXXFLAGS = \

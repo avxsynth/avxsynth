@@ -4,14 +4,12 @@
 noinst_LTLIBRARIES = libavxframeserver.la
 
 noinst_HEADERS = \
-	frameserverlib/src/frameserverlib.h \
-	frameserverlib/src/utilities.h
+	frameserverlib/src/frameserverlib.h
 
 bin_PROGRAMS = avxFrameServer
 
 libavxframeserver_la_SOURCES = \
-	frameserverlib/src/avxSynthAppInterface.cpp \
-	frameserverlib/src/utilities.cpp
+	frameserverlib/src/avxSynthAppInterface.cpp
 
 libavxframeserver_la_CPPFLAGS = \
 	-I$(srcdir)/frameserverlib/src          \
