@@ -69,6 +69,9 @@ namespace avxsynth {
 
 #define MODULE_NAME core::avxsynth
 
+const char _AVS_VERSTR[]    = AVS_VERSTR;
+const char _AVS_COPYRIGHT[] = AVS_AVX_SYNTH AVS_COPYRIGHT AVS_VERSTR;
+
 _PixelClip PixelClip;
 
 #ifdef _MSC_VER

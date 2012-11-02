@@ -65,9 +65,6 @@ namespace avxsynth {
 
 #define MODULE_NAME core::main
 
-const char _AVS_VERSTR[]    = AVS_VERSTR;
-const char _AVS_COPYRIGHT[] = AVS_AVX_SYNTH AVS_COPYRIGHT AVS_VERSTR;
-
 static long gRefCnt=0;
 
 
