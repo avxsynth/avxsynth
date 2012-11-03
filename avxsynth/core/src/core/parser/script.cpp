@@ -40,6 +40,7 @@
 #include "script.h"
 #include <time.h>
 #include <unistd.h>
+#include "utils/Path.h"
 #include "windowsPorts.h"
 
 namespace avxsynth {
@@ -279,22 +280,25 @@ AVSValue Import(AVSValue args, void*, IScriptEnvironment* env)
       env->ThrowError("Import: unable to read \"%s\"", script_name);
     CloseHandle(h);
 #else
-  
+
     if(NULL == realpath(script_name, full_path))
       env->ThrowError("Import: unable to open \"%s\" (path invalid?)", script_name);
-    
+
     FILE* fpTemp = fopen(full_path, "r");
     if(NULL == fpTemp)
       env->ThrowError("Import: couldn't open \"%s\"", full_path);
-    
+
+    Utf8String dir_name = Path::FullPath(full_path);
+    CWDChanger change_cwd(dir_name);
+
     fseek(fpTemp, 0, SEEK_END);
     DWORD size = ftell(fpTemp);
     fseek(fpTemp, 0, SEEK_SET);
-    
+
     DynamicCharBuffer buf(size+1);
     if(size != fread(buf, 1, size, fpTemp))
-      env->ThrowError("Import: unable to read \"%s\"", script_name);	  
-    
+      env->ThrowError("Import: unable to read \"%s\"", script_name);
+
     fclose(fpTemp);
 #endif 
 
