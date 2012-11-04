@@ -62,7 +62,6 @@ typedef uint32_t ULONG;
 typedef uint32_t* ULONG_PTR;
 //typedef __int64_t intptr_t;
 typedef __uint64_t _fsize_t;
-typedef pthread_mutex_t CRITICAL_SECTION;
 
 
 //

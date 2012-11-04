@@ -63,10 +63,6 @@ namespace avxsynth {
 #define InterlockedDecrement(x)             __sync_fetch_and_sub((x), 1)
 // Windows uses (new, old) ordering but GCC has (old, new)
 #define InterlockedCompareExchange(x,y,z)   __sync_val_compare_and_swap(x,z,y)
-#define InitializeCriticalSection(x)        pthread_mutex_init(x, NULL)
-#define EnterCriticalSection(x)             pthread_mutex_lock(x)
-#define LeaveCriticalSection(x)             pthread_mutex_unlock(x)
-#define DeleteCriticalSection(x)            pthread_mutex_destroy(x)
 
 #define UInt32x32To64(a, b)                 ( (uint64_t) ( ((uint64_t)((uint32_t)(a))) * ((uint32_t)(b))  ) ) 
 #define Int64ShrlMod32(a, b)                ( (uint64_t) ( (uint64_t)(a) >> (b) ) )

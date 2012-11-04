@@ -11,16 +11,11 @@ nobase_pkginclude_HEADERS = \
 	utils/AvxException.h                    \
 	utils/TextConfig.h                      \
 	utils/TextLayout.h                      \
-	windowsPorts/MMRegLinux.h               \
 	windowsPorts/WinNTLinux.h               \
-	windowsPorts/VfwLinux.h                 \
 	windowsPorts/excptLinux.h               \
 	windowsPorts/basicDataTypeConversions.h \
-	windowsPorts/WinBaseLinux.h             \
 	windowsPorts/WinDefLinux.h              \
-	windowsPorts/windows2linux.h            \
-	windowsPorts/WinGDILinux.h              \
-	windowsPorts/UnknwnLinux.h
+	windowsPorts/windows2linux.h
 
 uninstall-hook:
 	-rmdir $(pkgincludedir)/utils
