@@ -39,3 +39,7 @@ dist_doc_DATA = README.md
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = avxsynth.pc avxutils.pc
+
+uninstall-hook:
+	-rmdir $(pkglibdir)
+

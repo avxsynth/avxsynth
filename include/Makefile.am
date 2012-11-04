@@ -22,3 +22,9 @@ nobase_pkginclude_HEADERS = \
 	windowsPorts/windows2linux.h            \
 	windowsPorts/WinGDILinux.h              \
 	windowsPorts/UnknwnLinux.h
+
+uninstall-hook:
+	-rmdir $(pkgincludedir)/utils
+	-rmdir $(pkgincludedir)/windowsPorts
+	-rmdir $(pkgincludedir)
+
