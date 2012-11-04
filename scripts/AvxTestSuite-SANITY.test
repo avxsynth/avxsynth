@@ -4,7 +4,7 @@
 #Remember: This file only records the last known result.
 #Do not use this to assume correctness of behavior.
 #
-SCRIPT,"autoloadplugin.avs",02fd7ebbe4d0b57173f3fc0ccd1405d8
-SCRIPT,"exception.avs",02fd7ebbe4d0b57173f3fc0ccd1405d8
-SCRIPT,"loadplugin.avs",02fd7ebbe4d0b57173f3fc0ccd1405d8
-SCRIPT,"setworkingdir.avs",02fd7ebbe4d0b57173f3fc0ccd1405d8
+SCRIPT,"autoloadplugin.avs",410c6935937a084159bd27892e94bf67
+SCRIPT,"exception.avs",410c6935937a084159bd27892e94bf67
+SCRIPT,"loadplugin.avs",410c6935937a084159bd27892e94bf67
+SCRIPT,"setworkingdir.avs",410c6935937a084159bd27892e94bf67
