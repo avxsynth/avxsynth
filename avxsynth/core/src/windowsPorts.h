@@ -3,6 +3,7 @@
 
 #include <stdarg.h>
 #include <limits.h>
+#include <time.h>
 #include "windowsPorts/windows2linux.h"
 
 namespace avxsynth {

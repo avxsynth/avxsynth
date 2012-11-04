@@ -7,6 +7,5 @@ Name: AvxSynth
 Description: AvxSynth (AviSynth for Linux)
 Version: @PACKAGE_VERSION@
 Requires.private: log4cpp pangocairo
-Libs.private: @PTHREAD_CFLAGS@ @PTHREAD_LIBS@
 Libs: -L"${libdir}" -lavxutils
 Cflags: -I"${includedir}"

@@ -1,8 +1,7 @@
 #ifndef __DATA_TYPE_CONVERSIONS_H__
 #define __DATA_TYPE_CONVERSIONS_H__
 
-#include <inttypes.h>
-#include <pthread.h>
+#include <stdint.h>
 #include <wchar.h>
 
 #ifdef __cplusplus
@@ -61,7 +60,7 @@ typedef LONG_PTR LRESULT;
 typedef uint32_t ULONG;
 typedef uint32_t* ULONG_PTR;
 //typedef __int64_t intptr_t;
-typedef __uint64_t _fsize_t;
+typedef uint64_t _fsize_t;
 
 
 //

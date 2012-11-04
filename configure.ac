@@ -116,14 +116,6 @@ AC_DEFUN([RESTORE_COMPILER_FLAGS],
   ]
 )
 
-# Currently pthreads are not used, but may be in the future.
-# However, they are required by log4cpp for complete static linking.
-
-AX_PTHREAD(
-  [CFLAGS="$CFLAGS $PTHREAD_CFLAGS" CXXFLAGS="$CXXFLAGS $PTHREAD_CFLAGS" LIBS="$LIBS $PTHREAD_LIBS"],
-  [AC_MSG_WARN([unable to find pthreads, this will probably not work])]
-)
-
 # libtool can find these automatically, but not if the user requests
 # a completely static executable.
 AC_SEARCH_LIBS([dlopen], [dl dld],
@@ -462,9 +454,6 @@ LDFLAGS: $LDFLAGS
 LIBS: $LIBS
 
 Library specific build settings:
-pthreads:
-    CFLAGS: $PTHREAD_CFLAGS
-    LIBS: $PTHREAD_LIBS
 log4cpp:
     CFLAGS: $log4cpp_CFLAGS
     LIBS: $log4cpp_LIBS
