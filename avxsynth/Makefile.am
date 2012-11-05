@@ -137,6 +137,8 @@ libavxsynth_la_CPPFLAGS = \
 	-I$(top_srcdir)/include                 \
 	$(AM_CPPFLAGS)
 
+pkginclude_HEADERS = core/src/core/avxsynth_c.h
+
 libavxsynth_la_LDFLAGS = -version-info 0:0:0 -export-dynamic $(AM_LDFLAGS)
 
 # For some reason libtool refuses to run ldconfig
