@@ -75,6 +75,7 @@ void FreeLibraries(void* loaded_plugins, IScriptEnvironment* env) {
 
 static bool IdentifiedLibAvxsynthDuplicate(const char* filename)
 {    
+#ifndef __APPLE__
     std::string strCommand          = "nm -CD ";
     std::string strFilename         = std::string("\"") + std::string(filename) + std::string("\"");
     std::string strDiscriminator    = "avxsynth::CAVIFileSynth::DelayInit";
@@ -104,6 +105,9 @@ static bool IdentifiedLibAvxsynthDuplicate(const char* filename)
     }
     pclose(pp);
     return bIdentified;
+#else
+    return false;
+#endif
 }
 
 static bool MyLoadLibrary(const char* filename, HMODULE* hmod, bool quiet, IScriptEnvironment* env) {
