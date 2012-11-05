@@ -7,7 +7,7 @@
 //
 // Data types conversions
 //
-#include <assert.h>
+#include <stdlib.h>
 #include <string.h>
 #include "basicDataTypeConversions.h"
 
@@ -55,7 +55,6 @@ namespace avxsynth {
 #define MAKEDWORD(a,b,c,d) ((a << 24) | (b << 16) | (c << 8) | (d))
 #define MAKEWORD(a,b) ((a << 8) | (b))
 
-#define _ASSERT                             assert
 #define lstrlen                             strlen
 #define lstrcpy                             strcpy
 #define lstrcmpi                            strcasecmp

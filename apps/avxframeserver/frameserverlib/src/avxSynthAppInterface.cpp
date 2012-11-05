@@ -624,6 +624,12 @@ bool DetermineStreamType(IAVXSynth* pAVXSynth, IAVIStream* & pVideoStream, IAVIS
     return true;
 }
 
+#ifdef __APPLE__
+#define AVXSYNTH_LIB "libavxsynth.dylib"
+#else
+#define AVXSYNTH_LIB "libavxsynth.so"
+#endif
+
 extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
 {
      AVXLOG_INFO("%s", __FUNCTION__);
@@ -647,10 +653,10 @@ extern int ProcessScript(const char *scriptName, bool isMPlayerLaunchRequired)
           AVXLOG_INFO("Processing script %s:", scriptName);
           printScript(scriptName);
           
-          hAvxSynth = dlopen("libavxsynth.so", RTLD_NOW | RTLD_GLOBAL);
+          hAvxSynth = dlopen(AVXSYNTH_LIB, RTLD_NOW | RTLD_GLOBAL);
           if(NULL == hAvxSynth)
           {
-              AVXLOG_ERROR("%s", "Failed loading libavxsynth.so");
+              AVXLOG_ERROR("%s", "Failed loading " AVXSYNTH_LIB);
               AVXLOG_ERROR("Error: %s", dlerror());
               return -1;
           }
