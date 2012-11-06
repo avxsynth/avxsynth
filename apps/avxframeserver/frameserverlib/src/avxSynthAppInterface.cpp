@@ -184,7 +184,7 @@ int AvxContext::OpenFile() {
 int AvxContext::OutputVideo() {
 	FILE *sink;
 	unsigned char *writeBuffer = NULL;
-	sighandler_t old_sigpipe = signal(SIGPIPE, SIG_IGN);
+	sig_t old_sigpipe = signal(SIGPIPE, SIG_IGN);
 
 	if (launchMPlayer) {
 		char command[1024];
@@ -259,7 +259,7 @@ fail:
 int AvxContext::OutputAudio() {
 	FILE *sink;
 	void *writeBuffer = NULL;
-	sighandler_t old_sigpipe = signal(SIGPIPE, SIG_IGN);
+	sig_t old_sigpipe = signal(SIGPIPE, SIG_IGN);
 
 	if (launchMPlayer) {
 		char command[1024];
