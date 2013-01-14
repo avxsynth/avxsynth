@@ -102,9 +102,9 @@ Color::Color(PClip _child, double _gain_y, double _off_y, double _gamma_y, doubl
 PVideoFrame __stdcall Color::GetFrame(int frame, IScriptEnvironment* env)
 {
 	PVideoFrame src;
-	unsigned long *srcp;
+	uint32_t *srcp;
 //	PVideoFrame dst;
-//	unsigned long *dstp;
+//	uint32_t *dstp;
 	int pitch, w, h;
 	int i,j,wby4;
 	int modulo;
@@ -147,14 +147,14 @@ PVideoFrame __stdcall Color::GetFrame(int frame, IScriptEnvironment* env)
 	src = child->GetFrame(frame, env);
 	env->MakeWritable(&src);
 
-	srcp = (unsigned long *) src->GetWritePtr();
+	srcp = (uint32_t *) src->GetWritePtr();
 	pitch = src->GetPitch();
 	w = src->GetRowSize();
 	h = src->GetHeight();
 	wby4 = w / 4;
 	modulo = pitch - w;
 //	dst = env->NewVideoFrame(vi);
-//	dstp = (unsigned long *) dst->GetWritePtr();
+//	dstp = (uint32_t *) dst->GetWritePtr();
 //	dpitch = dst->GetPitch();
 //	dmodulo = dpitch - dst->GetRowSize();
   if (analyze||autowhite||autogain) {
@@ -194,7 +194,7 @@ PVideoFrame __stdcall Color::GetFrame(int frame, IScriptEnvironment* env)
       uvdiv=2;
       for (int y=0;y<h;y++) {
         for (int x=0;x<wby4;x++) {
-          unsigned long p=srcp[x];
+          uint32_t p=srcp[x];
           accum_Y[p&0xff]++;
           accum_Y[(p>>16)&0xff]++;
           accum_U[(p>>8)&0xff]++;
@@ -202,7 +202,7 @@ PVideoFrame __stdcall Color::GetFrame(int frame, IScriptEnvironment* env)
         }
         srcp+=pitch/4;
       }
-      srcp=(unsigned long *)src->GetReadPtr();
+      srcp=(uint32_t *)src->GetReadPtr();
     }
     int pixels = vi.width*vi.height;
     float avg_u=0, avg_v=0, avg_y=0;
@@ -336,7 +336,7 @@ PVideoFrame __stdcall Color::GetFrame(int frame, IScriptEnvironment* env)
 			CheckRGB(&r, &g, &b);
 #endif
 		  }
-		  srcp = (unsigned long *)((unsigned char *)srcp + modulo) ;
+		  srcp = (uint32_t *)((unsigned char *)srcp + modulo) ;
 	  }
   } else if (vi.IsPlanar()) {
 	  BYTE* srcp2 = (BYTE*) src->GetWritePtr();
