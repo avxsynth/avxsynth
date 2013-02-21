@@ -948,6 +948,8 @@ ScriptEnvironment::ScriptEnvironment()
 #endif
     if (memory_max <= 0 || memory_max > 512*1024*1024) // More than 0.5GB
       memory_max = 512*1024*1024;
+    else if (memory_max < 16*1024*1024)
+      memory_max = 16*1024*1024;
 
     memory_used = (__int64)0;
     global_var_table = new VarTable(0, 0);
