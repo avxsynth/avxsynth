@@ -85,6 +85,7 @@ extern AVSFunction Plugin_functions[],
                    CPlugin_filters[], Cache_filters[]
                    ;
                    
+int builtInFunctionsLoaded = 0;
 std::vector<std::vector<AVSFunction> > builtInFunctions;
 
 // Global statistics counters
@@ -959,9 +960,11 @@ ScriptEnvironment::ScriptEnvironment()
     global_var_table->Set("yes", true);
     global_var_table->Set("no", false);
 
-	InitializeBuiltInFunctionsStorage();
-	LoadInternalBuiltinPlugins(); // <--- this method will eventually go away, it is temporary until we port out all built-in plugins
-	LoadBuiltInPlugins();
+    if (!builtInFunctionsLoaded++) {
+      InitializeBuiltInFunctionsStorage();
+      LoadInternalBuiltinPlugins(); // <--- this method will eventually go away, it is temporary until we port out all built-in plugins
+      LoadBuiltInPlugins();
+    }
     PrescanPlugins();
     ExportFilters();
 }
@@ -1023,7 +1026,8 @@ ScriptEnvironment::~ScriptEnvironment() {
 	g_Bin=NULL;
   }
 
-  FreeAllBuiltInPlugins();
+  if (!--builtInFunctionsLoaded)
+    FreeAllBuiltInPlugins();
 }
 
 void ScriptEnvironment::FreeAllBuiltInPlugins(void)

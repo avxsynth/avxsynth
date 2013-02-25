@@ -19,6 +19,7 @@ apps/AVXEdit/src/moc_mainwindow.cpp
 apps/AVXEdit/src/qrc_application.cpp
 scripts/tools/avs_c_interface
 scripts/tools/avsgrabber
+scripts/*.log
 config.log
 config.mak
 config.targets
