@@ -780,7 +780,7 @@ char* StringDump::SaveString(const char* s, int len) {
     len = strlen(s);
   if (block_pos+len+1 > block_size) {
     char* new_block = new char[block_size = std::max((unsigned long)block_size, (unsigned long)(len+1+sizeof(char*)))];
-    AVXLOG_INFO("s", "StringDump: Allocating new stringblock.");
+    AVXLOG_INFO("%s", "StringDump: Allocating new stringblock.");
     *(char**)new_block = current_block;   // beginning of block holds pointer to previous block
     current_block = new_block;
     block_pos = sizeof(char*);
