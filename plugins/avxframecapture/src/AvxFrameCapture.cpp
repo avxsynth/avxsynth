@@ -40,7 +40,7 @@
 //      outputPath_name:    The path, and partial filename for the captured images.  /home/encodingtools/Pictures/Capture_ would generate 
 //                          the file /home/encodingtools/Pictures/Capture_Frame_<frameNum>_Time_<Frame time>.jpg
 //  interval_ms: The interval (in milliseconds, between each frame to capture (i.e. 10010 woudl capture frames every 10 seconds.
-//  scale:  the scale in integer percent (i.e. 1-100)
+//  scale:  the scale in integer percent (i.e. 10-100)
 
 #include "AvxFrameCapture.h"
 #include "AvxException.h"

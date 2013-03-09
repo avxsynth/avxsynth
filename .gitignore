@@ -20,6 +20,7 @@ apps/AVXEdit/src/qrc_application.cpp
 scripts/tools/avs_c_interface
 scripts/tools/avsgrabber
 scripts/*.log
+scripts/common.avsi
 config.log
 config.mak
 config.targets

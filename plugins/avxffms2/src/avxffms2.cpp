@@ -356,11 +356,11 @@ extern "C" __declspec(dllexport) const char* __stdcall AvisynthPluginInit2(avxsy
     Env->AddFunction("FFDeinterlace", "c", CreateFFDeinterlace, 0);    
 #endif // FFMS_USE_POSTPROC
     
-    // Colorspace conversion filters implemented using SWScale
+    // Colorspace conversion filters implemented using SWScale (matrix/interlaced not implemented)
     Env->AddFunction("FFConvertToRGB24", "c[matrix]s[interlaced]b", CreateFFConvertToRGB24, 0);
     Env->AddFunction("FFConvertToRGB32", "c[matrix]s[interlaced]b", CreateFFConvertToRGB32, 0);	
-    Env->AddFunction("FFConvertToYV12", "c[interlaced]b[matrix]s", CreateFFConvertToYV12, 0);
-    Env->AddFunction("FFConvertToYUY2", "c[interlaced]b[matrix]s", CreateFFConvertToYUY2, 0);
+    Env->AddFunction("FFConvertToYV12", "c[matrix]s[interlaced]b", CreateFFConvertToYV12, 0);
+    Env->AddFunction("FFConvertToYUY2", "c[matrix]s[interlaced]b", CreateFFConvertToYUY2, 0);
 	
     return "FFmpegSource - The Second Coming V2.0 Final";
 }

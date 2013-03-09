@@ -108,7 +108,7 @@ bottomAdd - Integer - default 0
 
 See above but for the bottom.
 
-threshold - Integer (0-255) - default 30
+threshold - Integer (0-255) - default 40
 
 Threshold is the average luminance a line must have before it's considered non blank. For
 DVD sources values as low as 20 should work reliably. For VHS sources raising the value

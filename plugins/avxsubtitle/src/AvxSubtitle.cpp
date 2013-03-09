@@ -178,7 +178,7 @@ extern "C" __declspec(dllexport) const char* __stdcall AvisynthPluginInit2(IScri
     env->AddFunction
     (
         "AvxSubtitle",
-        "cs[font]s[size]i[stroke_size]i[text_color]i[stroke_color]i[input_encoding]s",
+        "cs[font]s[size]f[stroke_size]i[text_color]i[stroke_color]i[input_encoding]s",
         AvxSubtitle::Create, 
         0
     );
