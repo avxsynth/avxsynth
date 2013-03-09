@@ -37,10 +37,10 @@
 #ifndef __Convert_YUY2_H__
 #define __Convert_YUY2_H__
 
-#include "../internal.h"
+#include "common/include/internal.h"
 #include "convert_yv12.h"
 #ifdef ENABLE_INLINE_ASSEMBLY_MMX_SSE
-#include "../core/softwire_helpers.h"
+#include "../core/softwire_helpers.h" // doesn't exist in source tree
 #endif // ENABLE_INLINE_ASSEMBLY_MMX_SSE
 
 namespace avxsynth {

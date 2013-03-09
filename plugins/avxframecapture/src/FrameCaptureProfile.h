@@ -37,7 +37,7 @@
 #ifndef _FRAME_CPATURE_PROFILE_H
 #define _FRAME_CPATURE_PROFILE_H
 
-#include "AvxString.h"
+#include "utils/AvxString.h"
 
 using namespace avxsynth;
 

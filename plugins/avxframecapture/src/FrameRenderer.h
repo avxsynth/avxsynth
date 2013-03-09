@@ -39,7 +39,7 @@
 
 #include "avxplugin.h"
 #include "FrameCaptureProfile.h"
-#include "Size.h"
+#include "utils/Size.h"
 
 #include <vector>
 using namespace std;

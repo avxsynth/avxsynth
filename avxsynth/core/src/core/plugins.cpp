@@ -35,8 +35,8 @@
 // import and export plugins, or graphical user interfaces.
 
 
-#include "stdafx.h"
-#include "windowsPorts.h"
+#include "common/include/stdafx.h"
+#include "core/src/windowsPorts.h"
 #include "Error.h"    // which includes "internal.h"
 #include <stdarg.h>
 #include <dlfcn.h>

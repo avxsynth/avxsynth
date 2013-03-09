@@ -35,8 +35,8 @@
 // import and export plugins, or graphical user interfaces.
 
 
-#include "stdafx.h"
-#include "cache.h"
+#include "common/include/stdafx.h"
+#include "common/include/core/cache.h"
 #include "avxlog.h"
 
 namespace avxsynth { 

@@ -41,8 +41,8 @@
  *******   AlignPlanar   ******
  *****************************/
 
-#include "stdafx.h"
-#include "avxsynth.h"
+#include "common/include/stdafx.h"
+#include "common/include/core/avxsynth.h"
 
 namespace avxsynth {
 	

@@ -35,7 +35,7 @@
 // import and export plugins, or graphical user interfaces.
 
 
-#include "stdafx.h"
+#include "common/include/stdafx.h"
 
 #include "tokenizer.h"
 

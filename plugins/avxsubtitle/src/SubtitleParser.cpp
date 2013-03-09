@@ -36,7 +36,7 @@
 
 
 #include "SubtitleParser.h"
-#include "AvxException.h"
+#include "utils/AvxException.h"
 #include "SrtParser.h"
 
 CaptionList SubtitleParser::Parse(const char* path)

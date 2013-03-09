@@ -43,7 +43,7 @@
 //  scale:  the scale in integer percent (i.e. 10-100)
 
 #include "AvxFrameCapture.h"
-#include "AvxException.h"
+#include "utils/AvxException.h"
 #include "avxlog.h"
 
 #ifdef MODULE_NAME

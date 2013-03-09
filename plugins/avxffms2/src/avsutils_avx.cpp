@@ -19,7 +19,7 @@
 //  THE SOFTWARE.
 
 #include "avxplugin.h"
-#include "ffms.h"
+#include <ffms.h>
 
 extern "C" {
 #include <libswscale/swscale.h>

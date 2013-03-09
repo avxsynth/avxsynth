@@ -36,15 +36,15 @@
 
 
 #include "FrameRenderer.h"
-#include "AvxException.h"
-#include "Path.h"
-#include "stdio.h"
-#include "errno.h"
+#include "utils/AvxException.h"
+#include "utils/Path.h"
+#include <stdio.h>
+#include <errno.h>
 
 #define JPEG_CJPEG_DJPEG	/* define proper options in jconfig.h */
 #define JPEG_INTERNAL_OPTIONS	/* cjpeg.c,djpeg.c need to see xxx_SUPPORTED */
-#include "jpeglib.h"
-#include "jerror.h"		/* get library error codes too */
+#include <jpeglib.h>
+#include <jerror.h>		/* get library error codes too */
 
 #include "avxlog.h"
 
@@ -67,7 +67,7 @@ using namespace std;
 
 static const char * const cdjpeg_message_table[] = 
 {
-    #include "jerror.h"
+    #include <jerror.h>
     NULL
 };
 
