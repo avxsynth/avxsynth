@@ -1,1 +1,0 @@
-./configure --enable-gpl --enable-nonfree --enable-version3 --enable-shared

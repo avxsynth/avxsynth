@@ -1,3 +1,0 @@
-./configure --enable-shared
-make
-sudo checkinstall --pkgname=ffms2 --pkgversion="2.17" --backup=no --deldoc=yes --fstrans=no --default
