@@ -37,9 +37,9 @@
 #ifndef __Levels_H__
 #define __Levels_H__
 
-#include "../internal.h"
+#include "common/include/internal.h"
 #ifdef ENABLE_INLINE_ASSEMBLY_MMX_SSE
-#include "../core/softwire_helpers.h"
+#include "../core/softwire_helpers.h" // doesn't exist in source tree
 #endif // ENABLE_INLINE_ASSEMBLY_MMX_SSE
 
 namespace avxsynth {

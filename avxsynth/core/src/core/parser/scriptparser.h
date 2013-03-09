@@ -37,7 +37,7 @@
 #ifndef __ScriptParser_H__
 #define __ScriptParser_H__
 
-#include <internal.h>
+#include "common/include/internal.h"
 #include "expression.h"
 #include "tokenizer.h"
 #include "script.h"

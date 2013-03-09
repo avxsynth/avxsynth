@@ -39,7 +39,7 @@
 
 typedef float REAL;
 
-#include "../internal.h"
+#include "avxsynth/common/include/internal.h"
 #include "ssrc.h"
 
 namespace avxsynth {

@@ -34,11 +34,11 @@
 // which is not derived from or based on Avisynth, such as 3rd-party filters,
 // import and export plugins, or graphical user interfaces.auto
 
-#include "Path.h"
-#include "limits.h"
-#include "stdlib.h"
-#include "string.h"
-#include "errno.h"
+#include "utils/Path.h"
+#include <limits.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
 
 namespace avxsynth
 {

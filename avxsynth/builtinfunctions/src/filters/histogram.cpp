@@ -35,10 +35,10 @@
 // import and export plugins, or graphical user interfaces.
 
 
-#include "stdafx.h"
+#include "common/include/stdafx.h"
 
 #include "histogram.h"
-#include "info.h"
+#include "common/include/core/info.h"
 
 
 namespace avxsynth {

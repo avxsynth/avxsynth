@@ -37,7 +37,7 @@
 #ifndef __Focus_H__
 #define __Focus_H__
 
-#include "../internal.h"
+#include "common/include/internal.h"
 
 namespace avxsynth {
 	

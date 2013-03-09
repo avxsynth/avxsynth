@@ -35,7 +35,7 @@
 // import and export plugins, or graphical user interfaces.
 
 
-#include "../internal.h"
+#include "common/include/internal.h"
 
 namespace avxsynth {
     

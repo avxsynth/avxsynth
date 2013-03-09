@@ -39,7 +39,7 @@
 // Avisynth filter: Layer
 // by "poptones" (poptones@myrealbox.com)
 
-#include "stdafx.h"
+#include "common/include/stdafx.h"
 
 #include "layer.h"
 

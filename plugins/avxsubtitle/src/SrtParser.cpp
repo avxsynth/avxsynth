@@ -40,7 +40,7 @@
 #include <wctype.h>
 #include "Utils.h"
 #include "SrtParser.h"
-#include "AvxException.h"
+#include "utils/AvxException.h"
 
 class _SrtParserWorker
 {

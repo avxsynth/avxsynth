@@ -37,7 +37,7 @@
 #ifndef __Greyscale_H__
 #define __Greyscale_H__
 
-#include "../internal.h"
+#include "common/include/internal.h"
 
 namespace avxsynth {
 

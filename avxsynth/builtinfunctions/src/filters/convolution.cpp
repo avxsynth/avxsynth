@@ -35,7 +35,7 @@
 // import and export plugins, or graphical user interfaces.
 
 
-#include "stdafx.h"
+#include "common/include/stdafx.h"
 
 // Avisynth filter: general convolution
 // by Richard Berg (avisynth-dev@richardberg.net)

@@ -38,7 +38,7 @@
 #define _CAPTION_LIST_H
 
 #include "CaptionEntry.h"
-#include "vector"
+#include <vector>
 using namespace std;
 
 using namespace avxsynth;
