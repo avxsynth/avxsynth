@@ -42,7 +42,7 @@
 #include "utils/AvxTextRender.h"
 #include <pango-1.0/pango/pango-layout.h>
 
-namespace avxsynth 
+namespace avxsynth
 {
 
 #ifdef MODULE_NAME
@@ -59,17 +59,17 @@ namespace avxsynth
             {
                 case TextLayout::Left:
                     return PANGO_ALIGN_LEFT;
-                    
+
                 case TextLayout::HCenter:
                     return PANGO_ALIGN_CENTER;
-                    
+
                 case TextLayout::Right:
                     return PANGO_ALIGN_RIGHT;
             }
-            
+
             return PANGO_ALIGN_LEFT;
         }
-        
+
         struct PangoStrideBuf
         {
             PangoStrideBuf() : pData(0), nCairoStride(0){};
@@ -78,7 +78,7 @@ namespace avxsynth
                     if(pData != 0)
                         delete [] pData;
             }
-            
+
             unsigned char *pData;
             int nCairoStride;
         };
@@ -90,7 +90,7 @@ namespace avxsynth
             // stride value. For that sake, we will first repack the original image buffer to
             // the buffer that matches the libcairo stride requirements
             //
-            strideBuf.nCairoStride = cairo_format_stride_for_width(CAIRO_FORMAT_RGB24, trd.width);        
+            strideBuf.nCairoStride = cairo_format_stride_for_width(CAIRO_FORMAT_RGB24, trd.width);
             strideBuf.pData = new unsigned char[trd.height*strideBuf.nCairoStride];
             if(NULL == strideBuf.pData)
             {
@@ -100,7 +100,7 @@ namespace avxsynth
                     trd.height*strideBuf.nCairoStride, trd.height, strideBuf.nCairoStride
                 );
             }
-            
+
             if(strideBuf.nCairoStride == trd.originalStride)
             {
                 //
@@ -108,7 +108,7 @@ namespace avxsynth
                 //
                 for(int i = 0; i < trd.height; i++)
                 {
-                    // single pass through this loop processes one 
+                    // single pass through this loop processes one
                     // horizontal line
                     unsigned char* pSrc  = trd.originalBuffer + i*trd.originalStride;
                     unsigned char* pDest = strideBuf.pData + (trd.height - 1 - i)*strideBuf.nCairoStride;
@@ -128,7 +128,7 @@ namespace avxsynth
                 //
                 for(int i = 0; i < trd.height; i++)
                 {
-                    // single pass through this loop processes one 
+                    // single pass through this loop processes one
                     // horizontal line
                     unsigned char* pSrc  = trd.originalBuffer + i*trd.originalStride;
                     unsigned char* pDest = strideBuf.pData + (trd.height - 1 - i)*strideBuf.nCairoStride;
@@ -141,14 +141,14 @@ namespace avxsynth
                 }
             }
         }
-            
+
         void repackToOriginalStride(AvxTextRender::FrameBuffer const& trd, PangoStrideBuf &strideBuf)
-        { 
+        {
             if(strideBuf.nCairoStride == trd.originalStride)
             {
                 for(int i = 0; i < trd.height; i++)
                 {
-                    // single pass through this loop processes one 
+                    // single pass through this loop processes one
                     // horizontal line
                     unsigned char* pSrc  = strideBuf.pData + (trd.height - 1 - i)*strideBuf.nCairoStride;
                     unsigned char* pDest = trd.originalBuffer + i*trd.originalStride;
@@ -168,7 +168,7 @@ namespace avxsynth
                 //
                 for(int i = 0; i < trd.height; i++)
                 {
-                    // single pass through this loop processes one 
+                    // single pass through this loop processes one
                     // horizontal line
                     unsigned char* pSrc  = strideBuf.pData + (trd.height - 1 - i)*strideBuf.nCairoStride;
                     unsigned char* pDest = trd.originalBuffer + i*trd.originalStride;
@@ -215,7 +215,7 @@ namespace avxsynth
 
         void RenderShowFrameNumberScrolling
         (
-            const char* strText, 
+            const char* strText,
             AvxTextRender::FrameBuffer& trd,
             const TextConfig& textConfig,
             cairo_t *cr,
@@ -226,18 +226,18 @@ namespace avxsynth
         {
             //
             // In addition to rendering the specified frame number, render also N previous
-            // frame numbers. The value of N depends on 
+            // frame numbers. The value of N depends on
             //  a) how much was specified through the optionsParam value
             //  b) how many can fit the screen
             //
             // Scrolling will observe the left coordinate, but will incrementally adjust
             // the top coordinate to achieve the scrolling effect
-            // 
+            //
             double fontSize = textConfig.size;
             unsigned int nAvailableRows = trd.height/fontSize;
             unsigned int nRowsToDisplay = nFrames < nAvailableRows ? nFrames + 1 : nAvailableRows;
-            unsigned int nStartFrameNumber = atoi(strText); 
-            
+            unsigned int nStartFrameNumber = atoi(strText);
+
             unsigned int nInitialOffsetFromTop = (nFrames + nAvailableRows - 2) % nAvailableRows;
             unsigned int nInitialOffsetFromBottom = (nAvailableRows - 1 - nInitialOffsetFromTop); // 0 to 9
             unsigned int nTopCoordinate;
@@ -249,41 +249,41 @@ namespace avxsynth
                 cairo_move_to(cr, nLeftCoordinate, nTopCoordinate);
                 char temp[6] = {0,0,0,0,0,0};
                 sprintf(temp, "%05d", nStartFrameNumber);
-                
+
                 pango_layout_set_text (layout, temp, -1);
                 pango_cairo_show_layout(cr, layout);
-                
+
                 nStartFrameNumber--;
-            }            
+            }
         }
 
         void RenderOutlineText
         (
-            AvxTextRender::FrameBuffer & trd, 
-            cairo_t *cr, 
-            PangoFontDescription *font_description, 
-            int x, int y, 
+            AvxTextRender::FrameBuffer & trd,
+            cairo_t *cr,
+            PangoFontDescription *font_description,
+            int x, int y,
             TextConfig const& textConfig,
             const char* strText,
             PangoAlignment hAlign,
             unsigned int options,
             unsigned int optionsParam = -1
-        ) 
+        )
         {
-            
+
             PangoLayout *layout;                            // layout for a paragraph of text
             layout = pango_cairo_create_layout(cr);                 // init pango layout ready for use
 
             pango_layout_set_text(layout, strText, -1);
-            
+
             if(options & AvxTextRender::RenderOptions_ResizeToFit)
             {
                 pango_layout_set_width(layout, trd.width * PANGO_SCALE * .9);
             }
-            
+
             cairo_new_path(cr);
             cairo_move_to(cr, 0, 0);
-            cairo_set_line_width(cr, textConfig.strokeSize);                
+            cairo_set_line_width(cr, textConfig.strokeSize);
             pango_layout_set_alignment(layout, hAlign);
             //pango_layout_set_justify(layout, TRUE);
             pango_layout_set_font_description (layout, font_description);
@@ -291,21 +291,21 @@ namespace avxsynth
 
             cairo_set_source_rgb (cr, textConfig.strokeColor.fR, textConfig.strokeColor.fG, textConfig.strokeColor.fB);
             cairo_move_to (cr, x, y);
-            pango_cairo_update_layout(cr, layout);   
+            pango_cairo_update_layout(cr, layout);
             pango_cairo_layout_path(cr, layout);                    // draw the pango layout onto the cairo surface
             cairo_stroke_preserve(cr);                      // draw a stroke along the path, but do not fill it
 
             g_object_unref(layout);                         // free the layout
-        }         
+        }
     }
 
     void AvxTextRender::RenderSubtitleText(const char* strText, AvxTextRender::FrameBuffer & trd, TextConfig const& textConfig) throw (AvxException)
-    {     
+    {
         avxsubtitle::PangoStrideBuf strideBuf;
-        
+
         avxsubtitle::adjustStride(trd, strideBuf);
-        
-        cairo_surface_t* pSurface = 
+
+        cairo_surface_t* pSurface =
         cairo_image_surface_create_for_data(strideBuf.pData, CAIRO_FORMAT_RGB24, trd.width, trd.height, strideBuf.nCairoStride);
         cairo_status_t status = cairo_surface_status(pSurface);
 
@@ -315,7 +315,7 @@ namespace avxsynth
         }
 
         cairo_t *cr = cairo_create (pSurface);
-                
+
         PangoLayout *layout;
         PangoFontDescription *font_description;
 
@@ -335,7 +335,7 @@ namespace avxsynth
 
         PangoRectangle rect;
         TextConfig::Color textColor = textConfig.textcolor;
-        
+
         pango_layout_get_extents(layout, 0, &rect);
         int x = trd.width / 2 - ((rect.width / PANGO_SCALE) / 2);
         int vAdj = 10 + (rect.height  / PANGO_SCALE);
@@ -344,37 +344,37 @@ namespace avxsynth
         cairo_move_to (cr, x, y);
         pango_cairo_show_layout (cr, layout);
 
-        g_object_unref (layout);        
-        
+        g_object_unref (layout);
+
         if(textConfig.strokeSize > 0)
             avxsubtitle::RenderOutlineText(trd, cr, font_description, x, y, textConfig, strText, PANGO_ALIGN_CENTER, 0);
-        
+
         pango_font_description_free (font_description);
         cairo_destroy (cr);
-            
+
         avxsubtitle::repackToOriginalStride(trd, strideBuf);
 
         cairo_surface_destroy (pSurface);
     }
-    
-    
+
+
     void AvxTextRender::RenderText
     (
-        const char* strText, 
-        AvxTextRender::FrameBuffer& trd, 
-        const TextConfig& textConfig, 
-        const TextLayout& textLayout, 
+        const char* strText,
+        AvxTextRender::FrameBuffer& trd,
+        const TextConfig& textConfig,
+        const TextLayout& textLayout,
         unsigned int options,
         unsigned int optionsParam
     ) throw(AvxException)
     {
         //AVXLOG_INFO("%s", __FUNCTION__);
-        
+
         avxsubtitle::PangoStrideBuf strideBuf;
-        
+
         adjustStride(trd, strideBuf);
-        
-        cairo_surface_t* pSurface = 
+
+        cairo_surface_t* pSurface =
         cairo_image_surface_create_for_data(strideBuf.pData, CAIRO_FORMAT_RGB24, trd.width, trd.height, strideBuf.nCairoStride);
         cairo_status_t status = cairo_surface_status(pSurface);
 
@@ -384,12 +384,12 @@ namespace avxsynth
         }
 
         cairo_t *cr = cairo_create (pSurface);
-                
+
         PangoLayout *layout;
         PangoFontDescription *font_description;
 
         double fontSize = textConfig.size;
-        
+
         PangoAlignment hAlign = avxsubtitle::FromHorizontalAlignment(textLayout.horizontalAlignment);
 
         font_description = pango_font_description_new ();
@@ -399,25 +399,25 @@ namespace avxsynth
         pango_font_description_set_stretch(font_description, PANGO_STRETCH_ULTRA_EXPANDED);
 
         layout = pango_cairo_create_layout (cr);
-        
+
         pango_layout_set_alignment(layout, hAlign);
         //pango_layout_set_justify(layout, TRUE);
         pango_layout_set_font_description (layout, font_description);
         pango_layout_set_text (layout, strText, -1);
-        
+
         pango_layout_set_wrap(layout, PANGO_WRAP_WORD_CHAR);
-        
+
         TextConfig::Color textColor = textConfig.textcolor;
-        
+
         if(options & RenderOptions_ResizeToFit)
         {
             pango_layout_set_width(layout, trd.width * PANGO_SCALE * .9);
         }
-            
+
         int x = textLayout.rect.left;
         int y = textLayout.rect.top;
         cairo_set_source_rgb (cr, textColor.fR, textColor.fG, textColor.fB);
-        
+
         if(options & RenderOptions_Scroll_SFN)
         {
             avxsubtitle::RenderShowFrameNumberScrolling(strText, trd, textConfig, cr, layout, x, optionsParam);
@@ -435,17 +435,17 @@ namespace avxsynth
         if(textConfig.strokeSize)
             avxsubtitle::RenderOutlineText(trd, cr, font_description, x, y, textConfig, strText, hAlign,  options, optionsParam);
 
-        g_object_unref (layout);        
-                
+        g_object_unref (layout);
+
         pango_font_description_free (font_description);
         cairo_destroy (cr);
         //cairo_surface_write_to_png (pSurface, <your_home_directory>/Desktop/firstTry.png");
-            
+
         repackToOriginalStride(trd, strideBuf);
 
         cairo_surface_destroy (pSurface);
-    }   
-    
+    }
+
     void AvxTextRender::GetApproximateCharacterWidth
     (
         TextConfig const& textConfig,
@@ -456,7 +456,7 @@ namespace avxsynth
         cairo_t *cr                 = cairo_create(surface);
         PangoLayout *layout         = pango_cairo_create_layout(cr);
         PangoContext *context       = pango_layout_get_context(layout);
-        
+
         PangoLanguage *language     = pango_language_get_default();
         PangoFontDescription *desc  = pango_font_description_new ();
         pango_font_description_set_family (desc, textConfig.fontname.c_str());
@@ -464,12 +464,12 @@ namespace avxsynth
         pango_font_description_set_absolute_size (desc, PANGO_SCALE*(textConfig.size));
         pango_font_description_set_stretch(desc, PANGO_STRETCH_ULTRA_EXPANDED);
         pango_layout_set_font_description(layout, desc);
-        
+
         PangoFontMetrics *metrics   = pango_context_get_metrics(context, desc, language);
 
         nCharacterWidth = pango_font_metrics_get_approximate_char_width(metrics);
         nCharacterWidth = (nCharacterWidth + PANGO_SCALE)/PANGO_SCALE;
-        
+
         pango_font_description_free(desc);
         g_object_unref(layout);
 

@@ -45,7 +45,7 @@
 #include "TextLayout.h"
 #include "AvxException.h"
 
-namespace avxsynth 
+namespace avxsynth
 {
     class AvxTextRender
     {
@@ -55,7 +55,7 @@ namespace avxsynth
             FrameBuffer() : originalBuffer(0), width(0), height(0), originalStride(0)
             {
             }
-            
+
             FrameBuffer(unsigned char* originalBuffer, int width, int height, int originalStride)
             {
                 this->originalBuffer = originalBuffer;
@@ -63,12 +63,12 @@ namespace avxsynth
                 this->height = height;
                 this->originalStride = originalStride;
             }
-            
+
             unsigned char*    originalBuffer;
             int               width;
             int               height;
             int               originalStride;
-            
+
         private:
             // don't allow
             FrameBuffer(FrameBuffer const& cpy){};
@@ -77,9 +77,9 @@ namespace avxsynth
                 return *this;
             }
         };
-        
+
         /**
-         * bit flag rendering options 
+         * bit flag rendering options
          */
         enum RenderOptions
         {
@@ -88,8 +88,8 @@ namespace avxsynth
             RenderOptions_Scroll_SFN  = 1 << 1,  // text scrolling in the fashion of ShowFrameNumber() function
             RenderOptions_Column_SFN  = 1 << 2   // form a column (wall) of text
         };
-        
-        
+
+
         static void RenderSubtitleText(const char* strText, FrameBuffer & trd, TextConfig const& textConfig) throw(AvxException);
         static void RenderText
         (
