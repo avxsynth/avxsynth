@@ -180,7 +180,38 @@ namespace avxsynth
                     }
                 }
             }
-         }            
+         }
+
+        void RenderShowFrameNumberColumn
+        (
+            const char* strText,
+            AvxTextRender::FrameBuffer& trd,
+            const TextConfig& textConfig,
+            cairo_t *cr,
+            PangoLayout *layout,
+            int nLeftCoordinate
+        )
+        {
+            double fontSize = textConfig.size;
+            unsigned int nAvailableRows = trd.height/fontSize;
+            unsigned int nFrameNumber = atoi(strText);
+
+            unsigned int nInitialOffsetFromTop = (nAvailableRows - 1) % nAvailableRows;
+            unsigned int nInitialOffsetFromBottom = (nAvailableRows - 1 - nInitialOffsetFromTop); // 0 to 9
+            for(unsigned int i = 0; i < nAvailableRows; i++)
+            {
+                unsigned int nOffsetFromBottom = (nInitialOffsetFromBottom + i) % nAvailableRows;
+                unsigned int nTopCoordinate = trd.height - (nOffsetFromBottom + 1)*fontSize;
+
+                cairo_move_to(cr, nLeftCoordinate, nTopCoordinate);
+                char temp[6] = {0};
+                sprintf(temp, "%05d", nFrameNumber);
+
+                pango_layout_set_text (layout, temp, -1);
+                pango_cairo_show_layout(cr, layout);
+            }
+        }
+
 
         void RenderShowFrameNumberScrolling
         (
@@ -389,7 +420,11 @@ namespace avxsynth
         
         if(options & RenderOptions_Scroll_SFN)
         {
-            avxsubtitle::RenderShowFrameNumberScrolling(strText, trd, textConfig, cr, layout, x, optionsParam);            
+            avxsubtitle::RenderShowFrameNumberScrolling(strText, trd, textConfig, cr, layout, x, optionsParam);
+        }
+        else if(options & RenderOptions_Column_SFN)
+        {
+           avxsubtitle::RenderShowFrameNumberColumn(strText, trd, textConfig, cr, layout, x);
         }
         else
         {
