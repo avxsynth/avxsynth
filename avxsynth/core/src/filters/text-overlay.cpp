@@ -167,7 +167,7 @@ PVideoFrame ShowFrameNumber::GetFrame(int n, IScriptEnvironment* env) {
     if(-1 == this->x && -1 == this->y && scroll)
         AvxTextRender::RenderText(text, trd, txtConfig, txtLayout, AvxTextRender::RenderOptions_Scroll_SFN, n - offset);
     else
-        AvxTextRender::RenderText(text, trd, txtConfig, txtLayout);
+        AvxTextRender::RenderText(text, trd, txtConfig, txtLayout, AvxTextRender::RenderOptions_Column_SFN);
   }
   catch(AvxException &e)
   {
