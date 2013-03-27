@@ -38,9 +38,9 @@
 #ifndef _CAPTION_ENTRY_H
 #define _CAPTION_ENTRY_H
 
-#include "vector"
-#include "AvxString.h"
-#include "stdint.h"
+#include <vector>
+#include "utils/AvxString.h"
+#include <stdint.h>
 
 using namespace std;
 

@@ -37,11 +37,11 @@
 #ifndef __Resample_H__
 #define __Resample_H__
 
-#include "../internal.h"
+#include "internal.h"
 #if 0
-#include "resample_functions.h"
+#include "resample_functions.h" // doesn't exist in source tree
 #include "transform.h"
-#include "../core/softwire_helpers.h"
+#include "../core/softwire_helpers.h" // doesn't exist in source tree
 #endif
 
 namespace avxsynth {

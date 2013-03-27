@@ -43,7 +43,7 @@
 #ifndef __Merge_H__
 #define __Merge_H__
 
-#include "../internal.h"
+#include "internal.h"
 
 namespace avxsynth {
 	

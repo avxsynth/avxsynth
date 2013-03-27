@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <avxsynth_c.h>
+#include "core/avxsynth_c.h"
 
 // The purpose of this program is to check consistency
 // between the size of AVS_Value (C) and AVSValue (C++)

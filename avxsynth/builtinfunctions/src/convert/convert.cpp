@@ -38,7 +38,7 @@
 
 #include "stdafx.h"
 
-#include "convert.h"
+#include "convert/convert.h"
 #include "convert_rgb.h"
 #include "convert_yv12.h"
 #include "convert_yuy2.h"

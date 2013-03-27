@@ -37,9 +37,9 @@
 
 #include "stdafx.h"
 
-#include "../internal.h"
+#include "internal.h"
 #include "source-private.h"
-#include "text-overlay.h"
+#include "filters/text-overlay.h"
 
 namespace avxsynth {
 	

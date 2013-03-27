@@ -1,7 +1,7 @@
 // Prints the string representation of an AVS value to stdout.
 // Probably not safe against buffer overflow etc.
 
-#include <avxplugin.h>
+#include "avxplugin.h"
 #include <stdio.h>
 
 using namespace avxsynth;

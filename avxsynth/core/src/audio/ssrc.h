@@ -18,13 +18,13 @@ Copyright © 2003, Klaus Post
 *******************************************************/
 
 
-#include "../internal.h"
-#include <distrib/include/pfc/pfc.h>
+#include "internal.h"
+#include <distrib/include/pfc/pfc.h> // doesn't exist in source tree
 
 typedef SFLOAT audio_sample;
 typedef audio_sample REAL_inout;
 
-#include "math_shared.h"
+#include "audio/math_shared.h"
 
 namespace avxsynth {
 	

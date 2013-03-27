@@ -37,7 +37,7 @@
 #ifndef __Expression_H__
 #define __Expression_H__
 
-#include <internal.h>
+#include "internal.h"
 
 namespace avxsynth {
 	

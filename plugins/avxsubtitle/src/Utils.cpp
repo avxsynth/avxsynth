@@ -35,7 +35,7 @@
 // import and export plugins, or graphical user interfaces.auto
 
 #include "Utils.h"
-#include "memory.h"
+#include <memory.h>
 
 namespace avxsynth
 {

@@ -36,9 +36,9 @@
 #ifndef __Audio_H__
 #define __Audio_H__
 
-#include "../internal.h"
-#include "../filters/text-overlay.h"
-#include "../core/cache.h"
+#include "internal.h"
+#include "filters/text-overlay.h"
+#include "core/cache.h"
 
 namespace avxsynth {
 

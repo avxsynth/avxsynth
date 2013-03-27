@@ -43,8 +43,8 @@
 
 #include "AvxSubtitle.h"
 #include "SubtitleParser.h"
-#include "AvxException.h"
-#include "AvxTextRender.h"
+#include "utils/AvxException.h"
+#include "utils/AvxTextRender.h"
 #include "avxlog.h"
 
 using namespace avxsynth;

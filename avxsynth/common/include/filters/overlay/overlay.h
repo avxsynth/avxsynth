@@ -39,7 +39,7 @@
 #ifndef __Overlay_h
 #define __Overlay_h
 
-#include <internal.h>
+#include "internal.h"
 #include "444convert.h"
 #include "overlayfunctions.h"
 #include "blend_asm.h"

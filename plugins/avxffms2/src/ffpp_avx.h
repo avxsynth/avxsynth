@@ -33,7 +33,7 @@ extern "C" {
 #include <libpostproc/postprocess.h>
 }
 
-#include "ffmscompat.h"
+#include <ffmscompat.h>
 
 #include "avxplugin.h"
 

@@ -42,7 +42,7 @@
 #ifndef __Planeswap_H__
 #define __Planeswap_H__
 
-#include "../internal.h"
+#include "internal.h"
 
 namespace avxsynth {
 

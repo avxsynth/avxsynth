@@ -60,11 +60,11 @@ api_CPPFLAGS = -I$(top_srcdir)/include $(AM_CPPFLAGS)
 api_LDADD = $(top_builddir)/avxsynth/libavxsynth.la
 
 api_test_avs_c_interface_SOURCES = api_test/avs_c_interface.c
-api_test_avs_c_interface_CPPFLAGS = -I$(top_srcdir)/avxsynth/core/src/core $(api_CPPFLAGS)
+api_test_avs_c_interface_CPPFLAGS = -I$(top_srcdir)/core $(api_CPPFLAGS)
 api_test_avs_c_interface_LDADD = $(api_LDADD)
 
 api_test_invoke_positional_args_SOURCES = api_test/invoke_positional_args.c
-api_test_invoke_positional_args_CPPFLAGS = -I$(top_srcdir)/avxsynth/core/src/core $(api_CPPFLAGS)
+api_test_invoke_positional_args_CPPFLAGS = -I$(top_srcdir)/core $(api_CPPFLAGS)
 api_test_invoke_positional_args_LDADD = $(api_LDADD)
 
 api_test_multiple_script_env_SOURCES = api_test/multiple_script_env.cpp

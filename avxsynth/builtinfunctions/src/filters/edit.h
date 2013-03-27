@@ -37,8 +37,8 @@
 #ifndef __Edit_H__
 #define __Edit_H__
 
-#include "../internal.h"
-#include "merge.h"
+#include "internal.h"
+#include "filters/merge.h"
 
 namespace avxsynth {
 	
