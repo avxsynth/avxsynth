@@ -37,7 +37,7 @@
 #ifndef __Transform_H__
 #define __Transform_H__
 
-#include "../internal.h"
+#include "common/include/internal.h"
 
 namespace avxsynth {
 	

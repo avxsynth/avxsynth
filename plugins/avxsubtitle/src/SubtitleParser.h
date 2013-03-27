@@ -39,7 +39,7 @@
 #define _SUBTITLE_PARSER_H
 
 #include "CaptionList.h"
-#include "vector"
+#include <vector>
 
 class SubtitleParser
 {

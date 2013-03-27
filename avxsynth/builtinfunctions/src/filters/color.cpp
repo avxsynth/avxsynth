@@ -35,7 +35,7 @@
 // import and export plugins, or graphical user interfaces.
 
 
-#include "stdafx.h"
+#include "common/include/stdafx.h"
 
 
 /* Color YUV originally by Kiraru2002(masani)
@@ -44,7 +44,7 @@
 */
 
 #include "color.h"
-#include <text-overlay.h>
+#include "common/include/filters/text-overlay.h"
 
 namespace avxsynth {
 

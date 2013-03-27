@@ -34,7 +34,7 @@
 // which is not derived from or based on Avisynth, such as 3rd-party filters,
 // import and export plugins, or graphical user interfaces.
 
-#include "stdafx.h"
+#include "common/include/stdafx.h"
 #include <stdlib.h>
 #include <stdarg.h>
 #include <errno.h>
@@ -42,10 +42,10 @@
 #include <string>
 using std::string;
 
-#include "../internal.h"
-#include "./parser/script.h"
+#include "common/include/internal.h"
+#include "core/src/core/parser/script.h"
 #include "memcpy_amd.h"
-#include "cache.h"
+#include "common/include/core/cache.h"
 #include <dlfcn.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -57,8 +57,8 @@ using std::string;
 #elif defined(BSD)
 #include <sys/sysctl.h>
 #endif
-#include "windowsPorts.h"
-#include "builtInFunctionsExportDefinitions.h"
+#include "core/src/windowsPorts.h"
+#include "builtinfunctions/builtInFunctionsExportDefinitions.h"
 #include "avxlog.h"
 
 namespace avxsynth {

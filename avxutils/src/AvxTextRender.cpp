@@ -33,12 +33,13 @@
 // Public License plus this exception.  An independent module is a module
 // which is not derived from or based on Avisynth, such as 3rd-party filters,
 // import and export plugins, or graphical user interfaces.auto
+
 #include <stdlib.h>
-#include <avxlog.h>
-#include "AvxException.h"
-#include <cairo.h>
+#include "avxlog.h"
+#include "utils/AvxException.h"
+#include <cairo/cairo.h>
 #include <pango-1.0/pango/pangocairo.h>
-#include "AvxTextRender.h"
+#include "utils/AvxTextRender.h"
 #include <pango-1.0/pango/pango-layout.h>
 
 namespace avxsynth 

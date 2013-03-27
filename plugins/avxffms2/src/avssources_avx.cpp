@@ -20,19 +20,22 @@
 
 #include "avssources_avx.h"
 #include "avsutils_avx.h"
+#include <libavutil/common.h>
 #include <cmath>
 
+
+
 AvisynthVideoSource::AvisynthVideoSource(const char *SourceFile, int Track, FFMS_Index *Index,
-		int FPSNum, int FPSDen, const char *PP, int Threads, int SeekMode, int RFFMode,
+		int FPSNum, int FPSDen, int Threads, int SeekMode, int RFFMode,
 		int ResizeToWidth, int ResizeToHeight, const char *ResizerName,
-        const char *ConvertToFormatName, const char *VarPrefix, avxsynth::IScriptEnvironment* Env) {
-  
+		const char *ConvertToFormatName, const char *VarPrefix, avxsynth::IScriptEnvironment* Env) {
+
 	memset(&VI, 0, sizeof(VI));
 	this->FPSNum = FPSNum;
 	this->FPSDen = FPSDen;
 	this->RFFMode = RFFMode;
-    this->VarPrefix = VarPrefix;
-    
+	this->VarPrefix = VarPrefix;
+
 	char ErrorMsg[1024];
 	FFMS_ErrorInfo E;
 	E.Buffer = ErrorMsg;
@@ -41,11 +44,6 @@ AvisynthVideoSource::AvisynthVideoSource(const char *SourceFile, int Track, FFMS
 	V = FFMS_CreateVideoSource(SourceFile, Track, Index, Threads, SeekMode, &E);
 	if (!V)
 		Env->ThrowError("FFVideoSource: %s", E.Buffer);
-
-	if (PP && FFMS_SetPP(V, PP, &E)) {
-		FFMS_DestroyVideoSource(V);
-		Env->ThrowError("FFVideoSource: %s", E.Buffer);
-	}
 
 	try {
 		InitOutputFormat(ResizeToWidth, ResizeToHeight, ResizerName, ConvertToFormatName, Env);
@@ -157,20 +155,19 @@ AvisynthVideoSource::AvisynthVideoSource(const char *SourceFile, int Track, FFMS
 		}
 	}
 
-	    // Set AR variables
-        Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFSAR_NUM"), VP->SARNum);
-        Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFSAR_DEN"), VP->SARDen);
-        if (VP->SARNum > 0 && VP->SARDen > 0)
-            Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFSAR"), VP->SARNum / (double)VP->SARDen);
-                
-        // Set crop variables
-        Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFCROP_LEFT"), VP->CropLeft);
-        Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFCROP_RIGHT"), VP->CropRight);
-        Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFCROP_TOP"), VP->CropTop);
-        Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFCROP_BOTTOM"), VP->CropBottom);
-                        
-        Env->SetGlobalVar("FFVAR_PREFIX", this->VarPrefix);
+	// Set AR variables
+	Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFSAR_NUM"), VP->SARNum);
+	Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFSAR_DEN"), VP->SARDen);
+	if (VP->SARNum > 0 && VP->SARDen > 0)
+		Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFSAR"), VP->SARNum / (double)VP->SARDen);
 
+	// Set crop variables
+	Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFCROP_LEFT"), VP->CropLeft);
+	Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFCROP_RIGHT"), VP->CropRight);
+	Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFCROP_TOP"), VP->CropTop);
+	Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFCROP_BOTTOM"), VP->CropBottom);
+
+	Env->SetGlobalVar("FFVAR_PREFIX", this->VarPrefix);
 }
 
 AvisynthVideoSource::~AvisynthVideoSource() {
@@ -246,13 +243,13 @@ void AvisynthVideoSource::InitOutputFormat(
 	if (RFFMode > 0 && ResizeToHeight != F->EncodedHeight)
 		Env->ThrowError("FFVideoSource: Vertical scaling not allowed in RFF mode");
 
-	if (RFFMode > 0 && 	TargetPixelFormat != PIX_FMT_NV12)
+	if (RFFMode > 0 && TargetPixelFormat != PIX_FMT_NV21)
 		Env->ThrowError("FFVideoSource: Only the default output colorspace can be used in RFF mode");
-    
-    // set color information variables
-    Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFCOLOR_SPACE"), F->ColorSpace);
-    Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFCOLOR_RANGE"), F->ColorRange);
-            
+	
+	// set color information variables
+	Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFCOLOR_SPACE"), F->ColorSpace);
+	Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFCOLOR_RANGE"), F->ColorRange);
+
 	if (VP->TopFieldFirst)
 		VI.image_type = avxsynth::VideoInfo::IT_TFF;
 	else
@@ -348,14 +345,14 @@ avxsynth::PVideoFrame AvisynthVideoSource::GetFrame(int n, avxsynth::IScriptEnvi
 			Frame = FFMS_GetFrame(V, n, &E);
 			FFMS_Track *T = FFMS_GetTrackFromVideo(V);
 			const FFMS_TrackTimeBase *TB = FFMS_GetTimeBase(T);
-            Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFVFR_TIME"), static_cast<int>(FFMS_GetFrameInfo(T, n)->PTS * static_cast<double>(TB->Num) / TB->Den));
-        }
+			Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFVFR_TIME"), static_cast<int>(FFMS_GetFrameInfo(T, n)->PTS * static_cast<double>(TB->Num) / TB->Den));
+		}
 
 		if (Frame == NULL)
 			Env->ThrowError("FFVideoSource: %s", E.Buffer);
 
-        Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFPICT_TYPE"), static_cast<int>(Frame->PictType));
-        OutputFrame(Frame, Dst, Env);
+		Env->SetVar(Env->Sprintf("%s%s", this->VarPrefix, "FFPICT_TYPE"), static_cast<int>(Frame->PictType));
+		OutputFrame(Frame, Dst, Env);
 	}
 
 	return Dst;
@@ -366,7 +363,7 @@ bool AvisynthVideoSource::GetParity(int n) {
 }
 
 AvisynthAudioSource::AvisynthAudioSource(const char *SourceFile, int Track, FFMS_Index *Index,
-                                         int AdjustDelay, const char *VarPrefix, avxsynth::IScriptEnvironment* Env) {
+										 int AdjustDelay, const char *VarPrefix, avxsynth::IScriptEnvironment* Env) {
 	memset(&VI, 0, sizeof(VI));
 
 	char ErrorMsg[1024];
@@ -383,12 +380,12 @@ AvisynthAudioSource::AvisynthAudioSource(const char *SourceFile, int Track, FFMS
 
 	VI.num_audio_samples = AP->NumSamples;
 	VI.audio_samples_per_second = AP->SampleRate;
-    
-    // casting to int should be safe; none of the channel constants are greater than INT_MAX
-    Env->SetVar(Env->Sprintf("%s%s", VarPrefix, "FFCHANNEL_LAYOUT"), static_cast<int>(AP->ChannelLayout));
-    
-    Env->SetGlobalVar("FFVAR_PREFIX", VarPrefix);
-    
+
+	// casting to int should be safe; none of the channel constants are greater than INT_MAX
+	Env->SetVar(Env->Sprintf("%s%s", VarPrefix, "FFCHANNEL_LAYOUT"), static_cast<int>(AP->ChannelLayout));
+
+	Env->SetGlobalVar("FFVAR_PREFIX", VarPrefix);
+
 	switch (AP->SampleFormat) {
 		case FFMS_FMT_U8: VI.sample_type  = avxsynth::SAMPLE_INT8; break;
 		case FFMS_FMT_S16: VI.sample_type = avxsynth::SAMPLE_INT16; break;

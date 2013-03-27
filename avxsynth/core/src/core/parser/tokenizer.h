@@ -38,7 +38,7 @@
 #ifndef __Tokenizer_H__
 #define __Tokenizer_H__
 
-#include <internal.h>
+#include "common/include/internal.h"
 
 namespace avxsynth {
 	

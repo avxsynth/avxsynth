@@ -41,7 +41,7 @@
 #ifndef __Null_H__
 #define __Null_H__
 
-#include "../internal.h"
+#include "common/include/internal.h"
 
 namespace avxsynth {
 	

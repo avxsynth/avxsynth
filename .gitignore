@@ -9,8 +9,6 @@
 *.dirstamp
 *.deps
 *.libs
-*.sub
-*.cache
 libtool
 apps/AVXEdit/AVXEdit
 apps/avxframeserver/frameserverapp/avxFrameServer
@@ -31,16 +29,4 @@ scripts/common.avsi
 config.log
 config.mak
 config.targets
-configure
-config.guess
 config.status
-depcomp
-install-sh
-ltmain.sh
-missing
-aclocal.m4
-autom4te/*
-m4/libtool.m4
-m4/lt*.m4
-*Makefile
-*Makefile.in

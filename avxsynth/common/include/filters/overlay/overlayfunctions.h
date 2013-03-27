@@ -39,7 +39,7 @@
 #ifndef __Overlay_funcs_h
 #define __Overlay_funcs_h
 
-#include <internal.h>
+#include "avxsynth/common/include/internal.h"
 #include "imghelpers.h"
 #include "blend_asm.h"
 
