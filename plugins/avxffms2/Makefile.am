@@ -7,7 +7,6 @@ libavxffms2_la_SOURCES = \
 	src/avsutils_avx.cpp   \
 	src/ffswscale_avx.cpp  \
 	src/avssources_avx.cpp \
-	src/ffpp_avx.cpp       \
 	src/avxffms2.cpp
 
 libavxffms2_la_LIBADD = \
