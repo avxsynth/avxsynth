@@ -35,7 +35,7 @@
 // import and export plugins, or graphical user interfaces.
 
 
-#include "common/include/stdafx.h"
+#include "stdafx.h"
 
 #include "scriptparser.h"
 

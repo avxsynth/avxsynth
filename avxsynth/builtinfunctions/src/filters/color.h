@@ -38,7 +38,7 @@
 #ifndef __Color_h
 #define __Color_h
 
-#include "common/include/internal.h"
+#include "internal.h"
 #include "avxlog.h"
 
 namespace avxsynth {

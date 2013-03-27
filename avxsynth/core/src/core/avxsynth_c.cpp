@@ -7,10 +7,10 @@
 // (at your option) any later version.
 //
 
-#include "common/include/stdafx.h"
+#include "stdafx.h"
 #include <stdarg.h>
 #include <dlfcn.h>
-#include "common/include/internal.h"
+#include "internal.h"
 #include "avxsynth_c.h"
 
 using namespace avxsynth;

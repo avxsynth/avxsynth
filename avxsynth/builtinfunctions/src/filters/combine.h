@@ -37,7 +37,7 @@
 #ifndef __Combine_H__
 #define __Combine_H__
 
-#include "common/include/internal.h"
+#include "internal.h"
 
 namespace avxsynth {
 	

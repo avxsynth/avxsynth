@@ -39,7 +39,7 @@
 #define __Internal_H__
 
 #include <string.h>
-#include "common/include/core/avxsynth.h"
+#include "core/avxsynth.h"
 
 namespace avxsynth {
 #define AVS_VERSION 4.00

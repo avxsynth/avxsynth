@@ -24,7 +24,7 @@ Copyright © 2003, Klaus Post
 #ifndef _SUPEREQ_H_
 #define _SUPEREQ_H_
 
-#include "avxsynth/common/include/internal.h"
+#include "internal.h"
 #include "../../distrib/include/pfc/pfc.h" // doesn't exist in source tree
 
 namespace avxsynth {
@@ -32,7 +32,7 @@ namespace avxsynth {
 typedef SFLOAT audio_sample;
 typedef audio_sample REAL_inout;
 
-#include "avxsynth/core/src/audio/math_shared.h"
+#include "audio/math_shared.h"
 
 class NOVTABLE supereq_base
 {

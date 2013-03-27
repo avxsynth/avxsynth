@@ -18,7 +18,7 @@
   sh0dan[at]stofanet.dk
 */
 
-#include "common/include/internal.h"
+#include "internal.h"
 #include <stdio.h>
 #include <limits.h>
 

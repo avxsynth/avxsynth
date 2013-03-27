@@ -35,11 +35,11 @@
 // import and export plugins, or graphical user interfaces.
 
 
-#include "common/include/stdafx.h"
+#include "stdafx.h"
 
 #include "levels.h"
 
-#include "common/include/filters/text-overlay.h"
+#include "filters/text-overlay.h"
 
 
 namespace avxsynth {

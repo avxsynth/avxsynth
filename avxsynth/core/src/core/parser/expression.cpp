@@ -35,12 +35,12 @@
 // import and export plugins, or graphical user interfaces.
 
 
-#include "common/include/stdafx.h"
+#include "stdafx.h"
 
 #include "windowsPorts/WinNTLinux.h"
 #include "windowsPorts/excptLinux.h"
 #include "expression.h"
-#include "common/include/core/cache.h"
+#include "core/cache.h"
 #include "avxlog.h"
 
 namespace avxsynth {

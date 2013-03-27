@@ -37,7 +37,7 @@
 #ifndef __Resample_H__
 #define __Resample_H__
 
-#include "common/include/internal.h"
+#include "internal.h"
 #if 0
 #include "resample_functions.h" // doesn't exist in source tree
 #include "transform.h"

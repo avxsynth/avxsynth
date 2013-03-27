@@ -18,10 +18,10 @@
   sh0dan[at]stofanet.dk
 */
 
-#include "common/include/stdafx.h"
+#include "stdafx.h"
 #include "conditional_reader.h"
 #include "avxlog.h"
-#include "common/include/filters/text-overlay.h"
+#include "filters/text-overlay.h"
 #include <errno.h>
 
 namespace avxsynth {

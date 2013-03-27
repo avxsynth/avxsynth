@@ -40,7 +40,7 @@
 **
 */
 
-#include "common/include/stdafx.h"
+#include "stdafx.h"
 
 #include "turn.h"
 

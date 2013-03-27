@@ -4,7 +4,7 @@
 #ifndef f_ERROR_H
 #define f_ERROR_H
 
-#include "common/include/internal.h"
+#include "internal.h"
 
 namespace avxsynth {
 	

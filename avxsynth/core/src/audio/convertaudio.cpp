@@ -38,9 +38,9 @@
 // Copyright (c) Klaus Post 2001 - 2004
 // Copyright (c) Ian Brabham 2005
 
-#include "common/include/stdafx.h"
+#include "stdafx.h"
 #include <errno.h>
-#include "common/include/core/avxsynth.h"
+#include "core/avxsynth.h"
 #include "avxlog.h"
 
 

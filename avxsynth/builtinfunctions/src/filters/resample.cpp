@@ -34,7 +34,7 @@
 // which is not derived from or based on Avisynth, such as 3rd-party filters,
 // import and export plugins, or graphical user interfaces.
 
-#include "common/include/stdafx.h"
+#include "stdafx.h"
 
 #include "resample.h"
 

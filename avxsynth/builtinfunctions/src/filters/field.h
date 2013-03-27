@@ -37,7 +37,7 @@
 #ifndef __Field_H__
 #define __Field_H__
 
-#include "common/include/internal.h"
+#include "internal.h"
 
 namespace avxsynth {
 

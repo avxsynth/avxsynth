@@ -42,7 +42,7 @@
 #ifndef __Turn_H__
 #define __Turn_H__
 
-#include "common/include/internal.h"
+#include "internal.h"
 #include "turnfunc.h"
 
 namespace avxsynth {

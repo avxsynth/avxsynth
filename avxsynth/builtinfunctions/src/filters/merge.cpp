@@ -41,7 +41,7 @@
 // iSSE code by Ian Brabham
 
 
-#include "common/include/stdafx.h"
+#include "stdafx.h"
 
 #include "merge.h"
 

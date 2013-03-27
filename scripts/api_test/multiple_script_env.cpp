@@ -1,5 +1,5 @@
 #include <iostream>
-#include "include/avxplugin.h"
+#include "avxplugin.h"
 
 using namespace std;
 using namespace avxsynth;

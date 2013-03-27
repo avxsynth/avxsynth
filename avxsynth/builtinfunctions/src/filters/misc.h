@@ -38,7 +38,7 @@
 #define __Misc_H__
 
 
-#include "common/include/internal.h"
+#include "internal.h"
 
 namespace avxsynth {
 	

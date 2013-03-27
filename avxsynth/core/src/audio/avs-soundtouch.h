@@ -40,7 +40,7 @@
 #ifndef __AVS_SOUNDTOUCH_H__
 #define __AVS_SOUNDTOUCH_H__
 
-#include "avxsynth/common/include/internal.h"
+#include "internal.h"
 #include "../../distrib/include/pfc/pfc.h" // doesn't exist in source tree
 #include <math.h>
 #include "../../distrib/include/SoundTouch/SoundTouch.h" // doesn't exist in source tree

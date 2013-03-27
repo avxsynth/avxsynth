@@ -35,14 +35,14 @@
 // import and export plugins, or graphical user interfaces.
 
 
-#include "common/include/stdafx.h"
+#include "stdafx.h"
 
-#include "common/include/filters/text-overlay.h"
+#include "filters/text-overlay.h"
 
 using namespace std;
 
 #include "windowsPorts/WinDefLinux.h"
-#include "core/src/windowsPorts.h"
+#include "windowsPorts.h"
 #include "utils/AvxString.h"
 #include "utils/TextLayout.h"
 #include "utils/TextConfig.h"

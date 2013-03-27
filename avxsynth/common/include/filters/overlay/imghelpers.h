@@ -39,7 +39,7 @@
 #ifndef __Overlay_helpers_h
 #define __Overlay_helpers_h
 
-#include "include/avxlog.h"
+#include "avxlog.h"
 
 namespace avxsynth {
 
