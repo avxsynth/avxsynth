@@ -17,6 +17,13 @@ apps/avxframeserver/frameserverapp/avxFrameServer
 apps/avxframeserver/avxFrameServer
 apps/AVXEdit/src/moc_mainwindow.cpp
 apps/AVXEdit/src/qrc_application.cpp
+scripts/api_test/*.log
+scripts/api_test/avs_c_interface
+scripts/api_test/invoke_positional_args
+scripts/api_test/multiple_script_env
+scripts/autoload/
+scripts/output/
+scripts/scriptfunctions/*.log
 scripts/tools/avs_c_interface
 scripts/tools/avsgrabber
 scripts/*.log

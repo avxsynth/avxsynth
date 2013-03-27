@@ -217,28 +217,6 @@ void MemDebug::reset()
   whichByte = 3;
 }
 
-//
-// ErrorHandlingExternal
-//
-#define DEFAULT_ERROR_HANDLING_ENABLE_VALUE     (true)
-
-bool ErrorHandlingExternal::m_bErrorHandlingExternal = DEFAULT_ERROR_HANDLING_ENABLE_VALUE;
-
-ErrorHandlingExternal::ErrorHandlingExternal(IScriptEnvironment* env )
-{   
-}
-
-bool ErrorHandlingExternal::IsErrorHandlingExternal(void)
-{ 
-   return ErrorHandlingExternal::m_bErrorHandlingExternal;
-};
-
-AVSValue __cdecl ErrorHandlingExternal::Create(AVSValue args, IScriptEnvironment* env)
-{
-  ErrorHandlingExternal::m_bErrorHandlingExternal = args[0].AsBool(DEFAULT_ERROR_HANDLING_ENABLE_VALUE);
-  return new ErrorHandlingExternal(env);
-}
-
 /********************************************************************
 ***** Declare index of new filters for Avisynth's filter engine *****
 ********************************************************************/
@@ -246,7 +224,6 @@ AVSValue __cdecl ErrorHandlingExternal::Create(AVSValue args, IScriptEnvironment
 AVSFunction Debug_filters[] = {
   { "Null", "c[copy]s", Null::Create },     // clip, copy
   { "SetPlanarLegacyAlignment", "cb", PlanarLegacyAlignment::Create },     // clip, legacy alignment
-  { "ErrorHandlingExternal", "[enable]b", (AVXSYNTH_PLUGIN_APPLY_FUNCTION)ErrorHandlingExternal::Create },     // clip, legacy alignment
   { 0,0,0 }
 };
 

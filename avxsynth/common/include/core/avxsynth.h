@@ -113,7 +113,7 @@ enum
 #define BUILT_IN_TRANSFORM_FILTERS_NUMBER_OF_ITEMS             (7)
 #define BUILT_IN_MERGE_FILTERS_NUMBER_OF_ITEMS                 (3)
 #define BUILT_IN_COLOR_FILTERS_NUMBER_OF_ITEMS                 (1)
-#define BUILT_IN_DEBUG_FILTERS_NUMBER_OF_ITEMS                 (3)
+#define BUILT_IN_DEBUG_FILTERS_NUMBER_OF_ITEMS                 (2)
 #define BUILT_IN_IMAGE_FILTERS_NUMBER_OF_ITEMS                 (3)
 #define BUILT_IN_TURN_FILTERS_NUMBER_OF_ITEMS                  (3)
 #define BUILT_IN_CONDITIONAL_FILTERS_NUMBER_OF_ITEMS           (8)
