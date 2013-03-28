@@ -17,7 +17,6 @@ libavxffms2_la_LIBADD = \
 libavxffms2_la_CPPFLAGS = \
 	-D__STDC_CONSTANT_MACROS      \
 	-D_FILE_OFFSET_BITS=64        \
-	-I$(top_srcdir)/include/utils \
 	-I$(top_srcdir)/include       \
 	$(AM_CPPFLAGS)
 

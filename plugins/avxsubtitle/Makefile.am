@@ -14,7 +14,6 @@ libavxsubtitle_la_SOURCES = \
 libavxsubtitle_la_LIBADD = $(top_builddir)/avxutils/libavxutils.la
 
 libavxsubtitle_la_CPPFLAGS = \
-	-I$(top_srcdir)/include/utils \
 	-I$(top_srcdir)/include       \
 	$(AM_CPPFLAGS)
 

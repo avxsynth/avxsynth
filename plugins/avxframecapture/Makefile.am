@@ -13,7 +13,6 @@ libavxframecapture_la_LIBADD = \
 	$(jpeg_LIBS)
 
 libavxframecapture_la_CPPFLAGS = \
-	-I$(top_srcdir)/include/utils \
 	-I$(top_srcdir)/include       \
 	$(jpeg_CFLAGS)                \
 	$(AM_CPPFLAGS)

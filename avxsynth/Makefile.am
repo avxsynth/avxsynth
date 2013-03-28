@@ -76,9 +76,6 @@ libavxbtinfncs_la_SOURCES = \
 
 libavxbtinfncs_la_CPPFLAGS = \
 	-I$(srcdir)/common/include         \
-	-I$(srcdir)/common/include/convert \
-	-I$(srcdir)/common/include/core    \
-	-I$(srcdir)/common/include/filters \
 	-I$(srcdir)/builtinfunctions/src   \
 	-I$(top_srcdir)/include            \
 	$(AM_CPPFLAGS)
@@ -129,11 +126,7 @@ libavxsynth_la_SOURCES = \
 libavxsynth_la_CPPFLAGS = \
 	-DAVXSYNTH_PLUGIN_PATH='"$(pkglibdir)"' \
 	-I$(srcdir)/common/include              \
-	-I$(srcdir)/common/include/core         \
-	-I$(srcdir)/common/include/filters      \
-	-I$(srcdir)/builtinfunctions            \
 	-I$(srcdir)/core/src                    \
-	-I$(top_srcdir)/include/utils           \
 	-I$(top_srcdir)/include                 \
 	$(AM_CPPFLAGS)
 

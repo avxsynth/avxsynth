@@ -11,7 +11,6 @@ libavxutils_la_SOURCES = \
 libavxutils_la_LIBADD = $(log4cpp_LIBS) $(pangocairo_LIBS)
 
 libavxutils_la_CPPFLAGS = \
-	-I$(top_srcdir)/include/utils \
 	-I$(top_srcdir)/include       \
         $(AM_CPPFLAGS)
 
