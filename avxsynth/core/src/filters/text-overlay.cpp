@@ -37,16 +37,16 @@
 
 #include "stdafx.h"
 
-#include <text-overlay.h>
+#include "filters/text-overlay.h"
 
 using namespace std;
 
 #include "windowsPorts/WinDefLinux.h"
 #include "windowsPorts.h"
-#include "AvxString.h"
-#include "TextLayout.h"
-#include "TextConfig.h"
-#include "AvxTextRender.h"
+#include "utils/AvxString.h"
+#include "utils/TextLayout.h"
+#include "utils/TextConfig.h"
+#include "utils/AvxTextRender.h"
 #include "avxlog.h"
 
 #ifdef MODULE_NAME

@@ -42,7 +42,7 @@
  *****************************/
 
 #include "stdafx.h"
-#include "avxsynth.h"
+#include "core/avxsynth.h"
 
 namespace avxsynth {
 	

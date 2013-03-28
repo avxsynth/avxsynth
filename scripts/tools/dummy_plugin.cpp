@@ -8,7 +8,7 @@ This code is made available to the public domain, but is
 also subject to any licensing terms in Avi/AvxSynth.
 */
 
-#include <avxplugin.h>
+#include "avxplugin.h"
 
 typedef avxsynth::AVSValue AVSValue;
 typedef avxsynth::IScriptEnvironment IScriptEnvironment;

@@ -25,7 +25,7 @@ extern "C" {
 #include <libswscale/swscale.h>
 }
 
-#include "ffmscompat.h"
+#include <ffmscompat.h>
 #include "avxplugin.h"
 
 SwsContext *FFGetSwsContext(int SrcW, int SrcH, PixelFormat SrcFormat, int DstW, int DstH, PixelFormat DstFormat, int64_t Flags, int ColorSpace = SWS_CS_DEFAULT, int ColorRange = -1);

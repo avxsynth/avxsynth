@@ -40,7 +40,7 @@
 
 #include "stdafx.h"
 #include <errno.h>
-#include "../core/avxsynth.h"
+#include "core/avxsynth.h"
 #include "avxlog.h"
 
 

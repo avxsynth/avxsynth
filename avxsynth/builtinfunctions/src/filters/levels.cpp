@@ -39,7 +39,7 @@
 
 #include "levels.h"
 
-#include <text-overlay.h>
+#include "filters/text-overlay.h"
 
 
 namespace avxsynth {

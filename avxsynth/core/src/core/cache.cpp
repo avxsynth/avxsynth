@@ -36,7 +36,7 @@
 
 
 #include "stdafx.h"
-#include "cache.h"
+#include "core/cache.h"
 #include "avxlog.h"
 
 namespace avxsynth { 

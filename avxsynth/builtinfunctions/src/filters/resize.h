@@ -37,7 +37,7 @@
 #ifndef __Resize_H__
 #define __Resize_H__
 
-#include "../internal.h"
+#include "internal.h"
 
 namespace avxsynth {
 	

@@ -10,7 +10,7 @@
 #include "stdafx.h"
 #include <stdarg.h>
 #include <dlfcn.h>
-#include "../internal.h"
+#include "internal.h"
 #include "avxsynth_c.h"
 
 using namespace avxsynth;

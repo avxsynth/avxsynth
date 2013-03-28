@@ -37,7 +37,7 @@
 #ifndef __Convert_RGB_H__
 #define __Convert_RGB_H__
 
-#include "../internal.h"
+#include "internal.h"
 
 namespace avxsynth {
 

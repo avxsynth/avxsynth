@@ -37,8 +37,8 @@
 #ifndef __Text_overlay_H__
 #define __Text_overlay_H__
 
-#include <internal.h>
-#include <convert/convert.h>
+#include "internal.h"
+#include "convert/convert.h"
 
 namespace avxsynth {
 	

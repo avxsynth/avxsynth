@@ -21,7 +21,7 @@
 #include "stdafx.h"
 #include <iostream>
 #include <fstream>
-#include <avxplugin.h>
+#include "avxplugin.h"
 
 namespace avxsynth {
 	

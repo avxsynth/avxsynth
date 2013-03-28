@@ -1,4 +1,4 @@
-#include <avxsynth_c.h>
+#include "core/avxsynth_c.h"
 #include <stdio.h>
 
 int main() {

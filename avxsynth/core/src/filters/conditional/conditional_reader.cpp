@@ -21,7 +21,7 @@
 #include "stdafx.h"
 #include "conditional_reader.h"
 #include "avxlog.h"
-#include <text-overlay.h>
+#include "filters/text-overlay.h"
 #include <errno.h>
 
 namespace avxsynth {

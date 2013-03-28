@@ -38,7 +38,7 @@
 #include "stdafx.h"
 
 #include "histogram.h"
-#include "info.h"
+#include "core/info.h"
 
 
 namespace avxsynth {

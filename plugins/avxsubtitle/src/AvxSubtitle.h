@@ -41,7 +41,7 @@
 #include "avxplugin.h"
 #include "CaptionEntry.h"
 #include "CaptionList.h"
-#include "TextConfig.h"
+#include "utils/TextConfig.h"
 
 using namespace avxsynth;
 

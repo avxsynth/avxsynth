@@ -38,8 +38,8 @@
 #include "stdafx.h"
 
 #include "conditional.h"
-#include "../../core/parser/scriptparser.h"
-#include <text-overlay.h>
+#include "core/parser/scriptparser.h"
+#include "filters/text-overlay.h"
 #include "conditional_reader.h"
 
 namespace avxsynth {

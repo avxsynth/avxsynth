@@ -42,10 +42,10 @@
 #include <string>
 using std::string;
 
-#include "../internal.h"
-#include "./parser/script.h"
+#include "internal.h"
+#include "core/parser/script.h"
 #include "memcpy_amd.h"
-#include "cache.h"
+#include "core/cache.h"
 #include <dlfcn.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -58,7 +58,7 @@ using std::string;
 #include <sys/sysctl.h>
 #endif
 #include "windowsPorts.h"
-#include "builtInFunctionsExportDefinitions.h"
+#include "builtinfunctions/builtInFunctionsExportDefinitions.h"
 #include "avxlog.h"
 
 namespace avxsynth {

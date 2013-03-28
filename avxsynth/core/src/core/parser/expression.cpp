@@ -37,10 +37,10 @@
 
 #include "stdafx.h"
 
-#include "./windowsPorts/WinNTLinux.h"
-#include "./windowsPorts/excptLinux.h"
+#include "windowsPorts/WinNTLinux.h"
+#include "windowsPorts/excptLinux.h"
 #include "expression.h"
-#include <cache.h>
+#include "core/cache.h"
 #include "avxlog.h"
 
 namespace avxsynth {

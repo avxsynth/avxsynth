@@ -43,7 +43,7 @@
 #ifndef __GeneralConvolution_H__
 #define __GeneralConvolution_H__
 
-#include "../internal.h"
+#include "internal.h"
 
 namespace avxsynth {
 	
