@@ -93,7 +93,7 @@ namespace avxsynth
         static void RenderSubtitleText(const char* strText, FrameBuffer & trd, TextConfig const& textConfig) throw(AvxException);
         static void RenderText
         (
-            const char* strText, FrameBuffer & trd, TextConfig const& textConfig, TextLayout const& layout, unsigned int options = RenderOptions_None, unsigned int nOptionsParam = -1
+            const char* strText, FrameBuffer & trd, TextConfig const& textConfig, TextLayout const& layout, unsigned int options = RenderOptions_None, unsigned int nOptionsParam = 0
         ) throw(AvxException);
         static void GetApproximateCharacterWidth(TextConfig const& textConfig, int & nCharWidth);
     };

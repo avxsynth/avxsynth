@@ -182,37 +182,6 @@ namespace avxsynth
             }
          }
 
-        void RenderShowFrameNumberColumn
-        (
-            const char* strText,
-            AvxTextRender::FrameBuffer& trd,
-            const TextConfig& textConfig,
-            cairo_t *cr,
-            PangoLayout *layout,
-            int nLeftCoordinate
-        )
-        {
-            double fontSize = textConfig.size;
-            unsigned int nAvailableRows = trd.height/fontSize;
-            unsigned int nFrameNumber = atoi(strText);
-
-            unsigned int nInitialOffsetFromTop = (nAvailableRows - 1) % nAvailableRows;
-            unsigned int nInitialOffsetFromBottom = (nAvailableRows - 1 - nInitialOffsetFromTop); // 0 to 9
-            for(unsigned int i = 0; i < nAvailableRows; i++)
-            {
-                unsigned int nOffsetFromBottom = (nInitialOffsetFromBottom + i) % nAvailableRows;
-                unsigned int nTopCoordinate = trd.height - (nOffsetFromBottom + 1)*fontSize;
-
-                cairo_move_to(cr, nLeftCoordinate, nTopCoordinate);
-                char temp[6] = {0};
-                sprintf(temp, "%05d", nFrameNumber);
-
-                pango_layout_set_text (layout, temp, -1);
-                pango_cairo_show_layout(cr, layout);
-            }
-        }
-
-
         void RenderShowFrameNumberScrolling
         (
             const char* strText,
@@ -235,25 +204,34 @@ namespace avxsynth
             //
             double fontSize = textConfig.size;
             unsigned int nAvailableRows = trd.height/fontSize;
-            unsigned int nRowsToDisplay = nFrames < nAvailableRows ? nFrames + 1 : nAvailableRows;
+            unsigned int nRowsToDisplay;
+            if(nFrames == 0)
+                nRowsToDisplay = nAvailableRows;
+            else if(nFrames < nAvailableRows)
+                nRowsToDisplay = nFrames + 1;
+            else
+                nRowsToDisplay = nAvailableRows;
             unsigned int nStartFrameNumber = atoi(strText);
 
-            unsigned int nInitialOffsetFromTop = (nFrames + nAvailableRows - 2) % nAvailableRows;
+            unsigned int nInitialOffsetFromTop;
+            if (nFrames == 0)
+                nInitialOffsetFromTop = nAvailableRows - 1;
+            else
+                nInitialOffsetFromTop = (nFrames + nAvailableRows - 2) % nAvailableRows;
             unsigned int nInitialOffsetFromBottom = (nAvailableRows - 1 - nInitialOffsetFromTop); // 0 to 9
-            unsigned int nTopCoordinate;
             for(unsigned int i = 0; i < nRowsToDisplay; i++)
             {
                 unsigned int nOffsetFromBottom = (nInitialOffsetFromBottom + i) % nAvailableRows;
-                nTopCoordinate = trd.height - (nOffsetFromBottom + 1)*fontSize;
+                unsigned int nTopCoordinate = trd.height - (nOffsetFromBottom + 1)*fontSize;
 
                 cairo_move_to(cr, nLeftCoordinate, nTopCoordinate);
-                char temp[6] = {0,0,0,0,0,0};
+                char temp[6] = {0};
                 sprintf(temp, "%05d", nStartFrameNumber);
 
                 pango_layout_set_text (layout, temp, -1);
                 pango_cairo_show_layout(cr, layout);
 
-                nStartFrameNumber--;
+                if(nFrames != 0) nStartFrameNumber--;
             }
         }
 
@@ -418,13 +396,9 @@ namespace avxsynth
         int y = textLayout.rect.top;
         cairo_set_source_rgb (cr, textColor.fR, textColor.fG, textColor.fB);
 
-        if(options & RenderOptions_Scroll_SFN)
+        if(options & RenderOptions_Scroll_SFN || options & RenderOptions_Column_SFN)
         {
             avxsubtitle::RenderShowFrameNumberScrolling(strText, trd, textConfig, cr, layout, x, optionsParam);
-        }
-        else if(options & RenderOptions_Column_SFN)
-        {
-           avxsubtitle::RenderShowFrameNumberColumn(strText, trd, textConfig, cr, layout, x);
         }
         else
         {
