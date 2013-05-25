@@ -9,7 +9,6 @@ TESTS = \
 	scriptfunctions/math.sh          \
 	scriptfunctions/string.sh        \
 	AvxTestSuite-SANITY.test         \
-	AvxTestSuite-audio.test          \
 	AvxTestSuite-colors.test         \
 	AvxTestSuite-colorspaces.test    \
 	AvxTestSuite-conditional.test    \
