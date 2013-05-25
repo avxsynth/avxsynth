@@ -435,8 +435,8 @@ AC_CONFIG_FILES(
     plugins/avxsubtitle/Makefile
     apps/avxframeserver/Makefile
     apps/AVXEdit/Makefile
-    scripts/Makefile
-    scripts/common.avsi
+    test/Makefile
+    test/common.avsi
     avxsynth.pc
     avxutils.pc
   ]

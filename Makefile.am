@@ -33,7 +33,7 @@ SUBDIRS = \
   $(AVXFFMS2_SUBDIRS)        \
   $(AVXEDIT_SUBDIRS)         \
   include                    \
-  scripts
+  test
 
 dist_doc_DATA = README.md
 
