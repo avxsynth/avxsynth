@@ -403,10 +403,10 @@ namespace avxsynth
         {
             cairo_move_to (cr, x, y);
             pango_cairo_show_layout (cr, layout);
-        }
 
-        if(textConfig.strokeSize)
-            avxsubtitle::RenderOutlineText(trd, cr, font_description, x, y, textConfig, strText, hAlign,  options, optionsParam);
+            if(textConfig.strokeSize)
+                avxsubtitle::RenderOutlineText(trd, cr, font_description, x, y, textConfig, strText, hAlign,  options, optionsParam);
+        }
 
         g_object_unref (layout);
 
