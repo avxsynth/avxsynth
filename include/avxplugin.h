@@ -54,21 +54,6 @@
 #endif // LINUXIZED_VERSION
 #include <stdio.h>
 
-namespace avxsynth {
-	
-
-enum { AVISYNTH_INTERFACE_VERSION = 3 };
-
-// Raster types used by VirtualDub & Avisynth
-#define in64 (__int64)(unsigned short)
-typedef uint32_t	Pixel;    
-typedef uint32_t	Pixel32;
-typedef unsigned char	Pixel8;
-typedef long			PixCoord;
-typedef long			PixDim;
-typedef long			PixOffset;
-
-
 /* Compiler-specific crap */
 
 // Tell MSVC to stop precompiling here
@@ -86,6 +71,19 @@ typedef long			PixOffset;
   #define _ASSERTE(x) assert(x)
 #endif
 
+namespace avxsynth {
+	
+
+enum { AVISYNTH_INTERFACE_VERSION = 3 };
+
+// Raster types used by VirtualDub & Avisynth
+#define in64 (__int64)(unsigned short)
+typedef uint32_t	Pixel;    
+typedef uint32_t	Pixel32;
+typedef unsigned char	Pixel8;
+typedef long			PixCoord;
+typedef long			PixDim;
+typedef long			PixOffset;
 
 
 // I had problems with Premiere wanting 1-byte alignment for its structures,
