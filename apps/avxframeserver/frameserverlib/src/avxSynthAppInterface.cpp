@@ -183,7 +183,7 @@ int AvxContext::OpenFile() {
 
 int AvxContext::OutputVideo() {
 	FILE *sink;
-	unsigned char *writeBuffer = NULL;
+	unsigned char *write_buffer = NULL;
 	sig_t old_sigpipe = signal(SIGPIPE, SIG_IGN);
 
 	if (launchMPlayer) {
@@ -201,8 +201,8 @@ int AvxContext::OutputVideo() {
 		sink = stdout;
 	}
 
-	writeBuffer = (unsigned char *)malloc(vi.RowSize() * vi.height);
-	if (!writeBuffer) {
+	write_buffer = (unsigned char *)malloc(vi.RowSize() * vi.height);
+	if (!write_buffer) {
 		AVXLOG_ERROR("%s", "Unable to allocate memory");
 		goto fail;
 	}
@@ -223,8 +223,8 @@ int AvxContext::OutputVideo() {
 					int height = frame->GetHeight(plane);
 					const unsigned char *srcp = frame->GetReadPtr(plane);
 
-					avx_library.env->BitBlt(writeBuffer, row_size, srcp, src_pitch, row_size, height);
-					fwrite(writeBuffer, 1, row_size * height, sink);
+					avx_library.env->BitBlt(write_buffer, row_size, srcp, src_pitch, row_size, height);
+					fwrite(write_buffer, 1, row_size * height, sink);
 				}
 			} else {
 				int src_pitch = frame->GetPitch();
@@ -232,8 +232,8 @@ int AvxContext::OutputVideo() {
 				int height = frame->GetHeight();
 				const unsigned char *srcp = frame->GetReadPtr();
 
-				avx_library.env->BitBlt(writeBuffer, row_size, srcp, src_pitch, row_size, height);
-				fwrite(writeBuffer, 1, row_size * height, sink);
+				avx_library.env->BitBlt(write_buffer, row_size, srcp, src_pitch, row_size, height);
+				fwrite(write_buffer, 1, row_size * height, sink);
 			}
 		}
 	} catch (AvisynthError &e) {
@@ -241,15 +241,15 @@ int AvxContext::OutputVideo() {
 		goto fail;
 	}
 
-	free(writeBuffer);
+	free(write_buffer);
 	if (launchMPlayer)
 		pclose(sink);
 	signal(SIGPIPE, old_sigpipe);
 	return 0;
 
 fail:
-	if (writeBuffer)
-		free(writeBuffer);
+	if (write_buffer)
+		free(write_buffer);
 	if (launchMPlayer)
 		pclose(sink);
 	signal(SIGPIPE, old_sigpipe);
