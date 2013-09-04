@@ -28,19 +28,18 @@ extern "C" {
 #include <ffmscompat.h>
 #include "avxplugin.h"
 
-SwsContext *FFGetSwsContext(int SrcW, int SrcH, PixelFormat SrcFormat, int DstW, int DstH, PixelFormat DstFormat, int64_t Flags, int ColorSpace = SWS_CS_DEFAULT, int ColorRange = -1);
-int FFGetSwsAssumedColorSpace(int Width, int Height);
+using namespace avxsynth;
 
-class SWScale : public avxsynth::GenericVideoFilter {
+class SWScale : public GenericVideoFilter {
 private:
 	SwsContext *Context;
 	int OrigWidth;
 	int OrigHeight;
 	bool FlipOutput;
 public:
-	SWScale(avxsynth::PClip Child, int ResizeToWidth, int ResizeToHeight, const char *ResizerName, const char *ConvertToFormatName, avxsynth::IScriptEnvironment *Env);
+	SWScale(PClip Child, int ResizeToWidth, int ResizeToHeight, const char *ResizerName, const char *ConvertToFormatName, IScriptEnvironment *Env);
 	~SWScale();
-    avxsynth::PVideoFrame __stdcall GetFrame(int n, avxsynth::IScriptEnvironment *Env);
+    PVideoFrame __stdcall GetFrame(int n, IScriptEnvironment *Env);
 };
 
 #endif

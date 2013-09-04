@@ -241,9 +241,9 @@ AS_IF(
     AC_MSG_RESULT([$HAVE_FFMS2])
     RESTORE_COMPILER_FLAGS
 
-    # The order is important -- ffms2 -> avformat -> avcodec -> postproc | swscale -> avutil.
+    # The order is important -- ffms2 -> avformat -> avcodec -> swscale -> avutil.
     # Specifying the wrong order will cause undefined symbols when linking to static libs.
-    PKG_CHECK_MODULES([libav], [libavformat libavcodec libswscale libpostproc libavutil], [], [true])
+    PKG_CHECK_MODULES([libav], [libavformat libavcodec libswscale libavutil], [], [true])
 
     # On x86_64, linking with static libav requires -Wl,-Bsymbolic
     SAVE_COMPILER_FLAGS
@@ -256,14 +256,12 @@ AS_IF(
           #include <libavcodec/avcodec.h>
           #include <libavformat/avformat.h>
           #include <libavutil/avutil.h>
-          #include <libpostproc/postprocess.h>
           #include <libswscale/swscale.h>
         ],
         [
           avcodec_close(NULL);
           avformat_close_input(NULL);
           avutil_license();
-          pp_free_context(NULL);
           sws_freeContext(NULL);
         ]
       )],
@@ -279,14 +277,12 @@ AS_IF(
             #include <libavcodec/avcodec.h>
             #include <libavformat/avformat.h>
             #include <libavutil/avutil.h>
-            #include <libpostproc/postprocess.h>
             #include <libswscale/swscale.h>
           ],
           [
             avcodec_close(NULL);
             avformat_close_input(NULL);
             avutil_license();
-            pp_free_context(NULL);
             sws_freeContext(NULL);
           ]
         )],

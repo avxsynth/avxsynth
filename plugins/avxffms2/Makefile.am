@@ -4,10 +4,15 @@
 pkglib_LTLIBRARIES = libavxffms2.la
 
 libavxffms2_la_SOURCES = \
-	src/avsutils_avx.cpp   \
-	src/ffswscale_avx.cpp  \
-	src/avssources_avx.cpp \
-	src/avxffms2.cpp
+	src/avssources.h \
+	src/avsutils.h \
+	src/ffswscale.h \
+	src/videoutils.h \
+	src/avisynth.cpp \
+	src/avssources.cpp \
+	src/avsutils.cpp \
+	src/ffswscale.cpp \
+	src/videoutils.cpp
 
 libavxffms2_la_LIBADD = \
 	$(ffms2_LIBS) \
