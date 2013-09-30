@@ -205,7 +205,7 @@ namespace avxsynth
             double fontSize = textConfig.size;
             unsigned int nAvailableRows = trd.height/fontSize;
             unsigned int nRowsToDisplay;
-            if(nFrames == 0)
+            if(0 == nFrames)
                 nRowsToDisplay = nAvailableRows;
             else if(nFrames < nAvailableRows)
                 nRowsToDisplay = nFrames + 1;
@@ -214,7 +214,7 @@ namespace avxsynth
             unsigned int nStartFrameNumber = atoi(strText);
 
             unsigned int nInitialOffsetFromTop;
-            if (nFrames == 0)
+            if (0 == nFrames)
                 nInitialOffsetFromTop = nAvailableRows - 1;
             else
                 nInitialOffsetFromTop = (nFrames + nAvailableRows - 2) % nAvailableRows;
@@ -231,7 +231,7 @@ namespace avxsynth
                 pango_layout_set_text (layout, temp, -1);
                 pango_cairo_show_layout(cr, layout);
 
-                if(nFrames != 0) nStartFrameNumber--;
+                if(0 != nFrames) nStartFrameNumber--;
             }
         }
 
