@@ -225,15 +225,25 @@ namespace avxsynth
             char temp[6];
             sprintf(temp, "%05d", frameNumber);
 
+            const TextConfig::Color & textColor = textConfig.textcolor;
+            const TextConfig::Color & strokeColor = textConfig.strokeColor;
+
             for(unsigned int i = 0; i < nRowsToDisplay; i++) {
                 // calculate positional coordinates of next text
                 unsigned int nOffsetFromBottom = (nInitialOffsetFromBottom + i) % nAvailableRows;
                 unsigned int nTopCoordinate = trd.height - (nOffsetFromBottom + 1)*fontSize;
 
-                // update frame
                 cairo_move_to(cr, nLeftCoordinate, nTopCoordinate);
                 pango_layout_set_text (layout, temp, -1);
-                pango_cairo_show_layout(cr, layout);
+
+                // make the text
+                cairo_set_source_rgb(cr, textColor.fR, textColor.fG, textColor.fB);
+                pango_cairo_layout_path(cr, layout);
+                cairo_fill_preserve(cr);
+
+                // make the outline
+                cairo_set_source_rgb(cr, strokeColor.fR, strokeColor.fG, strokeColor.fB);
+                cairo_stroke(cr);
 
                 if(0 != nFrames) {
                     frameNumber--;
