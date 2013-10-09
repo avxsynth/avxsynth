@@ -204,14 +204,16 @@ namespace avxsynth
             //
             double fontSize = textConfig.size;
             unsigned int nAvailableRows = trd.height/fontSize;
+            unsigned int nStartFrameNumber = atoi(strText);
+
+            // determine how many rows (of text) to display
             unsigned int nRowsToDisplay;
             if(0 == nFrames)
-                nRowsToDisplay = nAvailableRows;
+                nRowsToDisplay = nAvailableRows; // show current frame number only. use all rows.
             else if(nFrames < nAvailableRows)
                 nRowsToDisplay = nFrames + 1;
             else
                 nRowsToDisplay = nAvailableRows;
-            unsigned int nStartFrameNumber = atoi(strText);
 
             unsigned int nInitialOffsetFromTop;
             if (0 == nFrames)
@@ -219,19 +221,25 @@ namespace avxsynth
             else
                 nInitialOffsetFromTop = (nFrames + nAvailableRows - 2) % nAvailableRows;
             unsigned int nInitialOffsetFromBottom = (nAvailableRows - 1 - nInitialOffsetFromTop); // 0 to 9
-            for(unsigned int i = 0; i < nRowsToDisplay; i++)
-            {
+
+            // convert frame number to cstring
+            char temp[6];
+            sprintf(temp, "%05d", nStartFrameNumber);
+
+            for(unsigned int i = 0; i < nRowsToDisplay; i++) {
+                // calculate positional coordinates of next text
                 unsigned int nOffsetFromBottom = (nInitialOffsetFromBottom + i) % nAvailableRows;
                 unsigned int nTopCoordinate = trd.height - (nOffsetFromBottom + 1)*fontSize;
 
+                // update frame
                 cairo_move_to(cr, nLeftCoordinate, nTopCoordinate);
-                char temp[6] = {0};
-                sprintf(temp, "%05d", nStartFrameNumber);
-
                 pango_layout_set_text (layout, temp, -1);
                 pango_cairo_show_layout(cr, layout);
 
-                if(0 != nFrames) nStartFrameNumber--;
+                if(0 != nFrames) {
+                    nStartFrameNumber--;
+                    sprintf(temp, "%05d", nStartFrameNumber);
+                }
             }
         }
 
