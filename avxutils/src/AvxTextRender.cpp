@@ -184,7 +184,7 @@ namespace avxsynth
 
         void RenderShowFrameNumberScrolling
         (
-            const char* strText,
+            unsigned int frameNumber,
             AvxTextRender::FrameBuffer& trd,
             const TextConfig& textConfig,
             cairo_t *cr,
@@ -204,7 +204,6 @@ namespace avxsynth
             //
             double fontSize = textConfig.size;
             unsigned int nAvailableRows = trd.height/fontSize;
-            unsigned int nStartFrameNumber = atoi(strText);
 
             // determine how many rows (of text) to display
             unsigned int nRowsToDisplay;
@@ -224,7 +223,7 @@ namespace avxsynth
 
             // convert frame number to cstring
             char temp[6];
-            sprintf(temp, "%05d", nStartFrameNumber);
+            sprintf(temp, "%05d", frameNumber);
 
             for(unsigned int i = 0; i < nRowsToDisplay; i++) {
                 // calculate positional coordinates of next text
@@ -237,8 +236,8 @@ namespace avxsynth
                 pango_cairo_show_layout(cr, layout);
 
                 if(0 != nFrames) {
-                    nStartFrameNumber--;
-                    sprintf(temp, "%05d", nStartFrameNumber);
+                    frameNumber--;
+                    sprintf(temp, "%05d", frameNumber);
                 }
             }
         }
@@ -406,7 +405,8 @@ namespace avxsynth
 
         if(options & RenderOptions_Scroll_SFN || options & RenderOptions_Column_SFN)
         {
-            avxsubtitle::RenderShowFrameNumberScrolling(strText, trd, textConfig, cr, layout, x, optionsParam);
+            unsigned int frameNumber = atoi(strText);
+            avxsubtitle::RenderShowFrameNumberScrolling(frameNumber, trd, textConfig, cr, layout, x, optionsParam);
         }
         else
         {
