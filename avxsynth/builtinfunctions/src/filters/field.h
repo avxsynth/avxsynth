@@ -213,7 +213,7 @@ public:
     { delete[] child_array; }
   static AVSValue __cdecl Create(AVSValue args, void*, IScriptEnvironment* env);
 
-  void __stdcall SetCacheHints(int cachehints,size_t frame_range) { };
+  void __stdcall SetCacheHints(int cachehints,int frame_range) { };
 
 private:
   const int num_children;

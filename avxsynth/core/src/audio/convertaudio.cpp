@@ -59,7 +59,7 @@ PClip ConvertAudio::Create(PClip clip, int sample_type, int prefered_type)
 }
 
 
-void __stdcall ConvertAudio::SetCacheHints(int cachehints,size_t frame_range)
+void __stdcall ConvertAudio::SetCacheHints(int cachehints,int frame_range)
 {   // We do pass cache requests upwards, to the next filter.
     child->SetCacheHints(cachehints, frame_range);
 }

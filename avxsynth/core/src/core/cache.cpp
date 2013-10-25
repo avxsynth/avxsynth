@@ -126,7 +126,7 @@ void Cache::PokeCache(int key, int data, IScriptEnvironment* env)
       // instance is not with the current GetFrame chain.
       if ((Tick != Clock) && video_frames.next->vfb_locked) {
         UnlockVFB(video_frames.next);
-        AVXLOG_INFO("Cache:%x: PokeCache UnlockOld vfb %x, frame %d",
+        AVXLOG_INFO("Cache:%p: PokeCache UnlockOld vfb %p, frame %d",
               this, video_frames.next->vfb, video_frames.next->frame_number);
       }
       break;
@@ -135,7 +135,7 @@ void Cache::PokeCache(int key, int data, IScriptEnvironment* env)
       for (CachedVideoFrame* i = video_frames.next; i != &video_frames; i = i->next) {
         if (i->vfb_locked && i->vfb->data_size >= data) {
           UnlockVFB(i);
-          AVXLOG_INFO("Cache:%x: PokeCache UnlockAll vfb %x, frame %d",
+          AVXLOG_INFO("Cache:%p: PokeCache UnlockAll vfb %p, frame %d",
                 this, video_frames.next->vfb, video_frames.next->frame_number);
         }
       }
@@ -151,7 +151,7 @@ void Cache::PokeCache(int key, int data, IScriptEnvironment* env)
             UnlockVFB(i);
             UnProtectVFB(i);
             env->ManageCache(MC_PromoteVideoFrameBuffer, i->vfb);
-            AVXLOG_INFO("Cache:%x: PokeCache UnProtect vfb %x, frame %d",
+            AVXLOG_INFO("Cache:%p: PokeCache UnProtect vfb %p, frame %d",
                   this, video_frames.next->vfb, video_frames.next->frame_number);
             break;
           }
@@ -165,7 +165,7 @@ void Cache::PokeCache(int key, int data, IScriptEnvironment* env)
           UnlockVFB(i);
           UnProtectVFB(i);
           env->ManageCache(MC_PromoteVideoFrameBuffer, i->vfb);
-          AVXLOG_INFO("Cache:%x: PokeCache UnProtectAll vfb %x, frame %d",
+          AVXLOG_INFO("Cache:%p: PokeCache UnProtectAll vfb %p, frame %d",
                 this, video_frames.next->vfb, video_frames.next->frame_number);
         }
       }
@@ -207,7 +207,7 @@ void Cache::ResetCache(IScriptEnvironment* env)
   maxframe = -1;
   CachedVideoFrame *i, *j;
 
-  AVXLOG_DEBUG("Cache:%x: Cache Reset, cache_limit %d, cache_init %d", this, cache_limit, CACHE_SCALE_FACTOR*cache_init);
+  AVXLOG_DEBUG("Cache:%p: Cache Reset, cache_limit %d, cache_init %d", this, cache_limit, CACHE_SCALE_FACTOR*cache_init);
 
   int count=0;
   for (i = video_frames.next; i != &video_frames; i = i->next) {
@@ -258,14 +258,14 @@ PVideoFrame __stdcall Cache::childGetFrame(int n, IScriptEnvironment* env)
    || (p[-3] != 0xDEADBEAF)
    || (p[-2] != 0xDEADBEAF)
    || (p[-1] != 0xDEADBEAF)) {
-    env->ThrowError("Debug Cache: Write before start of VFB! Addr=%x", p);
+    env->ThrowError("Debug Cache: Write before start of VFB! Addr=%p", p);
   }
   p=(int *)(result->vfb->data + result->vfb->data_size);
   if ((p[0] != 0xDEADBEAF)
    || (p[1] != 0xDEADBEAF)
    || (p[2] != 0xDEADBEAF)
    || (p[3] != 0xDEADBEAF)) {
-    env->ThrowError("Debug Cache: Write after end of VFB! Addr=%x", p);
+    env->ThrowError("Debug Cache: Write after end of VFB! Addr=%p", p);
   }
 #endif
   return result;
@@ -307,7 +307,7 @@ PVideoFrame __stdcall Cache::GetFrame(int n, IScriptEnvironment* env)
 
   if (video_frames.next->vfb_locked) {  // release the head vfb if it is locked
 	UnlockVFB(video_frames.next);
-	AVXLOG_INFO("Cache:%x: unlocking vfb %x for frame %d", this, video_frames.next->vfb, video_frames.next->frame_number);
+	AVXLOG_INFO("Cache:%p: unlocking vfb %p for frame %d", this, video_frames.next->vfb, video_frames.next->frame_number);
   }
 
   CachedVideoFrame* cvf=0;
@@ -348,7 +348,7 @@ PVideoFrame __stdcall Cache::GetFrame(int n, IScriptEnvironment* env)
 		fault_rate += 30 + c; // Bias by number of cache entries searched
 		if (100*i->faults > fault_rate) fault_rate = 100*i->faults;
 		if (fault_rate > 300) fault_rate = 300;
-		AVXLOG_INFO("Cache:%x: stale frame %d, requests %d", this, n, i->faults);
+		AVXLOG_INFO("Cache:%p: stale frame %d, requests %d", this, n, i->faults);
 
 		// Modified by a parent
 		if (i->sequence_number == i->vfb->GetSequenceNumber()-1) {
@@ -357,7 +357,7 @@ PVideoFrame __stdcall Cache::GetFrame(int n, IScriptEnvironment* env)
 		// vfb has been stolen
 		else {
 		  ++g_Cache_stats.vfb_stolen;
-		  AVXLOG_INFO("Cache:%x: stolen vfb %x, frame %d", this, i->vfb, n);
+		  AVXLOG_INFO("Cache:%p: stolen vfb %p, frame %d", this, i->vfb, n);
 		}
 
 		if (i->vfb_protected) UnProtectVFB(i);
@@ -373,12 +373,12 @@ PVideoFrame __stdcall Cache::GetFrame(int n, IScriptEnvironment* env)
 	  // Unprotect any frames out of CACHE_RANGE scope
 	  if ((i->vfb_protected) && (abs(ifn-n) >= h_span)) {
 		UnProtectVFB(i);
-		AVXLOG_INFO("Cache:%x: A: Unprotect vfb %x for frame %d", this, i->vfb, ifn);
+		AVXLOG_INFO("Cache:%p: A: Unprotect vfb %p for frame %d", this, i->vfb, ifn);
 	  }
 
 	  if (i->vfb_locked) {  // release the vfb if it is locked
 		UnlockVFB(i);
-		AVXLOG_INFO("Cache:%x: B. unlock vfb %x for frame %d", this, i->vfb, ifn);
+		AVXLOG_INFO("Cache:%p: B. unlock vfb %p for frame %d", this, i->vfb, ifn);
 	  }
 	} // for (CachedVideoFrame* i =
 
@@ -396,7 +396,7 @@ PVideoFrame __stdcall Cache::GetFrame(int n, IScriptEnvironment* env)
 
 	if (cache_limit > CACHE_SCALE_FACTOR*MAX_CACHED_VIDEO_FRAMES) cache_limit = CACHE_SCALE_FACTOR*MAX_CACHED_VIDEO_FRAMES;
 
-	AVXLOG_DEBUG("Cache:%x: size %d, limit %d, fault %d", this, c, cache_limit, fault_rate);
+	AVXLOG_DEBUG("Cache:%p: size %d, limit %d, fault %d", this, c, cache_limit, fault_rate);
 
   } // if (n>=minframe
   else { // This frame is not in the range we are currently tracking
@@ -409,7 +409,7 @@ PVideoFrame __stdcall Cache::GetFrame(int n, IScriptEnvironment* env)
   
   if (fault_rate > 0) --fault_rate;  // decay fault rate
 
-  AVXLOG_DEBUG("Cache:%x: generating frame %d, cache from %d to %d", this, n, minframe, maxframe);
+  AVXLOG_DEBUG("Cache:%p: generating frame %d, cache from %d to %d", this, n, minframe, maxframe);
 
   // not cached; make the filter generate it.
 #ifdef ENABLE_INLINE_ASSEMBLY_MMX_SSE
@@ -444,7 +444,7 @@ PVideoFrame __stdcall Cache::GetFrame(int n, IScriptEnvironment* env)
 	                             // Once we start locking frames we cannot tell if locking is
 								 // still required. So probing is a cheap way to validate this.
 	LockVFB(cvf);                // Increment to be sure this frame isn't modified.
-	AVXLOG_INFO("Cache:%x: lock vfb %x, gened frame %d", this, cvf->vfb, n);
+	AVXLOG_INFO("Cache:%p: lock vfb %p, gened frame %d", this, cvf->vfb, n);
   }
 
   return result;
@@ -460,10 +460,10 @@ VideoFrame* Cache::BuildVideoFrame(CachedVideoFrame *i, int n)
   if (  (fault_rate <= 160)     // Reissued frames are not subject to locking at the lower fault rate
      || (fault_rate == 190) ) { // Throw an unlocked probing frame at the world occasionally
 	UnlockVFB(i);
-	AVXLOG_INFO("Cache:%x: using cached copy of frame %d", this, n);
+	AVXLOG_INFO("Cache:%p: using cached copy of frame %d", this, n);
   }
   else {
-	AVXLOG_INFO("Cache:%x: lock vfb %x, cached frame %d", this, i->vfb, n);
+	AVXLOG_INFO("Cache:%p: lock vfb %p, cached frame %d", this, i->vfb, n);
   }
   return result;
 }
@@ -559,7 +559,7 @@ void Cache::ProtectVFB(CachedVideoFrame *i, int n)
   while ((protectcount > h_span) && (j != &video_frames)){
 	if ( (j != i) && (j->vfb_protected) && (abs(n - j->frame_number) >= h_span) ) {
       UnProtectVFB(j);
-      AVXLOG_INFO("Cache:%x: B: Unprotect vfb %x for frame %d", this, j->vfb, j->frame_number);
+      AVXLOG_INFO("Cache:%p: B: Unprotect vfb %p for frame %d", this, j->vfb, j->frame_number);
 	  break;
 	}
 	j = j->prev;
@@ -619,12 +619,12 @@ void __stdcall Cache::GetAudio(void* buf, __int64 start, __int64 count, IScriptE
 
   if (h_audiopolicy == CACHE_NOTHING && ac_currentscore <=0) {
     SetCacheHints(CACHE_AUDIO_AUTO, 0);
-    AVXLOG_INFO("CacheAudio:%x: Automatically adding audiocache!", this);
+    AVXLOG_INFO("CacheAudio:%p: Automatically adding audiocache!", this);
   }
 
   if (h_audiopolicy == CACHE_AUDIO_AUTO  && (ac_currentscore > 400) ) {
     SetCacheHints(CACHE_AUDIO_NONE, 0);
-    AVXLOG_INFO("CacheAudio:%x: Automatically deleting cache!", this);
+    AVXLOG_INFO("CacheAudio:%p: Automatically deleting cache!", this);
   }
 
   ac_expected_next = start + count;
@@ -644,7 +644,7 @@ void __stdcall Cache::GetAudio(void* buf, __int64 start, __int64 count, IScriptE
   int shiftsamples;
 
   while (count>maxsamplecount) {    //is cache big enough?
-    AVXLOG_INFO("CA:%x:Cache too small->caching last audio", this);
+    AVXLOG_INFO("CA:%p:Cache too small->caching last audio", this);
     ac_too_small_count++;
 
 // But the current cache might have 99% of what was requested??
@@ -653,7 +653,7 @@ void __stdcall Cache::GetAudio(void* buf, __int64 start, __int64 count, IScriptE
       //automatically upsize cache!
       int new_size = (vi.BytesFromAudioSamples(count)+8192) & -8192;
       new_size = std::min(4096*1024, new_size);
-      AVXLOG_INFO("CacheAudio:%x: Autoupsizing buffer to %d bytes!", this, new_size);
+      AVXLOG_INFO("CacheAudio:%p: Autoupsizing buffer to %d bytes!", this, new_size);
       SetCacheHints(h_audiopolicy, new_size); // updates maxsamplecount!!
       ac_too_small_count = 0;
     }
@@ -671,7 +671,7 @@ void __stdcall Cache::GetAudio(void* buf, __int64 start, __int64 count, IScriptE
   }
 
   if ((start < cache_start) || (start >= cache_start+maxsamplecount)) { //first sample is before cache or beyond linear reach -> restart cache
-    AVXLOG_INFO("CA:%x: Restart", this);
+    AVXLOG_INFO("CA:%p: Restart", this);
 
     cache_count = std::min(count, (__int64)maxsamplecount);
     cache_start = start;
@@ -707,15 +707,16 @@ void __stdcall Cache::GetAudio(void* buf, __int64 start, __int64 count, IScriptE
 
 /*********** C A C H E   H I N T S ************/
 
-void __stdcall Cache::SetCacheHints(int cachehints,size_t frame_range) {
+void __stdcall Cache::SetCacheHints(int cachehints,int frame_range) {
 
   // Hack to detect if we are a cache, respond with our this pointer
   if ((cachehints == GetMyThis) && (frame_range != 0)) {
-	*(int *)frame_range = (size_t)this;
+	AVXLOG_ERROR("Cache:%p: Unsupported cache mode GetMyThis (hints:%d, range:%d)", this, cachehints, frame_range);
+//	*(int *)frame_range = (int)(void *)this;
 	return;
   }
 
-  AVXLOG_INFO("Cache:%x: Setting cache hints (hints:%d, range:%d )", this, cachehints, frame_range);
+  AVXLOG_INFO("Cache:%p: Setting cache hints (hints:%d, range:%d )", this, cachehints, frame_range);
 
   if (cachehints == CACHE_AUDIO || cachehints == CACHE_AUDIO_AUTO) {
 
@@ -841,7 +842,7 @@ AVSValue __cdecl Cache::Create_Cache(AVSValue args, void*, IScriptEnvironment* e
 	p->SetCacheHints(GetMyThis, (size_t)&q);
 
 	// Do not cache another cache!
-	if (q != (size_t)(void*)p) return new Cache(p, env);
+	if (dynamic_cast<Cache*>((IClip *)(void *)p)) return new Cache(p, env);
   }
   return p;
 }

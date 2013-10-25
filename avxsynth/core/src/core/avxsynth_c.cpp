@@ -42,7 +42,7 @@ public:
 	void __stdcall GetAudio(void * buf, __int64 start, __int64 count, IScriptEnvironment* env);
 	const VideoInfo & __stdcall GetVideoInfo();
 	bool __stdcall GetParity(int n);
-	void __stdcall SetCacheHints(int cachehints,size_t frame_range);
+	void __stdcall SetCacheHints(int cachehints,int frame_range);
 	__stdcall ~C_VideoFilter();
 };
 
@@ -114,7 +114,7 @@ bool __stdcall C_VideoFilter::GetParity(int n)
 	}
 }
 
-void __stdcall C_VideoFilter::SetCacheHints(int cachehints, size_t frame_range) 
+void __stdcall C_VideoFilter::SetCacheHints(int cachehints, int frame_range) 
 {
 	if (d.set_cache_hints) {
 		d.error = 0;

@@ -73,7 +73,7 @@ namespace avxsynth
         {
             this->outer->GetAudio(buf, start, count, env);
         }
-        virtual void __stdcall SetCacheHints(int cachehints,size_t frame_range){this->outer->SetCacheHints(cachehints, frame_range);}
+        virtual void __stdcall SetCacheHints(int cachehints,int frame_range){this->outer->SetCacheHints(cachehints, frame_range);}
         virtual const VideoInfo& __stdcall GetVideoInfo() {return this->outer->GetVideoInfo();}
         
         

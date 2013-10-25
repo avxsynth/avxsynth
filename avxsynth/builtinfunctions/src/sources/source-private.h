@@ -27,7 +27,7 @@ public:
   PVideoFrame __stdcall GetFrame(int n, IScriptEnvironment* env) { return frame; };
   bool __stdcall GetParity(int n) { return false; }
   const VideoInfo& __stdcall GetVideoInfo() { return vi; }
-  void __stdcall SetCacheHints(int cachehints,size_t frame_range) { };
+  void __stdcall SetCacheHints(int cachehints,int frame_range) { };
   void __stdcall GetAudio(void* buf, __int64 start, __int64 count, IScriptEnvironment* env);
 };
 
@@ -112,7 +112,7 @@ public:
   PVideoFrame __stdcall GetFrame(int n, IScriptEnvironment* env) { return NULL; }
   const VideoInfo& __stdcall GetVideoInfo() { return vi; }
   bool __stdcall GetParity(int n) { return false; }
-  void __stdcall SetCacheHints(int cachehints,size_t frame_range) { };
+  void __stdcall SetCacheHints(int cachehints,int frame_range) { };
 };
 
 }; // namespace avxsynth

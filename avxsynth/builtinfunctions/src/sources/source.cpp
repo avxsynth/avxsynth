@@ -75,7 +75,7 @@ public:
   }
   const VideoInfo& __stdcall GetVideoInfo() { return vi; }
   bool __stdcall GetParity(int n) { return (vi.IsFieldBased() ? (n&1) : false) ^ parity; }
-  void __stdcall SetCacheHints(int cachehints,size_t frame_range) { };
+  void __stdcall SetCacheHints(int cachehints,int frame_range) { };
 };
 
 
