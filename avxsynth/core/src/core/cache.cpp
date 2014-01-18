@@ -842,7 +842,7 @@ AVSValue __cdecl Cache::Create_Cache(AVSValue args, void*, IScriptEnvironment* e
 	p->SetCacheHints(GetMyThis, (size_t)&q);
 
 	// Do not cache another cache!
-	if (dynamic_cast<Cache*>((IClip *)(void *)p)) return new Cache(p, env);
+	if (!dynamic_cast<Cache*>((IClip *)(void *)p)) return new Cache(p, env);
   }
   return p;
 }
