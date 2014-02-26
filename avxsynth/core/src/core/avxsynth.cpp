@@ -62,7 +62,7 @@ using std::string;
 #include "avxlog.h"
 
 namespace avxsynth {
-  
+
 #ifdef MODULE_NAME
 #undef MODULE_NAME
 #endif
@@ -79,12 +79,12 @@ _PixelClip PixelClip;
   #define strdup(a) _strdup(a)
 #endif
 
-extern AVSFunction Plugin_functions[], 
+extern AVSFunction Plugin_functions[],
                    Script_functions[], Text_filters[], Debug_filters[],
                    Conditional_filters[], Conditional_funtions_filters[],
                    CPlugin_filters[], Cache_filters[]
                    ;
-                   
+
 int builtInFunctionsLoaded = 0;
 std::vector<std::vector<AVSFunction> > builtInFunctions;
 
@@ -111,6 +111,36 @@ AVSValue LoadPlugin(AVSValue args, void* user_data, IScriptEnvironment* env);
 void FreeLibraries(void* loaded_plugins, IScriptEnvironment* env);
 
 //extern const char* loadplugin_prefix;  // in plugin.cpp
+
+
+static __int64 GetAvailableMemory()
+{
+    __int64 memory;
+
+#if defined(_WIN32)
+    MEMORYSTATUS memstatus;
+    GlobalMemoryStatus(&memstatus);
+    memory = memstatus.dwAvailPhys;
+#else // *nix
+    long nPageSize = sysconf(_SC_PAGE_SIZE);
+    __int64 nAvailablePhysicalPages;
+
+  #if defined(__APPLE__)
+    vm_statistics64_data_t vmstats;
+    mach_msg_type_number_t vmstatsz = HOST_VM_INFO64_COUNT;
+    host_statistics64(mach_host_self(), HOST_VM_INFO64, (host_info_t)&vmstats, &vmstatsz);
+    nAvailablePhysicalPages = vmstats.free_count;
+  #elif defined(BSD)
+    size_t nAvailablePhysicalPagesLen = sizeof(nAvailablePhysicalPages);
+    sysctlbyname("vm.stats.vm.v_free_count", &nAvailablePhysicalPages, &nAvailablePhysicalPagesLen, NULL, 0);
+  #else // Linux
+    nAvailablePhysicalPages = sysconf(_SC_AVPHYS_PAGES);
+  #endif
+
+    memory = nPageSize * nAvailablePhysicalPages;
+#endif
+    return memory;
+}
 
 
 class LinkedVideoFrame {
@@ -921,32 +951,7 @@ ScriptEnvironment::ScriptEnvironment()
     else
       InterlockedIncrement(&refcount);
 
-#if 0 // Win32 specific
-//    MEMORYSTATUS memstatus;
-//    GlobalMemoryStatus(&memstatus);
-//    // Minimum 16MB
-//    // else physical memory/4
-//    // Maximum 0.5GB
-//    if (memstatus.dwAvailPhys    > 64*1024*1024)
-//      memory_max = (__int64)memstatus.dwAvailPhys >> 2;
-//    else
-//      memory_max = 16*1024*1024;
-#else
-    long nPageSize = sysconf(_SC_PAGE_SIZE);
-    __int64 nAvailablePhysicalPages;
-#ifdef __APPLE__
-    vm_statistics64_data_t vmstats;
-    mach_msg_type_number_t vmstatsz = HOST_VM_INFO64_COUNT;
-    host_statistics64(mach_host_self(), HOST_VM_INFO64, (host_info_t)&vmstats, &vmstatsz);
-    nAvailablePhysicalPages = vmstats.free_count;
-#elif defined(BSD)
-    size_t nAvailablePhysicalPagesLen = sizeof(nAvailablePhysicalPages);
-    sysctlbyname("vm.stats.vm.v_free_count", &nAvailablePhysicalPages, &nAvailablePhysicalPagesLen, NULL, 0);
-#else // Linux
-    nAvailablePhysicalPages = sysconf(_SC_AVPHYS_PAGES);
-#endif
-    memory_max = (__int64)(nPageSize*nAvailablePhysicalPages) >> 2;
-#endif
+    memory_max = GetAvailableMemory() >> 2;
     if (memory_max <= 0 || memory_max > 512*1024*1024) // More than 0.5GB
       memory_max = 512*1024*1024;
     else if (memory_max < 16*1024*1024)
@@ -1045,31 +1050,10 @@ void ScriptEnvironment::FreeAllBuiltInPlugins(void)
 
 int ScriptEnvironment::SetMemoryMax(int mem) {
   if (mem > 0) {
-    __int64 mem_limit;
+    __int64 mem_limit = GetAvailableMemory();
+
     memory_max = mem * (__int64)1048576;                          // mem as megabytes
     if (memory_max < memory_used) memory_max = memory_used; // can't be less than we already have
-
-#if 0 // win32
-    MEMORYSTATUS memstatus;
-    GlobalMemoryStatus(&memstatus); // Correct call for a 32Bit process. -Ex gives numbers we cannot use!
-	if (memstatus.dwAvailVirtual < memstatus.dwAvailPhys) // Check for big memory in Vista64
-	  mem_limit = (__int64)memstatus.dwAvailVirtual;
-	else
-      mem_limit = (__int64)memstatus.dwAvailPhys;
-#else
-#ifdef __APPLE__
-    vm_statistics64_data_t vmstats;
-    mach_msg_type_number_t vmstatsz = HOST_VM_INFO64_COUNT;
-    host_statistics64(mach_host_self(), HOST_VM_INFO64, (host_info_t)&vmstats, &vmstatsz);
-    mem_limit = vmstats.free_count;
-#elif defined(BSD)
-    size_t szAvailPages = sizeof(mem_limit);
-    sysctlbyname("vm.stats.vm.v_free_count", &mem_limit, &szAvailPages, NULL, 0);
-#else // Linux
-    mem_limit = sysconf(_SC_AVPHYS_PAGES);
-#endif
-    mem_limit *= sysconf(_SC_PAGE_SIZE);
-#endif
 
     mem_limit += memory_used - (__int64)5242880;
     if (memory_max > mem_limit) memory_max = mem_limit;     // can't be more than 5Mb less than total
