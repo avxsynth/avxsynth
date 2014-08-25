@@ -18,7 +18,6 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-
 extern "C" {
 #include <libavutil/mem.h>
 #include <libavformat/avformat.h>
@@ -28,10 +27,9 @@ extern "C" {
 }
 // must be included after ffmpeg headers
 #include <ffmscompat.h>
+#include <ffms.h>
 
 #include <vector>
-
-#include <ffms.h>
 
 
 // swscale and pp-related functions
