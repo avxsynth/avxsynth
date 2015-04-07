@@ -1,6 +1,6 @@
 ## What Is AvxSynth?
 
-AvxSynth is a Linux port of the [AviSynth](http://avisynth.org/mediawiki/Main_Page) toolkit. The objective of the porting effort was to bring the power of AviSynth into the Linux world. In particular, we are interested in AviSynth as a frame server front-end to the encode step of our media pipeline. An overview of the AvxSynth architecture can be found [here](https://github.com/avxsynth/avxsynth/wiki/Overview).
+AvxSynth is a Linux port of the [AviSynth](http://avisynth.org/) toolkit. The objective of the porting effort was to bring the power of AviSynth into the Linux world. In particular, we are interested in AviSynth as a frame server front-end to the encode step of our media pipeline. An overview of the AvxSynth architecture can be found [here](https://github.com/avxsynth/avxsynth/wiki/Overview).
 
 The AvxSynth port was based on the AviSynth 2.5.8 code base, and we are calling this version 4.0, so as to differentiate from the dead AviSynth 3.0 project.
 
