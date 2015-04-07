@@ -60,6 +60,7 @@ using namespace std;
 #define JVERSION    "8b  16-May-2010"
 
 #define JCOPYRIGHT  "Copyright (C) 2010, Thomas G. Lane, Guido Vollbeding"
+#define JCOPYRIGHT_SHORT  "(C) 2010, Thomas G. Lane, Guido Vollbeding"
 
 /* Create the add-on message string table. */
 

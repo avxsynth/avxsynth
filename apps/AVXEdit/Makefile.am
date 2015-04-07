@@ -58,4 +58,4 @@ src/qrc_application.cpp: application.qrc \
 	$(rcc_verbose)$(RCC) -name application $(srcdir)/application.qrc -o src/qrc_application.cpp
 
 src/moc_mainwindow.cpp: $(srcdir)/src/mainwindow.h
-	$(moc_verbose)$(MOC) $(AVXEdit_CPPFLAGS) $(CPPFLAGS) $< -o $@
+	$(moc_verbose)$(MOC) $(AVXEdit_CPPFLAGS) $< -o $@
