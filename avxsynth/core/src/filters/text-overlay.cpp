@@ -84,7 +84,7 @@ AVSFunction Text_filters[] = {
 
   { "Subtitle",
 	"cs[x]i[y]i[first_frame]i[last_frame]i[font]s[size]f[text_color]i[halo_color]i"
-	"[align]i[spc]i[lsp]i[font_width]f[font_angle]f[interlaced]b", 
+	"[align]i[spc]i[lsp]i[font_width]f[font_angle]f[interlaced]b",
     Subtitle::Create },       // see docs!
 
   { "Compare",
@@ -118,8 +118,8 @@ void convertColorFormatBackToOriginal(PClip & input, VideoInfo const& vi, IScrip
 ShowFrameNumber::ShowFrameNumber(PClip _child, bool _scroll, int _offset, int _x, int _y, const char _fontname[],
 					 int _size, int _textcolor, int _halocolor, int font_width, int font_angle, IScriptEnvironment* env)
 // GenericVideoFilter(_child), antialiaser(vi.width, vi.height, "Arial", 192),
- : GenericVideoFilter(_child), 
-   fontname(_fontname), textcolor(_textcolor), halocolor(_halocolor),			   
+ : GenericVideoFilter(_child),
+   fontname(_fontname), textcolor(_textcolor), halocolor(_halocolor),
    scroll(_scroll), offset(_offset), size(_size), x(_x), y(_y)
 {
   if ((x==-1) ^ (y==-1))
@@ -133,7 +133,7 @@ PVideoFrame ShowFrameNumber::GetFrame(int n, IScriptEnvironment* env) {
   PVideoFrame frame = child->GetFrame(n, env);
   n+=offset;
   if (n < 0) return frame;
-  
+
   env->MakeWritable(&frame);
 
   AvxTextRender::FrameBuffer trd(frame->GetWritePtr(), vi.width, vi.height, frame->GetPitch());
@@ -141,7 +141,7 @@ PVideoFrame ShowFrameNumber::GetFrame(int n, IScriptEnvironment* env) {
 
   int nCharWidth;
   GetApproximateCharacterWidth(fontname, size/8, 0, 0, nCharWidth);
-  
+
   int nLeftCoordinate = this->x;
   if(-1 == nLeftCoordinate)
   {
@@ -151,23 +151,23 @@ PVideoFrame ShowFrameNumber::GetFrame(int n, IScriptEnvironment* env) {
     nLeftCoordinate         = bDisplayOnRightSide ? vi.width - nSideMargin - FRAME_NUMBER_CHARACTERS*nCharWidth : this->x + nSideMargin;
   }
 
-  int nTopCoordinate = this->y; 
+  int nTopCoordinate = this->y;
   if(-1 == nTopCoordinate)
   {
     nTopCoordinate   = vi.height - 2*size/8;
   }
-  
+
   TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, nTopCoordinate, vi.width, vi.height), TextLayout::VCenter, TextLayout::HCenter);
 
   char text[16];
   sprintf(text, FRAME_NUMBER_PRINT_FORMAT, n);
-  
+
   try
   {
     if(-1 == this->x && -1 == this->y && scroll)
         AvxTextRender::RenderText(text, trd, txtConfig, txtLayout, AvxTextRender::RenderOptions_Scroll_SFN, n - offset);
     else
-        AvxTextRender::RenderText(text, trd, txtConfig, txtLayout);
+        AvxTextRender::RenderText(text, trd, txtConfig, txtLayout, AvxTextRender::RenderOptions_Column_SFN);
   }
   catch(AvxException &e)
   {
@@ -177,15 +177,15 @@ PVideoFrame ShowFrameNumber::GetFrame(int n, IScriptEnvironment* env) {
 }
 
 
-AVSValue __cdecl ShowFrameNumber::Create(AVSValue args, void*, IScriptEnvironment* env) 
+AVSValue __cdecl ShowFrameNumber::Create(AVSValue args, void*, IScriptEnvironment* env)
 {
   AVXLOG_INFO("ShowFrameNumber::%s", __FUNCTION__);
 
   PClip clip = args[0].AsClip();
-  
+
   VideoInfo vi = clip->GetVideoInfo();
   convertColorFormatToRGB24(clip, vi, env);
-  
+
   bool scroll = args[1].AsBool(false);
   const int offset = args[2].AsInt(0);
   const int x = args[3].AsInt(-1);
@@ -197,7 +197,7 @@ AVSValue __cdecl ShowFrameNumber::Create(AVSValue args, void*, IScriptEnvironmen
   const int font_width = int(args[9].AsFloat(0)*8+0.5);
   const int font_angle = int(args[10].AsFloat(0)*10+0.5);
   PClip texted = new ShowFrameNumber(clip, scroll, offset, x, y, font, size, text_color, halo_color, font_width, font_angle, env);
-  
+
   convertColorFormatBackToOriginal(texted, vi, env);
   return texted;
 }
@@ -215,7 +215,7 @@ AVSValue __cdecl ShowFrameNumber::Create(AVSValue args, void*, IScriptEnvironmen
 
 ShowSMPTE::ShowSMPTE(PClip _child, double _rate, const char* offset, int _offset_f, int _x, int _y, const char _fontname[],
 					 int _size, int _textcolor, int _halocolor, int font_width, int font_angle, IScriptEnvironment* env)
-  : GenericVideoFilter(_child), 
+  : GenericVideoFilter(_child),
   fontname(_fontname), textcolor(_textcolor), halocolor(_halocolor), size(_size),
 	x(_x), y(_y)
 {
@@ -224,23 +224,23 @@ ShowSMPTE::ShowSMPTE(PClip _child, double _rate, const char* offset, int _offset
   if (_rate == 24) {
     rate = 24;
     dropframe = false;
-  } 
+  }
   else if (_rate > 23.975 && _rate < 23.977) { // Pulldown drop frame rate
     rate = 24;
     dropframe = true;
-  } 
+  }
   else if (_rate == 25) {
     rate = 25;
     dropframe = false;
-  } 
+  }
   else if (_rate == 30) {
     rate = 30;
     dropframe = false;
-  } 
+  }
   else if (_rate > 29.969 && _rate < 29.971) {
     rate = 30;
     dropframe = true;
-  } 
+  }
   else if (_rate == 0) {
     rate = 0; // Display hh:mm:ss.mmm
     dropframe = false;
@@ -293,7 +293,7 @@ ShowSMPTE::ShowSMPTE(PClip _child, double _rate, const char* offset, int _offset
 }
 
 
-PVideoFrame __stdcall ShowSMPTE::GetFrame(int n, IScriptEnvironment* env) 
+PVideoFrame __stdcall ShowSMPTE::GetFrame(int n, IScriptEnvironment* env)
 {
   PVideoFrame frame = child->GetFrame(n, env);
   n+=offset_f;
@@ -351,7 +351,7 @@ PVideoFrame __stdcall ShowSMPTE::GetFrame(int n, IScriptEnvironment* env)
   AvxTextRender::FrameBuffer trd(frame->GetWritePtr(), vi.width, vi.height, frame->GetPitch());
   TextConfig txtConfig(fontname, size/8, 0.75, textcolor, halocolor);
   TextLayout txtLayout(TextLayout::Rect(nLeftCoordinate, nTopCoordinate, vi.width, vi.height), TextLayout::VCenter, TextLayout::HCenter);
-  
+
   try
   {
     AvxTextRender::RenderText(text, trd, txtConfig, txtLayout);
@@ -366,12 +366,12 @@ PVideoFrame __stdcall ShowSMPTE::GetFrame(int n, IScriptEnvironment* env)
 AVSValue __cdecl ShowSMPTE::CreateSMTPE(AVSValue args, void*, IScriptEnvironment* env)
 {
   AVXLOG_INFO("ShowSMPTE::%s", __FUNCTION__);
-    
+
   PClip clip = args[0].AsClip();
-  
+
   VideoInfo vi = clip->GetVideoInfo();
   convertColorFormatToRGB24(clip, vi, env);
-  
+
   double def_rate = (double)args[0].AsClip()->GetVideoInfo().fps_numerator / (double)args[0].AsClip()->GetVideoInfo().fps_denominator;
   double dfrate = args[1].AsFloat(def_rate);
   const char* offset = args[2].AsString(0);
@@ -387,7 +387,7 @@ AVSValue __cdecl ShowSMPTE::CreateSMTPE(AVSValue args, void*, IScriptEnvironment
   const int font_width = int(args[10].AsFloat(0)*8+0.5);
   const int font_angle = int(args[11].AsFloat(0)*10+0.5);
   PClip texted = new ShowSMPTE(clip, dfrate, offset, offset_f, x, y, font, size, text_color, halo_color, font_width, font_angle, env);
-   
+
   convertColorFormatBackToOriginal(texted, vi, env);
   return texted;
 }
@@ -395,10 +395,10 @@ AVSValue __cdecl ShowSMPTE::CreateSMTPE(AVSValue args, void*, IScriptEnvironment
 AVSValue __cdecl ShowSMPTE::CreateTime(AVSValue args, void*, IScriptEnvironment* env)
 {
   PClip clip = args[0].AsClip();
-  
+
   VideoInfo vi = clip->GetVideoInfo();
   convertColorFormatToRGB24(clip, vi, env);
-  
+
   const int offset_f = args[1].AsInt(0);
   const int xreal = args[0].AsClip()->GetVideoInfo().width;
   const int x = args[2].AsInt(-1);
@@ -411,7 +411,7 @@ AVSValue __cdecl ShowSMPTE::CreateTime(AVSValue args, void*, IScriptEnvironment*
   const int font_width = int(args[8].AsFloat(0)*8+0.5);
   const int font_angle = int(args[9].AsFloat(0)*10+0.5);
   PClip texted = new ShowSMPTE(clip, 0.0, NULL, offset_f, x, y, font, size, text_color, halo_color, font_width, font_angle, env);
-     
+
   convertColorFormatBackToOriginal(texted, vi, env);
   return texted;
 }
@@ -426,21 +426,21 @@ AVSValue __cdecl ShowSMPTE::CreateTime(AVSValue args, void*, IScriptEnvironment*
  **********************************/
 
 
-Subtitle::Subtitle( PClip _child, const char _text[], int _x, int _y, int _firstframe, 
-                    int _lastframe, const char _fontname[], int _size, int _textcolor, 
+Subtitle::Subtitle( PClip _child, const char _text[], int _x, int _y, int _firstframe,
+                    int _lastframe, const char _fontname[], int _size, int _textcolor,
                     int _halocolor, int _align, int _spc, bool _multiline, int _lsp,
 					int _font_width, int _font_angle, bool _interlaced )
- : GenericVideoFilter(_child), 
-   x(_x), y(_y), 
-   firstframe(_firstframe), lastframe(_lastframe), 
+ : GenericVideoFilter(_child),
+   x(_x), y(_y),
+   firstframe(_firstframe), lastframe(_lastframe),
    size(_size),
-   lsp(_lsp), 
-   font_width(_font_width), font_angle(_font_angle), 
-   multiline(_multiline), 
-   interlaced(_interlaced), 
+   lsp(_lsp),
+   font_width(_font_width), font_angle(_font_angle),
+   multiline(_multiline),
+   interlaced(_interlaced),
    textcolor(vi.IsYUV() ? RGB2YUV(_textcolor) : _textcolor),
-   halocolor(vi.IsYUV() ? RGB2YUV(_halocolor) : _halocolor), 
-   align(_align), 
+   halocolor(vi.IsYUV() ? RGB2YUV(_halocolor) : _halocolor),
+   align(_align),
    spc(_spc),
    fontname(_fontname),
    text(_text)
@@ -449,13 +449,13 @@ Subtitle::Subtitle( PClip _child, const char _text[], int _x, int _y, int _first
 
 
 
-Subtitle::~Subtitle(void) 
+Subtitle::~Subtitle(void)
 {
 }
 
 
 
-PVideoFrame Subtitle::GetFrame(int n, IScriptEnvironment* env) 
+PVideoFrame Subtitle::GetFrame(int n, IScriptEnvironment* env)
 {
   PVideoFrame frame = child->GetFrame(n, env);
 
@@ -464,7 +464,7 @@ PVideoFrame Subtitle::GetFrame(int n, IScriptEnvironment* env)
 
     AvxTextRender::FrameBuffer trd(frame->GetWritePtr(), vi.width, vi.height, frame->GetPitch());
     TextConfig txtConfig(fontname, size/8, 0.75, textcolor, halocolor);
-    TextLayout txtLayout(TextLayout::Rect(x,y,vi.width, vi.height), TextLayout::VCenter, TextLayout::Left);    
+    TextLayout txtLayout(TextLayout::Rect(x,y,vi.width, vi.height), TextLayout::VCenter, TextLayout::Left);
 
     try
     {
@@ -475,19 +475,19 @@ PVideoFrame Subtitle::GetFrame(int n, IScriptEnvironment* env)
         env->ThrowError(Utf8String(e.GetMsg()).c_str());
     }
   }
-  
+
   return frame;
 }
 
-AVSValue __cdecl Subtitle::Create(AVSValue args, void*, IScriptEnvironment* env) 
+AVSValue __cdecl Subtitle::Create(AVSValue args, void*, IScriptEnvironment* env)
 {
     AVXLOG_INFO("Subtitle::%s", __FUNCTION__);
-    
+
     PClip clip = args[0].AsClip();
-    
+
     VideoInfo vi = clip->GetVideoInfo();
     convertColorFormatToRGB24(clip, vi, env);
-    
+
     const char* text = args[1].AsString();
     const int first_frame = args[4].AsInt(0);
     const int last_frame = args[5].AsInt(clip->GetVideoInfo().num_frames-1);
@@ -523,9 +523,9 @@ AVSValue __cdecl Subtitle::Create(AVSValue args, void*, IScriptEnvironment* env)
 
     PClip texted = new Subtitle(clip, text, x, y, first_frame, last_frame, font, size, text_color,
 	                    halo_color, align, spc, multiline, lsp, font_width, font_angle, interlaced);
-      
+
     convertColorFormatBackToOriginal(texted, vi, env);
-    return texted;    
+    return texted;
 }
 
 
@@ -555,7 +555,7 @@ FilterInfo::FilterInfo( PClip _child, VideoInfo const& _viIn)
 
 
 
-FilterInfo::~FilterInfo(void) 
+FilterInfo::~FilterInfo(void)
 {
 }
 
@@ -588,7 +588,7 @@ const char* t_SBFF="Bottom Field (Separated)   ";
 string GetCpuMsg(IScriptEnvironment * env)
 {
   int flags = env->GetCPUFlags();
-  stringstream ss;  
+  stringstream ss;
 
   if (flags & CPUF_FPU)
     ss << "x87  ";
@@ -611,10 +611,10 @@ string GetCpuMsg(IScriptEnvironment * env)
 }
 
 
-PVideoFrame FilterInfo::GetFrame(int n, IScriptEnvironment* env) 
+PVideoFrame FilterInfo::GetFrame(int n, IScriptEnvironment* env)
 {
     PVideoFrame frame = child->GetFrame(n, env);
-  
+
     const char* c_space;
     const char* s_type = t_NONE;
     const char* s_parity;
@@ -650,7 +650,7 @@ PVideoFrame FilterInfo::GetFrame(int n, IScriptEnvironment* env)
     char text[512];
 	int tlen;
     RECT r= { 32, 16, min(3440,viIn.width*8), 900*2 };
-    
+
     int vLenInMsecs = (int)(1000.0 * (double)viIn.num_frames * (double)viIn.fps_denominator / (double)viIn.fps_numerator);
     int cPosInMsecs = (int)(1000.0 * (double)n * (double)viIn.fps_denominator / (double)viIn.fps_numerator);
 
@@ -666,7 +666,7 @@ PVideoFrame FilterInfo::GetFrame(int n, IScriptEnvironment* env)
       "Has Audio: %s\n"                                     //  15=12+3
       , n, viIn.num_frames
       , (cPosInMsecs/(60*60*1000)), (cPosInMsecs/(60*1000))%60 ,(cPosInMsecs/1000)%60, cPosInMsecs%1000,
-        (vLenInMsecs/(60*60*1000)), (vLenInMsecs/(60*1000))%60 ,(vLenInMsecs/1000)%60, vLenInMsecs%1000 
+        (vLenInMsecs/(60*60*1000)), (vLenInMsecs/(60*1000))%60 ,(vLenInMsecs/1000)%60, vLenInMsecs%1000
       , c_space
       , viIn.width, viIn.height
       , (float)viIn.fps_numerator/(float)viIn.fps_denominator, viIn.fps_numerator, viIn.fps_denominator
@@ -697,13 +697,13 @@ PVideoFrame FilterInfo::GetFrame(int n, IScriptEnvironment* env)
       "CPU detected: %s\n"                                  //  60=15+45
       , GetCpuMsg(env).c_str()                              // 442
     );
-    
+
     env->MakeWritable(&frame);
-    
+
     AvxTextRender::FrameBuffer trd(frame->GetWritePtr(), vi.width, vi.height, frame->GetPitch());
-    TextConfig txtConfig("Arial", CalcFontSize(vi.width, vi.height)/8, 0.75, textcolor, halocolor);    
-    TextLayout txtLayout(TextLayout::Rect(r.left, r.top, r.right, r.bottom), TextLayout::VCenter, TextLayout::Left);    
- 
+    TextConfig txtConfig("Arial", CalcFontSize(vi.width, vi.height)/8, 0.75, textcolor, halocolor);
+    TextLayout txtLayout(TextLayout::Rect(r.left, r.top, r.right, r.bottom), TextLayout::VCenter, TextLayout::Left);
+
     try
     {
         AvxTextRender::RenderText(text, trd, txtConfig, txtLayout);
@@ -716,19 +716,19 @@ PVideoFrame FilterInfo::GetFrame(int n, IScriptEnvironment* env)
     return frame;
 }
 
-AVSValue __cdecl FilterInfo::Create(AVSValue args, void*, IScriptEnvironment* env) 
+AVSValue __cdecl FilterInfo::Create(AVSValue args, void*, IScriptEnvironment* env)
 {
     AVXLOG_INFO("FilterInfo::%s", __FUNCTION__);
 
     PClip clip = args[0].AsClip();
-    
+
     VideoInfo const& vi = clip->GetVideoInfo();
     convertColorFormatToRGB24(clip, vi, env);
-    
+
     PClip texted = new FilterInfo(clip, vi);
-    
+
     convertColorFormatBackToOriginal(texted, vi, env);
-    return texted;        
+    return texted;
 }
 
 
@@ -856,11 +856,11 @@ AVSValue __cdecl Compare::Create(AVSValue args, void*, IScriptEnvironment *env)
 {
   PClip clip = args[0].AsClip();
   PClip clip1 = args[1].AsClip();
-  
+
   VideoInfo vi = clip->GetVideoInfo();
   convertColorFormatToRGB24(clip, vi, env);
   convertColorFormatToRGB24(clip1, vi, env);
-  
+
   PClip texted = new Compare(clip,     // clip
                              clip1,     // base clip
                              args[2].AsString(""),   // channels
@@ -872,11 +872,11 @@ AVSValue __cdecl Compare::Create(AVSValue args, void*, IScriptEnvironment *env)
 }
 
 void Compare::Compare_ISSE(DWORD mask, int incr,
-                           const BYTE * f1ptr, int pitch1, 
+                           const BYTE * f1ptr, int pitch1,
                            const BYTE * f2ptr, int pitch2,
                            int rowsize, int height,
                            int &SAD_sum, int &SD_sum, int &pos_D,  int &neg_D, double &SSD_sum)
-{ 
+{
     // rowsize multiple of 8 for YUV Planar, RGB32 and YUY2; 6 for RGB24
     // incr must be 3 for RGB24 and 4 for others
     // SAD_sum, SD_sum, SSD_sum are incremented (must be properly initialized)
@@ -1021,7 +1021,7 @@ PVideoFrame __stdcall Compare::GetFrame(int n, IScriptEnvironment* env)
     }
   }
   else { // Planar
-  
+
     int planes[3] = {PLANAR_Y, PLANAR_U, PLANAR_V};
     for (int p=0; p<3; p++) {
       const int plane = planes[p];
@@ -1037,7 +1037,7 @@ PVideoFrame __stdcall Compare::GetFrame(int n, IScriptEnvironment* env)
 
         bytecount += rowsize * height;
 
-        if ((rowsize & 7) || !(env->GetCPUFlags() & CPUF_INTEGER_SSE)) { 
+        if ((rowsize & 7) || !(env->GetCPUFlags() & CPUF_INTEGER_SSE)) {
           // rowsize must be a multiple 8 to use the ISSE routine
           for (int y = 0; y < height; y++) {
             row_SSD = 0;
@@ -1087,7 +1087,7 @@ PVideoFrame __stdcall Compare::GetFrame(int n, IScriptEnvironment* env)
     PSNR_tot += PSNR;
     PSNR_max = max(PSNR_max, PSNR);
     bytecount_overall += double(bytecount);
-    SSD_overall += SSD;  
+    SSD_overall += SSD;
   }
 
   if (log)
@@ -1102,14 +1102,14 @@ PVideoFrame __stdcall Compare::GetFrame(int n, IScriptEnvironment* env)
 	char text[400];
 	RECT r= { 32, 16, min(3440,vi.width*8), 768+128 };
 	double PSNR_overall = 10.0 * log10(bytecount_overall * 255.0 * 255.0 / SSD_overall);
-	snprintf(text, sizeof(text), 
+	snprintf(text, sizeof(text),
 		"       Frame:  %-8u(   min  /   avg  /   max  )\n"
 		"Mean Abs Dev:%8.4f  (%7.3f /%7.3f /%7.3f )\n"
 		"    Mean Dev:%+8.4f  (%+7.3f /%+7.3f /%+7.3f )\n"
 		" Max Pos Dev:%4d  \n"
 		" Max Neg Dev:%4d  \n"
 		"        PSNR:%6.2f dB ( %6.2f / %6.2f / %6.2f )\n"
-		"Overall PSNR:%6.2f dB\n", 
+		"Overall PSNR:%6.2f dB\n",
 		n,
 		MAD, MAD_min, MAD_tot / framecount, MD_max,
 		MD, MD_min, MD_tot / framecount, MD_max,
@@ -1118,11 +1118,11 @@ PVideoFrame __stdcall Compare::GetFrame(int n, IScriptEnvironment* env)
 		PSNR, PSNR_min, PSNR_tot / framecount, PSNR_max,
 		PSNR_overall
 	);
-	  
+
     AvxTextRender::FrameBuffer trd(f1->GetWritePtr(), vi.width, vi.height, f1->GetPitch());
 	TextConfig txtConfig("Courier New",  fontsize/8, 0.75, textcolor, halocolor);
     TextLayout txtLayout(TextLayout::Rect(vi.width/8, vi.height/2, vi.width-4*8, vi.height-4*8), TextLayout::VCenter, TextLayout::Left);
-	  
+
     try
     {
         AvxTextRender::RenderText(text, trd, txtConfig, txtLayout);
@@ -1138,7 +1138,7 @@ PVideoFrame __stdcall Compare::GetFrame(int n, IScriptEnvironment* env)
       if (vi.height > 196) {
         if (vi.IsYUY2()) {
           dstp += (vi.height - 1) * dst_pitch;
-          for (int y = 0; y <= 100; y++) {            
+          for (int y = 0; y <= 100; y++) {
             for (int x = max(0, vi.width - n - 1); x < vi.width; x++) {
               if (y <= psnrs[n - vi.width + 1 + x]) {
                 if (y <= psnrs[n - vi.width + 1 + x] - 2) {
@@ -1157,7 +1157,7 @@ PVideoFrame __stdcall Compare::GetFrame(int n, IScriptEnvironment* env)
         }
 		else if (vi.IsPlanar()) {
           dstp += (vi.height - 1) * dst_pitch;
-          for (int y = 0; y <= 100; y++) {            
+          for (int y = 0; y <= 100; y++) {
             for (int x = max(0, vi.width - n - 1); x < vi.width; x++) {
               if (y <= psnrs[n - vi.width + 1 + x]) {
                 if (y <= psnrs[n - vi.width + 1 + x] - 2) {
@@ -1200,20 +1200,20 @@ PVideoFrame __stdcall Compare::GetFrame(int n, IScriptEnvironment* env)
  *******   Helper Functions    ******
  ***********************************/
 
-void ApplyMessage( PVideoFrame* frame, const VideoInfo& vi, const char* message, int size, 
-                   int textcolor, int halocolor, int bgcolor, IScriptEnvironment* env ) 
-{    
+void ApplyMessage( PVideoFrame* frame, const VideoInfo& vi, const char* message, int size,
+                   int textcolor, int halocolor, int bgcolor, IScriptEnvironment* env )
+{
   AVXLOG_INFO("ApplyMessage::%s", __FUNCTION__);
-    
+
   if (vi.IsYUV()) {
     textcolor = RGB2YUV(textcolor);
     halocolor = RGB2YUV(halocolor);
   }
-  
+
   AvxTextRender::FrameBuffer trd((*frame)->GetWritePtr(), vi.width, vi.height, (*frame)->GetPitch());
   TextConfig txtConfig("Arial", size, 0.75, textcolor, halocolor);
   TextLayout txtLayout(TextLayout::Rect(4*8, 4*8, vi.width - 4*8, vi.height-4*8), TextLayout::VCenter, TextLayout::Left);
-  
+
   try
   {
     AvxTextRender::RenderText(message, trd, txtConfig, txtLayout, AvxTextRender::RenderOptions_ResizeToFit);
@@ -1227,7 +1227,7 @@ void ApplyMessage( PVideoFrame* frame, const VideoInfo& vi, const char* message,
 void GetApproximateCharacterWidth(const char* pStrFontFamily, int nFontSize, int textcolor, int halocolor, int& nCharWidth)
 {
     TextConfig txtConfig(pStrFontFamily, nFontSize, 0, textcolor, halocolor);
-    
+
     AvxTextRender::GetApproximateCharacterWidth(txtConfig, nCharWidth);
 }
 
