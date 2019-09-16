@@ -27,18 +27,18 @@ extern "C" {
 
 #define _stricmp strcasecmp
 
-PixelFormat CSNameToPIXFMT(const char *CSName, PixelFormat Default) {
+AVPixelFormat CSNameToPIXFMT(const char *CSName, AVPixelFormat Default) {
 	if (!_stricmp(CSName, ""))
 		return Default;
 	if (!_stricmp(CSName, "YV12"))
-		return PIX_FMT_YUV420P;
+		return AV_PIX_FMT_YUV420P;
 	if (!_stricmp(CSName, "YUY2"))
-		return PIX_FMT_YUYV422;
+		return AV_PIX_FMT_YUYV422;
 	if (!_stricmp(CSName, "RGB24"))
-		return PIX_FMT_BGR24;
+		return AV_PIX_FMT_BGR24;
 	if (!_stricmp(CSName, "RGB32"))
-		return PIX_FMT_RGB32;
-	return PIX_FMT_NONE;
+		return AV_PIX_FMT_RGB32;
+	return AV_PIX_FMT_NONE;
 }
 
 int ResizerNameToSWSResizer(const char *ResizerName) {
