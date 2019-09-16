@@ -185,12 +185,12 @@ void AvisynthVideoSource::InitOutputFormat(
 	TargetFormats[2] = FFMS_GetPixFmt("bgra");
 	TargetFormats[3] = -1;
 
-	// PIX_FMT_NV21 is misused as a return value different to the defined ones in the function
-	PixelFormat TargetPixelFormat = CSNameToPIXFMT(ConvertToFormatName, PIX_FMT_NV21);
-	if (TargetPixelFormat == PIX_FMT_NONE)
+	// AV_PIX_FMT_NV21 is misused as a return value different to the defined ones in the function
+	AVPixelFormat TargetPixelFormat = CSNameToPIXFMT(ConvertToFormatName, AV_PIX_FMT_NV21);
+	if (TargetPixelFormat == AV_PIX_FMT_NONE)
 		Env->ThrowError("FFVideoSource: Invalid colorspace name specified");
 
-	if (TargetPixelFormat != PIX_FMT_NV21) {
+	if (TargetPixelFormat != AV_PIX_FMT_NV21) {
 		TargetFormats[0] = TargetPixelFormat;
 		TargetFormats[1] = -1;
 	}
@@ -234,7 +234,7 @@ void AvisynthVideoSource::InitOutputFormat(
 	if (RFFMode > 0 && ResizeToHeight != F->EncodedHeight)
 		Env->ThrowError("FFVideoSource: Vertical scaling not allowed in RFF mode");
 
-	if (RFFMode > 0 && TargetPixelFormat != PIX_FMT_NV21)
+	if (RFFMode > 0 && TargetPixelFormat != AV_PIX_FMT_NV21)
 		Env->ThrowError("FFVideoSource: Only the default output colorspace can be used in RFF mode");
 
 	// set color information variables
