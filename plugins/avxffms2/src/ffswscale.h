@@ -22,6 +22,7 @@
 #define FFSWSCALE_H
 
 extern "C" {
+#include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
 }
 
