@@ -158,7 +158,7 @@ void GeneralConvolution::initBuffers(IScriptEnvironment* env)
   pbyG = new BYTE[buffSize];
   pbyB = new BYTE[buffSize];
 
-  if(pbyA && pbyR && pbyG && pbyB == false)
+  if(!(pbyA && pbyR && pbyG && pbyB))
     env->ThrowError("GeneralConvolution: out of memory");
 }
 
