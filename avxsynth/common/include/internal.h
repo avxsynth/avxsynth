@@ -45,7 +45,7 @@ namespace avxsynth {
 #define AVS_VERSION 4.00
 #define AVS_AVX_SYNTH "AvxSynth 4.0 (Linux port of AviSynth 2.58),\n"
 #define AVS_COPYRIGHT "\xC2\xA9 2000-2012 Ben Rudiak-Gould, et al.\n(http://www.avxsynth.org))\n"
-#define AVS_VERSTR "build:"__DATE__" ["__TIME__"]"
+#define AVS_VERSTR " build:" __DATE__ " [" __TIME__ "] "
 
 extern const char _AVS_VERSTR[], _AVS_COPYRIGHT[];
 
