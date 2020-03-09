@@ -53,7 +53,7 @@ AC_ARG_ENABLE([ffms2],
 AC_ARG_ENABLE([avxedit],
   [AS_HELP_STRING(
     [--enable-avxedit],
-    [build AVXEdit program (default yes, requires Qt4)]
+    [build AVXEdit program (default yes, requires Qt5)]
   )]
 )
 AC_ARG_WITH([jpeg],
@@ -318,22 +318,22 @@ AS_IF(
   [enable_ffms2="no"]
 )
 
-# AVXEdit requires Qt. We must check for required Qt compilers as well as libs.
+# AVXEdit requires Qt5. We must check for required Qt compilers as well as libs.
 # This example adapted from http://qtnode.net/wiki/Qt_with_autotools .
 AC_LANG([C++])
 AS_IF(
   [test "x$enable_avxedit" = "xyes" || test "x$enable_avxedit" = "x"],
   [
-    PKG_CHECK_MODULES([Qt], [QtCore QtGui >= 4],
+    PKG_CHECK_MODULES([Qt], [Qt5Core Qt5Widgets >= 5],
       [
-        test "x$MOC" = "x" && MOC=$("$PKG_CONFIG" --variable=moc_location QtCore)
-        test "x$RCC" = "x" && RCC=$("$PKG_CONFIG" --variable=rcc_location QtCore)
-        Qt_CFLAGS=$($PKG_CONFIG --cflags QtGui)
-        Qt_LIBS=$($PKG_CONFIG --libs QtGui)
+        test "x$MOC" = "x" && MOC=$("$PKG_CONFIG" --variable=moc_location Qt5Core)
+        test "x$RCC" = "x" && RCC=$("$PKG_CONFIG" --variable=rcc_location Qt5Core)
+        Qt_CFLAGS=$($PKG_CONFIG --cflags Qt5Widgets)
+        Qt_LIBS=$($PKG_CONFIG --libs Qt5Widgets)
       ],
       [true]
     )
-    AC_PATH_PROGS([MOC], [moc-qt4 moc], [moc])
+    AC_PATH_PROGS([MOC], [moc-qt5 moc], [moc])
     AC_PATH_PROG([RCC], [rcc])
 
 # There's no way sane way to check rcc function, so we only test moc.
@@ -353,7 +353,7 @@ signals:
 EOF
 
     SAVED_CXXFLAGS="$CXXFLAGS" SAVED_LIBS="$LIBS"
-    CXXFLAGS="$CXXFLAGS $Qt_CFLAGS" LIBS="$LIBS $Qt_LIBS"
+    CXXFLAGS="-fPIC $CXXFLAGS $Qt_CFLAGS" LIBS="$LIBS $Qt_LIBS"
 
     AC_MSG_CHECKING([if $MOC works])
     if "$MOC" myqt.h -o moc_myqt.cpp 2>&AS_MESSAGE_LOG_FD; then
@@ -395,9 +395,9 @@ AS_IF(
   [test "x$HAVE_QT" = "xno" || test "x$RCC" = "x"],
   [
     if test "x$enable_avxedit" = "xyes"; then
-      AC_MSG_ERROR([Qt4 libraries and moc+rcc are required for AVXEdit])
+      AC_MSG_ERROR([Qt5 libraries and moc+rcc are required for AVXEdit])
     elif test "x$enable_avxedit" = "x"; then
-      AC_MSG_WARN([Required Qt4 libraries and tools not found, disabling AVXEdit])
+      AC_MSG_WARN([Required Qt5 libraries and tools not found, disabling AVXEdit])
       enable_avxedit="no"
     fi
   ],
@@ -466,7 +466,7 @@ ffms2:
 libav:
     CFLAGS: $libav_CFLAGS
     LIBS: $libav_LIBS
-Qt:
+Qt5:
     moc: $MOC
     rcc: $RCC
     CFLAGS: $Qt_CFLAGS

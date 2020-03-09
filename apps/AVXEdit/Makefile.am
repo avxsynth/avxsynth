@@ -48,6 +48,7 @@ AVXEdit_CPPFLAGS = \
 	$(AM_CPPFLAGS)
 
 AVXEdit_CXXFLAGS = \
+	-fPIC \
 	$(Qt_CFLAGS) \
 	$(AM_CXXFLAGS)
 
