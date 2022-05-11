@@ -89,15 +89,15 @@ static const char * const StringSystemError(const unsigned code)
     return "Evaluate: System exception - Access Violation";
   case STATUS_IN_PAGE_ERROR:             // 0xc0000006
     return "Evaluate: System exception - In Page Error";
-  case STATUS_INVALID_HANDLE:            // 0xc0000008
+  case (unsigned)STATUS_INVALID_HANDLE:  // 0xc0000008
     return "Evaluate: System exception - Invalid Handle";
   case STATUS_NO_MEMORY:                 // 0xc0000017
     return "Evaluate: System exception - No Memory";
   case STATUS_ILLEGAL_INSTRUCTION:       // 0xc000001d
     return "Evaluate: System exception - Illegal Instruction";
-  case STATUS_NONCONTINUABLE_EXCEPTION:  // 0xc0000025
+  case (unsigned)STATUS_NONCONTINUABLE_EXCEPTION:  // 0xc0000025
     return "Evaluate: System exception - Noncontinuable Exception";
-  case STATUS_INVALID_DISPOSITION:       // 0xc0000026
+  case (unsigned)STATUS_INVALID_DISPOSITION:       // 0xc0000026
     return "Evaluate: System exception - Invalid Disposition";
   case STATUS_ARRAY_BOUNDS_EXCEEDED:     // 0xc000008c
     return "Evaluate: System exception - Array Bounds Exceeded";
