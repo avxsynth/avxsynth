@@ -1827,7 +1827,8 @@ void* ScriptEnvironment::ManageCache(int key, void* data){
 // ScriptEnvironment class without extending the IScriptEnvironment
 // definition.
 
-  switch (key)
+  unsigned ikey = static_cast<unsigned>(key);
+  switch (ikey)
   {
   // Allow the cache to designate a VideoFrameBuffer as expired thus
   // allowing it to be reused in favour of any of it's older siblings.
